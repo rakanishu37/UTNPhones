@@ -1,7 +1,7 @@
 
 CREATE DATABASE utn_phones;
 USE utn_phones;
--- Por qué la llamada tiene la factura? la misma factura ya esta en la linea
+
 CREATE TABLE Clients(
     id_client INT AUTO_INCREMENT,
     id_city INT NOT NULL,
@@ -56,6 +56,7 @@ CREATE TABLE Phone_lines(
     id_client INT NOT NULL,
     id_prefix INT NOT NULL,
     line_number VARCHAR(15) NOT NULL,
+    line_status INT(1) NOT NULL, -- -1 suspendida, 0 cancelada, 1 activada
     CONSTRAINT PK_PHONE_LINES PRIMARY KEY (id_phone_line),
     CONSTRAINT FK_LINES_USER_TYPES FOREIGN KEY (id_user_type) REFERENCES User_types(id_user_type),
     CONSTRAINT FK_LINES_CLIENTS FOREIGN KEY (id_client) REFERENCES Clients(id_client),
