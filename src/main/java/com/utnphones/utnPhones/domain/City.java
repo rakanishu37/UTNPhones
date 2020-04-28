@@ -6,20 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Table(name = "cities")
 public class City {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_city")
     private Integer id;
     @NotNull
     @ManyToOne
+    @JoinColumn(name = "id_province")
     private Province province;
     @NotNull
     @Column(name = "city_name")

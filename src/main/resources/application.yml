@@ -1,0 +1,11 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+  jpa:
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://127:0:0:1:3306/utn_phones?useSSL=false
+    username: root
+    password: root
