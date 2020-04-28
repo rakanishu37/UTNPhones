@@ -26,10 +26,10 @@ CREATE TABLE Provinces(
     CONSTRAINT PK_PROVINCES PRIMARY KEY (id_province)
 );
 
-CREATE TABLE User_types(
-    id_user_type INT AUTO_INCREMENT,
+CREATE TABLE Line_types(
+    id_line_type INT AUTO_INCREMENT,
     type_name VARCHAR(50) NOT NULL,
-    CONSTRAINT PK_USER_TYPES PRIMARY KEY (id_user_type)
+    CONSTRAINT PK_LINE_TYPES PRIMARY KEY (id_line_type)
 );
 
 CREATE TABLE Prefixes(
@@ -52,13 +52,13 @@ CREATE TABLE Invoices(
 
 CREATE TABLE Phone_lines(
     id_phone_line INT AUTO_INCREMENT,
-    id_user_type INT NOT NULL,
+    id_line_type INT NOT NULL,
     id_client INT NOT NULL,
     id_prefix INT NOT NULL,
     line_number VARCHAR(15) NOT NULL,
     line_status INT(1) NOT NULL, -- -1 suspendida, 0 cancelada, 1 activada
     CONSTRAINT PK_PHONE_LINES PRIMARY KEY (id_phone_line),
-    CONSTRAINT FK_LINES_USER_TYPES FOREIGN KEY (id_user_type) REFERENCES User_types(id_user_type),
+    CONSTRAINT FK_LINES_LINE_TYPES FOREIGN KEY (id_line_type) REFERENCES Line_types(id_line_type),
     CONSTRAINT FK_LINES_CLIENTS FOREIGN KEY (id_client) REFERENCES Clients(id_client),
     CONSTRAINT FK_LINES_PREFIX FOREIGN KEY (id_prefix) REFERENCES Prefixes(id_prefix)
 );
