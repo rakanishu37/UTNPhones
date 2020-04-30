@@ -1,5 +1,6 @@
 package com.utnphones.utnPhones.dao.mysql;
 
+import com.utnphones.utnPhones.dao.ProvinceDao;
 import com.utnphones.utnPhones.domain.Province;
 
 import java.sql.Connection;
@@ -9,11 +10,36 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProvinceMySQLDAO {
+public class ProvinceMySQLDao implements ProvinceDao {
     private Connection connection;
 
-    public ProvinceMySQLDAO(Connection connection) {
+    public ProvinceMySQLDao(Connection connection) {
         this.connection = connection;
+    }
+
+    @Override
+    public Province add(Province value) {
+        return null;
+    }
+
+    @Override
+    public Province update(Province value) {
+        return null;
+    }
+
+    @Override
+    public void remove(Integer id) {
+
+    }
+
+    @Override
+    public void remove(Province value) {
+
+    }
+
+    @Override
+    public Province getById(Integer id) {
+        return null;
     }
 
     public List<Province> getAll(){

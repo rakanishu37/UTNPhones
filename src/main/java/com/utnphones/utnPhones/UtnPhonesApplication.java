@@ -1,9 +1,8 @@
 package com.utnphones.utnPhones;
 
 import com.utnphones.utnPhones.controllers.ProvinceController;
-import com.utnphones.utnPhones.dao.mysql.ProvinceMySQLDAO;
+import com.utnphones.utnPhones.dao.mysql.ProvinceMySQLDao;
 import com.utnphones.utnPhones.services.ProvinceService;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.sql.Connection;
@@ -26,7 +25,7 @@ public class UtnPhonesApplication {
 		}
 		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/utn_phones?user=root&password=root");
 
-		ProvinceMySQLDAO provinceDao = new ProvinceMySQLDAO(conn);
+		ProvinceMySQLDao provinceDao = new ProvinceMySQLDao(conn);
 		ProvinceService provinceService = new ProvinceService(provinceDao);
 		ProvinceController provinceController = new ProvinceController(provinceService);
 

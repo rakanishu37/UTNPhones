@@ -1,14 +1,14 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.ProvinceMySQLDAO;
+import com.utnphones.utnPhones.dao.mysql.ProvinceMySQLDao;
 import com.utnphones.utnPhones.domain.Province;
 
 import java.util.List;
 
 public class ProvinceService {
-    private ProvinceMySQLDAO provinceMySQLDAO;
+    private ProvinceMySQLDao provinceMySQLDAO;
 
-    public ProvinceService(ProvinceMySQLDAO provinceMySQLDAO) {
+    public ProvinceService(ProvinceMySQLDao provinceMySQLDAO) {
         this.provinceMySQLDAO = provinceMySQLDAO;
     }
 

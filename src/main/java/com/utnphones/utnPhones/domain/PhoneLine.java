@@ -19,5 +19,5 @@ import javax.persistence.Table;
 public class PhoneLine {
     @ManyToOne
     @JoinColumn(name = "id_client")
-    private Client client;
+    private Person client;
 }
