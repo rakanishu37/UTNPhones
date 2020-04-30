@@ -1,6 +1,5 @@
 CREATE DATABASE utn_phones;
 USE utn_phones;
-
 CREATE TABLE Provinces(
     id_province INT AUTO_INCREMENT,
     province_name VARCHAR(50) NOT NULL,
@@ -17,33 +16,28 @@ CREATE TABLE Cities(
     CONSTRAINT UNQ_PREFIX unique(prefix)
 );
 
+CREATE TABLE User_types(
+	id_user_type INT AUTO_INCREMENT,
+    user_type VARCHAR(50),
+    CONSTRAINT PK_USER_TYPES PRIMARY KEY (id_user_type)
+);
+
 CREATE TABLE Persons(
     id_person INT AUTO_INCREMENT,
     id_city INT NOT NULL,
     firstname VARCHAR(50) NOT NULL,
     surname VARCHAR(50) NOT NULL, 
-    DNI VARCHAR(9) NOT  NULL UNIQUE,
+    DNI VARCHAR(9) NOT  NULL,
+    username varchar(50) not null,
+    password varchar(50) not null,
+    id_user_type INT NOT NULL, 
     CONSTRAINT PK_PERSONS PRIMARY KEY (id_person),
-    CONSTRAINT FK_PERSONS_CITIES FOREIGN KEY (id_city) REFERENCES Cities(id_city)
+    CONSTRAINT FK_PERSONS_CITIES FOREIGN KEY (id_city) REFERENCES Cities(id_city),
+    CONSTRAINT FK_PERSONS_USER_TYPES FOREIGN KEY (id_user_type) REFERENCES User_types(id_user_type),
+    CONSTRAINT UNQ_DNI unique(DNI),
+    CONSTRAINT UNQ_USERNAME unique(username)
 );
 
-CREATE TABLE Clients(
-    id_client INT AUTO_INCREMENT,
-    id_person int not null,
-    username varchar(50) not null,
-    password varchar(50) not null,
-	constraint PK_CLIENTS primary key(id_client),
-    constraint FK_CLIENTS_PERSONS foreign key(id_person) references Persons(id_person)
-);
-
-CREATE TABLE Employees(
-	id_employee INT AUTO_INCREMENT,
-    id_person int not null,
-    username varchar(50) not null,
-    password varchar(50) not null,
-    constraint PK_EMPLOYEES primary key(id_employee),
-    constraint FK_EMPLOYEES_PERSONS foreign key(id_person) references Persons(id_person)
-);
 
 CREATE TABLE Fares(
     id_city_from INT NOT NULL,
@@ -63,12 +57,13 @@ CREATE TABLE Line_types(
 CREATE TABLE Phone_lines(
     id_phone_line INT AUTO_INCREMENT,
     id_line_type INT NOT NULL,
-    id_client INT NOT NULL,
+    id_person INT NOT NULL,
     line_number VARCHAR(15) NOT NULL,
 	line_status ENUM('active', 'canceled', 'suspended') NOT NULL,
     CONSTRAINT PK_PHONE_LINES PRIMARY KEY (id_phone_line),
     CONSTRAINT FK_LINES_LINE_TYPES FOREIGN KEY (id_line_type) REFERENCES Line_types(id_line_type),
-    CONSTRAINT FK_LINES_CLIENTS FOREIGN KEY (id_client) REFERENCES Clients(id_client)
+    CONSTRAINT FK_LINES_PERSONS FOREIGN KEY (id_person) REFERENCES Persons(id_person),
+    CONSTRAINT UNQ_LINE_NUMBER UNIQUE (line_number)
 );
 
 CREATE TABLE Invoices(
