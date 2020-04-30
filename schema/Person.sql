@@ -1,37 +1,46 @@
-drop procedure sp_add_person
 delimiter $$
-create procedure sp_add_person(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9), OUT id_person int)
+create procedure sp_add_person(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50),IN pUserTypeId int, OUT pPersonId int)
 begin
 	declare vCityId int default 0;
     select id_city into vCityId from cities as c where c.city_name =  pCity_name;
     
     if(vCityId <> 0) then
-		insert into persons(id_city, firstname, surname, DNI) values(vCityId, pFirstname, pSurname, pDNI);
-        set id_person = last_insert_id();
+		insert into persons(id_city, firstname, surname, DNI,username,password,id_user_type) values(vCityId, pFirstname, pSurname, pDNI, pUsername, pPassword, pUserTypeId);
+        set pPersonId = last_insert_id();
 	else
 		signal sqlstate '10001' SET MESSAGE_TEXT = 'City does not exists', MYSQL_ERRNO = 1000 ;
     end if;
-    
 end; $$
 
-call sp_add_person("Mar del Plata", "Pedro", "Gimenez", "18448563");
-call sp_add_person("Buenos Aires", "Peter", "Perez", "42444964");
-
 delimiter $$
-create procedure sp_add_client(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9), IN pUsername varchar(50), IN pPassword varchar(50))
+create procedure sp_add_client(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50), OUT pClientId int)
 begin
-	declare vPersonId int;
+	declare vUserTypeId int;
 	declare vCounter int default 0;
-
-    select count(*) into vCounter from clients where clients.username = pUsername;
+	
+    select count(*) into vCounter from persons as p where p.username = pUsername;
     
     if(vCounter = 0) then
-		call sp_add_person(pCity_name, pFirstname, pSurname, pDNI, vPersonId);
-		insert into clients(id_person, username, password) values (vPersonId, pUsername, pPassword);
-	else
-		signal sqlstate '10001' SET MESSAGE_TEXT = 'Username already exists', MYSQL_ERRNO = 2000 ;
+		select id_user_type into vUserTypeId from user_types where user_type = "client";
+		call sp_add_person(pCity_name, pFirstname, pSurname, pDNI, pUsername, pPassword,vUserTypeId,pClientId);
     end if;
 end; $$
 
 call sp_add_client("Catamarca", "Susana", "Gimenez", "8448563", "susana_gim", "123456");
 call sp_add_client("Corrientes", "Ricardo", "Lev", "54412658", "ricardo_montaner@hotmail.com.ar", "123456");
+
+delimiter $$
+create procedure sp_add_employee(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50), OUT pEmployeeId int)
+begin
+	declare vUserTypeId int;
+	declare vCounter int default 0;
+	
+    select count(*) into vCounter from persons as p where p.username = pUsername;
+    
+    if(vCounter = 0) then
+		select id_user_type into vUserTypeId from user_types where user_type = "employee";
+		call sp_add_person(pCity_name, pFirstname, pSurname, pDNI, pUsername, pPassword,vUserTypeId,pEmployeeId);
+	else
+		signal sqlstate '10001' SET MESSAGE_TEXT = 'Username already exists', MYSQL_ERRNO = 2000 ;
+    end if;
+end; $$

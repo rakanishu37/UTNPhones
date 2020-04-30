@@ -1,1 +1,5 @@
 1000: City does not exists
+
+2000: Username does not exists
+
+3000: Client does not exists
