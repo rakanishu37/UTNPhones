@@ -1,3 +1,4 @@
+
 insert into Provinces(province_name) values
 ('Buenos Aires'),
 ('Catamarca'),
@@ -61,8 +62,6 @@ call sp_add_city('Tierra del Fuego','Ushuaia','2901');
 
 insert into line_types(type_name) values('mobile'),('home');
 
-drop procedure sp_add_Fare
-
 delimiter //
 create procedure sp_add_Fare(IN pCity_name_From varchar(50),IN pCity_name_To varchar(50),IN pPrice float)
 begin
@@ -80,8 +79,7 @@ begin
 	end if;
 end; //
 
-select * from fares;
-truncate fares;
 call sp_add_Fare("La Plata","La Plata",1);
 call sp_add_Fare("Mar del Plata","Mar del Plata",1);
 call sp_add_Fare("Mar del Plata","La Plata",5);
+select * from fares;
