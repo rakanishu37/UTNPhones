@@ -15,4 +15,5 @@ public class ProvinceController {
     public List<Province> getAll(){
         return this.provinceService.getAll();
     }
+    
 }
