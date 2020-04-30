@@ -82,7 +82,7 @@ CREATE TABLE Calls(
     id_call INT AUTO_INCREMENT,
     id_phone_line_from INT NOT NULL,
     id_phone_line_to INT NOT NULL,
-    id_invoice int not null,
+    id_invoice int not null default 0,
     fare float NOT NULL,
     duration INT NOT NULL,
     total_price float not null,

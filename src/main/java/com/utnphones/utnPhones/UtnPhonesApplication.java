@@ -13,29 +13,29 @@ import java.sql.SQLException;
 @SpringBootApplication
 public class UtnPhonesApplication {
 
-	public static void main(String[] args) throws SQLException {
-		//SpringApplication.run(UtnPhonesApplication.class, args);
-		try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/utn_phones?user=root&password=root");
+    public static void main(String[] args) throws SQLException {
+        //SpringApplication.run(UtnPhonesApplication.class, args);
+       /* try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/utn_phones?user=root&password=root");
 
-		ProvinceMySQLDAO provinceDao = new ProvinceMySQLDAO(conn);
-		ProvinceService provinceService = new ProvinceService(provinceDao);
-		ProvinceController provinceController = new ProvinceController(provinceService);
+        ProvinceMySQLDAO provinceDao = new ProvinceMySQLDAO(conn);
+        ProvinceService provinceService = new ProvinceService(provinceDao);
+        ProvinceController provinceController = new ProvinceController(provinceService);
 
-		try {
-			System.out.println(provinceController.getAll());
-		}catch (RuntimeException e){
+        try {
+            System.out.println(provinceController.getAll());
+        }catch (RuntimeException e){
 
-		}
-
-	}
+        }
+	*/
+    }
 
 }
