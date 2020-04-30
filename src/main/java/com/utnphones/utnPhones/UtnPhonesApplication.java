@@ -12,7 +12,6 @@ import java.sql.SQLException;
 @SpringBootApplication
 public class UtnPhonesApplication {
 
-<<<<<<< HEAD
 	public static void main(String[] args) throws SQLException {
 		//SpringApplication.run(UtnPhonesApplication.class, args);
 		try {
@@ -37,31 +36,4 @@ public class UtnPhonesApplication {
 		}
 
 	}
-=======
-    public static void main(String[] args) throws SQLException {
-        //SpringApplication.run(UtnPhonesApplication.class, args);
-       /* try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/utn_phones?user=root&password=root");
-
-        ProvinceMySQLDAO provinceDao = new ProvinceMySQLDAO(conn);
-        ProvinceService provinceService = new ProvinceService(provinceDao);
-        ProvinceController provinceController = new ProvinceController(provinceService);
-
-        try {
-            System.out.println(provinceController.getAll());
-        }catch (RuntimeException e){
-
-        }
-	*/
-    }
->>>>>>> 59064f6f63df8ccee4336414d92e18b9827e84fc
-
 }
