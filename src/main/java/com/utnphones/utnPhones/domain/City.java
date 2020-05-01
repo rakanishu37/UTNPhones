@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+@Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,4 +27,7 @@ public class City {
     @NotNull
     @Column(name = "city_name")
     private String name;
+    @NotNull
+    @Column(name = "prefix")
+    private String prefix;
 }

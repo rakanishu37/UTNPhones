@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -12,7 +13,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 @Table(name = "clients")
 public abstract class Person {
     @Id
@@ -28,6 +29,9 @@ public abstract class Person {
     @NotNull
     private String DNI;
     @NotNull
-    @OneToMany(mappedBy = "client")
-    private List<PhoneLine> phoneLines;
+    private String username;
+    @NotNull
+    private String password;
+
+
 }

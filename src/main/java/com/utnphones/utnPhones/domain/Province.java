@@ -9,20 +9,20 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Table(name = "provinces")
 public class Province {
-    //@Id
+    @Id
    // @GeneratedValue(strategy= GenerationType.AUTO)
    // @Column(name = "id_province")
     private Integer id;
     @NotNull
     private String name;
 
-    public Province(Integer id, @NotNull String name) {
+    /*public Province(Integer id, @NotNull String name) {
         this.id = id;
         this.name = name;
-    }
+    }*/
 }
