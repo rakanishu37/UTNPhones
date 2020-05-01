@@ -73,8 +73,9 @@ begin
     if(vCityFromId = vCityToId) then
 		insert into Fares(id_city_from,id_city_to,price) values(vCityFromId,vCityToId,pPrice);
     else
-		insert into Fares(id_city_from,id_city_to,price) 
-        values(vCityFromId,vCityToId,pPrice),(vCityToId,vCityFromId,pPrice);        
+		insert into Fares(id_city_from,id_city_to,price) values
+        (vCityFromId,vCityToId,pPrice),
+        (vCityToId,vCityFromId,pPrice);        
 	end if;
 end; //
 
@@ -83,3 +84,14 @@ call sp_add_Fare("Mar del Plata","Mar del Plata",1);
 call sp_add_Fare("Mar del Plata","La Plata",5);
 
 insert into user_types(user_type) values ("client"),("employee");
+
+create view v_cities_fares
+as
+select 
+	cf.city_name as "city caller",
+    ct.city_name as "city called",
+    f.price as "Price per minute"
+from 
+	fares as f 
+    inner join cities as cf on f.id_city_from = cf.id_city 
+	inner join cities as ct on f.id_city_to = ct.id_city;

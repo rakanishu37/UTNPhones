@@ -3,7 +3,8 @@ USE utn_phones;
 CREATE TABLE Provinces(
     id_province INT AUTO_INCREMENT,
     province_name VARCHAR(50) NOT NULL,
-    CONSTRAINT PK_PROVINCES PRIMARY KEY (id_province)
+    CONSTRAINT PK_PROVINCES PRIMARY KEY (id_province),
+    CONSTRAINT UNQ_province_name unique(province_name)
 );
 
 CREATE TABLE Cities(
@@ -73,7 +74,8 @@ CREATE TABLE Invoices(
     price_cost FLOAT NOT NULL,
     total_price FLOAT NOT NULL,
     invoice_date TIMESTAMP(6) NOT NULL,
-    due_date TIMESTAMP(6) NOT NULL, 
+    due_date TIMESTAMP(6) NOT NULL,
+    paid boolean default false,
     CONSTRAINT PK_INVOICES PRIMARY KEY (id_invoice),
     CONSTRAINT FK_INVOICES_LINES FOREIGN KEY (id_line) REFERENCES Phone_lines(id_phone_line)
 );
@@ -82,7 +84,7 @@ CREATE TABLE Calls(
     id_call INT AUTO_INCREMENT,
     id_phone_line_from INT NOT NULL,
     id_phone_line_to INT NOT NULL,
-    id_invoice int not null default 0,
+    id_invoice int default 0,
     fare float NOT NULL,
     duration INT NOT NULL,
     total_price float not null,

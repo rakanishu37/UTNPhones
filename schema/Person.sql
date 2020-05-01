@@ -26,8 +26,8 @@ begin
     end if;
 end; $$
 
-call sp_add_client("Catamarca", "Susana", "Gimenez", "8448563", "susana_gim", "123456");
-call sp_add_client("Corrientes", "Ricardo", "Lev", "54412658", "ricardo_montaner@hotmail.com.ar", "123456");
+call sp_add_client("Mar del Plata", "Susana", "Gimenez", "8448563", "susana_gim", "123456",@clientId);
+call sp_add_client("La Plata", "Ricardo", "Lev", "54412658", "ricardo_montaner@hotmail.com.ar", "123456",@clientId);
 
 delimiter $$
 create procedure sp_add_employee(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50), OUT pEmployeeId int)
@@ -44,3 +44,17 @@ begin
 		signal sqlstate '10001' SET MESSAGE_TEXT = 'Username already exists', MYSQL_ERRNO = 2000 ;
     end if;
 end; $$
+
+create view v_client_public_info
+as
+select 
+	p.firstname,
+    p.surname,
+    p.DNI,
+    p.username, 
+    c.city_name, 
+    pl.line_number
+from 
+	persons as p 
+    inner join cities as c on p.id_city = c.id_city
+	inner join phone_lines as pl on p.id_person = pl.id_person and p.id_user_type = 1
