@@ -17,17 +17,17 @@ import javax.validation.constraints.NotNull;
 @Table(name = "cities")
 public class City {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id_city")
+    /*@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id_city")*/
     private Integer id;
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "id_province")
+   /* @ManyToOne
+    @JoinColumn(name = "id_province")*/
     private Province province;
     @NotNull
-    @Column(name = "city_name")
+   // @Column(name = "city_name")
     private String name;
     @NotNull
-    @Column(name = "prefix")
+   // @Column(name = "prefix")
     private String prefix;
 }

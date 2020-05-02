@@ -16,6 +16,7 @@ public class PersonMySQLDao implements PersonDao {
     private Connection connection;
     private CityMySQLDao cityMySQLDao;
 
+
     public PersonMySQLDao(Connection connection, CityMySQLDao cityMySQLDao) {
         this.connection = connection;
         this.cityMySQLDao = cityMySQLDao;
@@ -50,7 +51,7 @@ public class PersonMySQLDao implements PersonDao {
     public List<Person> getAll() {
         List<Person> personList= new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from persons");
+            PreparedStatement preparedStatement = connection.prepareStatement(MySQLUtils.GET_ALL_PERSONS);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 personList.add(

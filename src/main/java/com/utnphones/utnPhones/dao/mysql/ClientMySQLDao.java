@@ -51,8 +51,7 @@ public class ClientMySQLDao implements ClientDao {
     public List<Client> getAll() {
         List<Client> clientList= new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from persons where " +
-                    "persons.id_user_type = 1");
+            PreparedStatement preparedStatement = connection.prepareStatement(MySQLUtils.GET_ALL_CLIENTS);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Client cLient = Client.builder().id(resultSet.getInt(1))

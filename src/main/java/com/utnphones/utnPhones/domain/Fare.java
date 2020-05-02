@@ -14,8 +14,12 @@ import javax.persistence.Table;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "fares")
+//@Table(name = "fares")
 public class Fare {
     @Id
     private Integer id;
+
+    private City cityFrom;
+
+    private City cityTo;
 }

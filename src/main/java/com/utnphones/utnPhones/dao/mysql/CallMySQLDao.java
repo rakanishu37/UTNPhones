@@ -1,15 +1,22 @@
 package com.utnphones.utnPhones.dao.mysql;
 
 import com.utnphones.utnPhones.dao.CallDao;
-import com.utnphones.utnPhones.domain.Call;
+import com.utnphones.utnPhones.domain.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class CallMySQLDao implements CallDao {
     private Connection connection;
+    private PhoneLineMySQLDao phoneLineMySQLDao;
 
     @Override
     public Call add(Call value) {
@@ -38,6 +45,24 @@ public class CallMySQLDao implements CallDao {
 
     @Override
     public List<Call> getAll() {
-        return null;
+        List<Call> callList= new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(MySQLUtils.GET_ALL_CALLS);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                callList.add(Call.builder()
+                        .id(resultSet.getInt(1))
+                        .phoneFrom(this.phoneLineMySQLDao.getById(resultSet.getInt(2)))
+                        .phoneTo(this.phoneLineMySQLDao.getById(resultSet.getInt(3)))
+                        .invoice(new Invoice())
+                        .fare(new Fare())
+                        .duration(resultSet.getInt(6))
+                        .totalPrice(resultSet.getFloat(7))
+                        .date(resultSet.getTimestamp(8).toInstant()).build());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return callList;
     }
 }

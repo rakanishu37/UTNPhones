@@ -42,8 +42,7 @@ public class PhoneLineMySQLDao implements PhoneLineDao {
     public List<PhoneLine> getByPerson(Person person){
         List<PhoneLine> phoneLineList= new ArrayList<>();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from phone_lines " +
-                    "where phone_lines.id_person = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement(MySQLUtils.GET_PHONE_LINE_BY_PERSON);
             preparedStatement.setInt(1, person.getId());
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
@@ -57,12 +56,36 @@ public class PhoneLineMySQLDao implements PhoneLineDao {
     }
 
     @Override
-    public PhoneLine getById(Integer id) {
-        return null;
+    public PhoneLine getById(Integer id){
+        PhoneLine phoneLine = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(MySQLUtils.GET_PHONE_LINE_BY_ID);
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                phoneLine = new PhoneLine(resultSet.getInt(1), new LineType(1, "mobile"), null,
+                        resultSet.getString(4), LineStatus.valueOf(resultSet.getString(5)));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return phoneLine;
     }
 
     @Override
     public List<PhoneLine> getAll() {
-        return null;
+
+        List<PhoneLine> phoneLineList= new ArrayList<>();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(MySQLUtils.GET_ALL_PHONE_LINES);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                phoneLineList.add(new PhoneLine(resultSet.getInt(1), new LineType(1, "mobile"), null,
+                        resultSet.getString(4), LineStatus.valueOf(resultSet.getString(5))));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return phoneLineList;
     }
 }

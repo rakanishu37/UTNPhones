@@ -1,16 +1,12 @@
 package com.utnphones.utnPhones;
 
-import com.utnphones.utnPhones.controllers.ClientController;
-import com.utnphones.utnPhones.controllers.PersonController;
-import com.utnphones.utnPhones.controllers.ProvinceController;
+import com.utnphones.utnPhones.controllers.*;
 import com.utnphones.utnPhones.dao.mysql.*;
 import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.domain.PhoneLine;
-import com.utnphones.utnPhones.services.ClientService;
-import com.utnphones.utnPhones.services.PersonService;
-import com.utnphones.utnPhones.services.ProvinceService;
+import com.utnphones.utnPhones.services.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -43,19 +39,26 @@ public class UtnPhonesApplication {
 
 		CityMySQLDao cityMySQLDao = new CityMySQLDao(conn, provinceMySQLDao);
 		PhoneLineMySQLDao phoneLineMySQLDao = new PhoneLineMySQLDao(conn);
+		PhoneLineService phoneLineService = new PhoneLineService(phoneLineMySQLDao);
+		PhoneLineController phoneLineController = new PhoneLineController(phoneLineService);
+
+		//phoneLineController.getAll().forEach(phoneLine -> System.out.println(phoneLine));
 
 		ClientMySQLDao clientMySQLDao = new ClientMySQLDao(conn, phoneLineMySQLDao, cityMySQLDao);
 		ClientService clientService = new ClientService(clientMySQLDao);
 		ClientController clientController = new ClientController(clientService);
 
-		clientController.getAll().forEach(client -> System.out.println(client));
+		//clientController.getAll().forEach(client -> System.out.println(client));
+
+		CallMySQLDao callMySQLDao = new CallMySQLDao(conn, phoneLineMySQLDao);
+		CallService callService = new CallService(callMySQLDao);
+		CallController callController = new CallController(callService);
+
+		callController.getAll().forEach(call -> System.out.println(call.toString()));
 
 		PersonMySQLDao personMySQLDao = new PersonMySQLDao(conn, cityMySQLDao);
 		PersonService personService = new PersonService(personMySQLDao);
 		PersonController personController = new PersonController(personService);
-
-
-
 
 		try {
 			//System.out.println(provinceController.getAll());
