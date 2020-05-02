@@ -73,8 +73,8 @@ CREATE TABLE Invoices(
     number_of_calls INT NOT NULL,
     price_cost FLOAT NOT NULL,
     total_price FLOAT NOT NULL,
-    invoice_date TIMESTAMP(6) NOT NULL,
-    due_date TIMESTAMP(6) NOT NULL,
+    invoice_date date NOT NULL,
+    due_date date NOT NULL,
     paid boolean default false,
     CONSTRAINT PK_INVOICES PRIMARY KEY (id_invoice),
     CONSTRAINT FK_INVOICES_LINES FOREIGN KEY (id_line) REFERENCES Phone_lines(id_phone_line)

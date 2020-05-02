@@ -27,8 +27,8 @@ begin
 end; $$
 
 call sp_add_client("Mar del Plata", "Susana", "Gimenez", "8448563", "susana_gim", "123456",@clientId);
-call sp_add_client("La Plata", "Ricardo", "Lev", "54412658", "ricardo_montaner@hotmail.com.ar", "123456",@clientId);
-
+call sp_add_client("La Plata", "Ricardo", "Lev", "54412658", "ricardo_@ar", "123456",@clientId);
+call sp_add_client("Mar del Plata", "AAAA", "AAAAA", "11112658", "BBBBB", "123456",@clientId);
 delimiter $$
 create procedure sp_add_employee(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50), OUT pEmployeeId int)
 begin
@@ -48,6 +48,7 @@ end; $$
 create view v_client_public_info
 as
 select 
+	p.id_person,
 	p.firstname,
     p.surname,
     p.DNI,

@@ -15,7 +15,7 @@ begin
 		insert into phone_lines(id_line_type,id_person,line_number,line_status) values(vLineTypeId,vPersonId, vPhoneNumber, pLineStatus);
 	end if;
 end; //
-drop procedure sp_add_call
+
 delimiter //
 create procedure sp_add_call(IN pLineNumberFrom VARCHAR(15), IN pLineNumberTo VARCHAR(15), IN pDuration int)
 begin
@@ -27,7 +27,7 @@ begin
     declare vPrefixTo int;
 	declare vCityFromId int;
     declare vCityToId int;
-    
+    declare vDateCall datetime;
     select id_phone_line into vPhoneLineFromId from phone_lines where line_number = pLineNumberFrom;
     select id_phone_line into vPhoneLineToId from phone_lines where line_number = pLineNumberTo;
     
@@ -40,25 +40,88 @@ begin
 	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
     
     set vTotalPrice = (pDuration * (vFare/60));
-	insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price) 
-    values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice);
+    set vDateCall = (select utc_timestamp());
+    
+	insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price,date_call) 
+    values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice,vDateCall);
 end; //
-
+drop procedure sp_generate_invoice;
 delimiter //
-create procedure sp_add_invoice()
+create procedure sp_generate_invoice()
 begin
+    declare vAuxId int default -1;
+	declare vCallId int;
+	declare vPhoneLineId int;
+    declare vClientId int;
+    declare vSubTotal float;
+    declare vTotalPrice float default 0;
+    declare vNumberOfCalls int default 0;
+    declare vPriceCost float default 1.20;
+	declare vInvoiceDate date;
+    declare vDueDate date;
+    declare vInvoiceId int;
+	declare cur_calls_data_finished int default 0;
+	
+    Declare cur_calls_data cursor for
+		select
+			id_call,id_phone_line_from
+		from 
+			calls
+		where 
+			id_invoice is null
+        group by
+            id_call;
+    Declare continue handler for not found set cur_calls_data_finished = 1;
+    Start transaction;
+    set vInvoiceDate = (select current_date());
+	set vDueDate = (select date_add(vInvoiceDate, INTERVAL 15 DAY));
+        
+    open cur_calls_data;
+    
+    all_clients : LOOP
+		fetch cur_calls_data into vCallId, vPhoneLineId;
+        if(cur_calls_data_finished = 1) then
+			leave all_clients;
+		end if;
+        
+        if(vAuxId <> vPhoneLineId) then
+            select 
+                (sum(total_price)*vPriceCost), count(*) 
+            into 
+                vTotalPrice,vNumberOfCalls 
+            from 
+                calls             
+            where 
+                id_invoice is null and id_phone_line_from = vPhoneLineId;
 
+            insert into invoices(id_line, number_of_calls, price_cost, total_price, invoice_date, due_date, paid)
+            values(vPhoneLineId,vNumberOfCalls,vPriceCost,vTotalPrice,vInvoiceDate,vDueDate,false);
+            set vInvoiceId = last_insert_id();
+            set vAuxId = vPhoneLineId;
+        end if;
+        update calls set id_invoice = vInvoiceId where id_call = vCallId;
+    END LOOP all_clients;
+    close cur_calls_data;    
+    commit;
 end; //
-
 
 call sp_add_phone_line("home", "susana_gim", "4758196", "active", "Mar del Plata");
 call sp_add_phone_line("mobile", "susana_gim", "5797650", "active", "Mar del Plata");
-call sp_add_phone_line("mobile", "ricardo_montaner@hotmail.com.ar", "4888999", "active", "La Plata");
+call sp_add_phone_line("mobile", "ricardo_@ar", "4888999", "active", "La Plata");
 
-select * from phone_lines;
-select * from v_cities_fares;
-select * from v_client_public_info;
-call sp_add_call('2234758196','2235797650',30);
-select * from invoices;
-/*insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price) 
-    values(1, 2, 5, 1000, 5000);*/
+
+call sp_add_call('2234758196','2214888999',30);
+call sp_add_call('2234758196','2214888999',60);
+call sp_add_call('2234758196','2214888999',300);
+call sp_add_call('2214888999','2234758196',150);
+
+-- SHOW PROCESSLIST;
+-- SET GLOBAL event_scheduler = ON;
+delimiter //
+CREATE EVENT event_generate_invoices
+ON SCHEDULE EVERY "1" MONTH	
+Starts "2020-06-01"
+DO
+begin
+	call sp_generate_invoice();
+end; //
