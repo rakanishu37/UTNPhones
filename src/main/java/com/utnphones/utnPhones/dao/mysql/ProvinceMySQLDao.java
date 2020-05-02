@@ -1,6 +1,7 @@
 package com.utnphones.utnPhones.dao.mysql;
 
 import com.utnphones.utnPhones.dao.ProvinceDao;
+import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Province;
 
 import java.sql.Connection;
@@ -39,7 +40,19 @@ public class ProvinceMySQLDao implements ProvinceDao {
 
     @Override
     public Province getById(Integer id) {
-        return null;
+        Province province = null;
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from provinces where" +
+                    " provinces.id_province = ?");
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()) {
+                province = new Province(resultSet.getInt(1), resultSet.getString(2));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return province;
     }
 
     public List<Province> getAll(){

@@ -14,9 +14,11 @@ import java.util.List;
 @Data
 public class CityMySQLDao implements CityDao {
     private Connection connection;
+    private ProvinceMySQLDao provinceMySQLDao;
 
-    public CityMySQLDao(Connection connection) {
+    public CityMySQLDao(Connection connection, ProvinceMySQLDao provinceMySQLDao) {
         this.connection = connection;
+        this.provinceMySQLDao = provinceMySQLDao;
     }
 
     @Override
@@ -48,7 +50,7 @@ public class CityMySQLDao implements CityDao {
             preparedStatement.setInt(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()) {
-               city = new City(resultSet.getInt(1), new Province(), resultSet.getString(3), resultSet.getString(4));
+               city = new City(resultSet.getInt(1), this.provinceMySQLDao.getById(resultSet.getInt(2)), resultSet.getString(3), resultSet.getString(4));
             }
         } catch (SQLException e) {
             e.printStackTrace();

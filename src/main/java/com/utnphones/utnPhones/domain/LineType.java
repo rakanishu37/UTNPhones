@@ -18,4 +18,6 @@ import javax.persistence.Table;
 public class LineType {
     @Id
     private Integer id;
+
+    private String type_name;
 }

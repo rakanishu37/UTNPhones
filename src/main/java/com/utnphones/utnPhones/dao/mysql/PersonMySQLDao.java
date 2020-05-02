@@ -72,6 +72,7 @@ public class PersonMySQLDao implements PersonDao {
                                         .username(resultSet.getString(6))
                                         .password(resultSet.getString(7)).build()
                 );
+
             }
         } catch (SQLException e) {
             e.printStackTrace();

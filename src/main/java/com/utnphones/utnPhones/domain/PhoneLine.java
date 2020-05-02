@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-@Data
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -16,9 +16,23 @@ import javax.persistence.*;
 public class PhoneLine {
     @Id
     private Integer id;
-    @ManyToOne
-    @JoinColumn(name = "id_client")
+    /*@ManyToOne
+    @JoinColumn(name = "id_client")*/
+    private LineType lineType;
+
     private Person client;
 
-    private int number;
+    private String number;
+
+    private LineStatus lineStatus;
+
+    @Override
+    public String toString() {
+        return "PhoneLine{" +
+                "id=" + id +
+                ", lineType=" + lineType +
+                ", number='" + number + '\'' +
+                ", lineStatus=" + lineStatus.toString() +
+                '}';
+    }
 }
