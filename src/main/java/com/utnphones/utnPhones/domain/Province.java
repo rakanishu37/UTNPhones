@@ -11,18 +11,13 @@ import javax.validation.constraints.NotNull;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Entity
 @Table(name = "provinces")
 public class Province {
     @Id
-   // @GeneratedValue(strategy= GenerationType.AUTO)
-   // @Column(name = "id_province")
+    @Column(name = "id_province")
     private Integer id;
-    @NotNull
-    private String name;
 
-    /*public Province(Integer id, @NotNull String name) {
-        this.id = id;
-        this.name = name;
-    }*/
+    @Column(name = "province_name")
+    private String name;
 }

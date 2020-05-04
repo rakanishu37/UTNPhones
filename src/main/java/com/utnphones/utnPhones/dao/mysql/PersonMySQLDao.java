@@ -1,6 +1,6 @@
 package com.utnphones.utnPhones.dao.mysql;
 
-import com.utnphones.utnPhones.dao.PersonDao;
+import com.utnphones.utnPhones.dao.interfaces.PersonDao;
 import com.utnphones.utnPhones.domain.*;
 import lombok.Data;
 

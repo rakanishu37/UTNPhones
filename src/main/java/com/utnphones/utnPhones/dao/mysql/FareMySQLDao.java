@@ -1,6 +1,6 @@
 package com.utnphones.utnPhones.dao.mysql;
 
-import com.utnphones.utnPhones.dao.FareDao;
+import com.utnphones.utnPhones.dao.interfaces.FareDao;
 import com.utnphones.utnPhones.domain.Fare;
 import lombok.Data;
 

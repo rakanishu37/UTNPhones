@@ -2,26 +2,43 @@ package com.utnphones.utnPhones;
 
 import com.utnphones.utnPhones.controllers.*;
 import com.utnphones.utnPhones.dao.mysql.*;
-import com.utnphones.utnPhones.domain.City;
-import com.utnphones.utnPhones.domain.Client;
-import com.utnphones.utnPhones.domain.Person;
-import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.domain.*;
 import com.utnphones.utnPhones.services.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.hibernate.query.Query;
 @SpringBootApplication
 public class UtnPhonesApplication {
 
 	public static void main(String[] args) throws SQLException {
+		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
+
+		SessionFactory factory = meta.getSessionFactoryBuilder().build();
+		Session session = factory.openSession();
+		Transaction t = session.beginTransaction();
+
+		Query query = session.createQuery("from Province");
+
+		List<Province> provinces = query.list();
+		session.getTransaction().commit();
+
+		provinces.forEach(province -> System.out.println(province));
 		//SpringApplication.run(UtnPhonesApplication.class, args);
-		try {
+		/*try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 		} catch (InstantiationException e) {
 			e.printStackTrace();
@@ -38,7 +55,8 @@ public class UtnPhonesApplication {
 		ProvinceController provinceController = new ProvinceController(provinceService);
 
 		CityMySQLDao cityMySQLDao = new CityMySQLDao(conn, provinceMySQLDao);
-		PhoneLineMySQLDao phoneLineMySQLDao = new PhoneLineMySQLDao(conn);
+		LineTypeMySQLDao lineTypeMySQLDao = new LineTypeMySQLDao(conn);
+		PhoneLineMySQLDao phoneLineMySQLDao = new PhoneLineMySQLDao(conn, lineTypeMySQLDao);
 		PhoneLineService phoneLineService = new PhoneLineService(phoneLineMySQLDao);
 		PhoneLineController phoneLineController = new PhoneLineController(phoneLineService);
 
@@ -64,7 +82,7 @@ public class UtnPhonesApplication {
 			//System.out.println(provinceController.getAll());
 		}catch (RuntimeException e){
 
-		}
+		}*/
 
 	}
 }

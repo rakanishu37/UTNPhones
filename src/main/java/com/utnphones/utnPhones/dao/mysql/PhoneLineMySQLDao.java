@@ -1,6 +1,6 @@
 package com.utnphones.utnPhones.dao.mysql;
 
-import com.utnphones.utnPhones.dao.PhoneLineDao;
+import com.utnphones.utnPhones.dao.interfaces.PhoneLineDao;
 import com.utnphones.utnPhones.domain.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class PhoneLineMySQLDao implements PhoneLineDao {
     private Connection connection;
-
+    private LineTypeMySQLDao lineTypeMySQLDao;
 
 
     @Override
@@ -40,7 +40,7 @@ public class PhoneLineMySQLDao implements PhoneLineDao {
     }
 
     public List<PhoneLine> getByPerson(Person person){
-        List<PhoneLine> phoneLineList= new ArrayList<>();
+        /*List<PhoneLine> phoneLineList= new ArrayList<>();
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(MySQLUtils.GET_PHONE_LINE_BY_PERSON);
             preparedStatement.setInt(1, person.getId());
@@ -52,7 +52,8 @@ public class PhoneLineMySQLDao implements PhoneLineDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return phoneLineList;
+        return phoneLineList;*/
+        return null;
     }
 
     @Override

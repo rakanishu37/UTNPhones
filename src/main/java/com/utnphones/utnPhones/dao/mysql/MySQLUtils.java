@@ -7,6 +7,7 @@ public class MySQLUtils {
     protected static final String TABLE_PERSONS = "persons ";
     protected static final String TABLE_PHONE_LINES = "phone_lines ";
     protected static final String TABLE_CALLS = "calls ";
+    protected static final String TABLE_LINE_TYPES = "line_types ";
 
     /* PERSONS QUERY */
 
@@ -20,4 +21,7 @@ public class MySQLUtils {
 
     /* CALLS QUERY */
     protected static final String GET_ALL_CALLS = BASE_SELECT + TABLE_CALLS;
+
+    /* LINE TYPES QUERY */
+    protected static final String GET_ALL_LINE_TYPES = BASE_SELECT + TABLE_LINE_TYPES;
 }

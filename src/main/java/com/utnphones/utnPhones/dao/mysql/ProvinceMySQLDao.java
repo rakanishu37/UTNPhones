@@ -1,7 +1,6 @@
 package com.utnphones.utnPhones.dao.mysql;
 
-import com.utnphones.utnPhones.dao.ProvinceDao;
-import com.utnphones.utnPhones.domain.City;
+import com.utnphones.utnPhones.dao.interfaces.ProvinceDao;
 import com.utnphones.utnPhones.domain.Province;
 
 import java.sql.Connection;
