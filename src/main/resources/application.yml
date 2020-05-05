@@ -5,10 +5,8 @@ spring:
       path: /h2-console
   jpa:
     show-sql: true
-      properties:
-        hibernate:
-          format_sql: true
+
   datasource:
-    url: jdbc:mysql://127:0:0:1:3306/utn_phones?useSSL=false
+    url: jdbc:mysql://localhost:3306/utn_phones?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: root

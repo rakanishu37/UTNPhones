@@ -24,7 +24,8 @@ import org.hibernate.query.Query;
 public class UtnPhonesApplication {
 
 	public static void main(String[] args) throws SQLException {
-		StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
+		SpringApplication.run(UtnPhonesApplication.class, args);
+		/*StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
 		Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
 
 		SessionFactory factory = meta.getSessionFactoryBuilder().build();
@@ -36,7 +37,7 @@ public class UtnPhonesApplication {
 		List<Object> provinces = query.list();
 		session.getTransaction().commit();
 
-		provinces.forEach(obj -> System.out.println(obj));
+		provinces.forEach(obj -> System.out.println(obj));*/
 		//SpringApplication.run(UtnPhonesApplication.class, args);
 		/*try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();

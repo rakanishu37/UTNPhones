@@ -1,13 +1,12 @@
 package com.utnphones.utnPhones.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
@@ -18,19 +17,25 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@Table(name = "calls")
+@Table(name = "calls")
 public class Call {
 
     @Id
     private Integer id;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
     private PhoneLine phoneFrom;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id")
     private PhoneLine phoneTo;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
     private Invoice invoice;
 
-    private Fare fare;
+    private Float fare;
 
     private Integer duration;
 

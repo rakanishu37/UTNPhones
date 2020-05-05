@@ -1,15 +1,17 @@
 package com.utnphones.utnPhones.controllers;
 
-import com.utnphones.utnPhones.services.LineTypeService;
+import com.utnphones.utnPhones.repository.LineTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/linetype")
 public class LineTypeController {
-    private LineTypeService lineTypeService;
+    private LineTypeRepository lineTypeRepository;
 
     @Autowired
-    public LineTypeController(final LineTypeService lineTypeService) {
-        this.lineTypeService = lineTypeService;
+    public LineTypeController(final LineTypeRepository lineTypeRepository) {
+        this.lineTypeRepository = lineTypeRepository;
     }
 }

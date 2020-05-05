@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-@Table(name = "persons")
+@Entity
 public class Client extends Person {
     @NotNull
     @OneToMany(mappedBy = "client")

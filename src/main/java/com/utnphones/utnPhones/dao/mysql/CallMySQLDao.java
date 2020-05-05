@@ -54,8 +54,8 @@ public class CallMySQLDao implements CallDao {
                         .id(resultSet.getInt(1))
                         .phoneFrom(this.phoneLineMySQLDao.getById(resultSet.getInt(2)))
                         .phoneTo(this.phoneLineMySQLDao.getById(resultSet.getInt(3)))
-                        .invoice(new Invoice())
-                        .fare(new Fare())
+                        .invoice(null)
+                        .fare(resultSet.getFloat(5))
                         .duration(resultSet.getInt(6))
                         .totalPrice(resultSet.getFloat(7))
                         .date(resultSet.getTimestamp(8).toInstant()).build());
