@@ -5,9 +5,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Data
@@ -17,7 +19,10 @@ import javax.persistence.Table;
 @Table(name = "line_types")
 public class LineType {
     @Id
+    @Column(name = "id_line_type")
     private Integer id;
 
+    @NotNull
+    @Column(name = "type_name")
     private String type_name;
 }

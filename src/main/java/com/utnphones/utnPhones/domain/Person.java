@@ -14,23 +14,37 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder
-@Table(name = "clients")
-public abstract class Person {
+@Entity
+@Table(name = "persons")
+public class Person {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    @Column(name = "id_client")
+    @Column(name = "id_person")
     private Integer id;
     @NotNull
+    @Column(name = "firstname")
     private String firstname;
     @NotNull
+    @Column(name = "surname")
     private String surname;
+
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_city")
     private City city;
+
     @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_user_type")
+    private UserType userType;
+
+    @NotNull
+    @Column(name = "DNI")
     private String DNI;
     @NotNull
+    @Column(name = "username")
     private String username;
     @NotNull
+    @Column(name = "password")
     private String password;
 
 

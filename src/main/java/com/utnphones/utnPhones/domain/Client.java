@@ -6,24 +6,21 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@DiscriminatorColumn(name="id_user_type")
+@DiscriminatorValue(value="1")
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@Table(name = "persons")
 public class Client extends Person {
     @NotNull
-    //@OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "client")
     private List<PhoneLine> phoneLines;
 
-    @Override
-    public String toString() {
-        return  super.toString() +  "Client{" +
-                "phoneLines=" + phoneLines +
-                '}';
-    }
+
 }

@@ -1,7 +1,7 @@
 package com.utnphones.utnPhones.dao.mysql;
 
 public class MySQLUtils {
-    private static final String BASE_SELECT = "SELECT * FROM ";
+    private static final String BASE_SELECT = "FROM ";
 
     /* TABLES */
     protected static final String TABLE_PERSONS = "persons ";

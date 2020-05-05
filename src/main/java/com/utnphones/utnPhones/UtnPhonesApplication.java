@@ -31,12 +31,12 @@ public class UtnPhonesApplication {
 		Session session = factory.openSession();
 		Transaction t = session.beginTransaction();
 
-		Query query = session.createQuery("from Province");
+		Query query = session.createQuery("from Person where id_user_type = 1");
 
-		List<Province> provinces = query.list();
+		List<Object> provinces = query.list();
 		session.getTransaction().commit();
 
-		provinces.forEach(province -> System.out.println(province));
+		provinces.forEach(obj -> System.out.println(obj));
 		//SpringApplication.run(UtnPhonesApplication.class, args);
 		/*try {
 			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();

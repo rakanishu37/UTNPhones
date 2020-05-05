@@ -31,6 +31,14 @@
         <property name="hbm2ddl.auto">none</property>
 
         <mapping class="com.utnphones.utnPhones.domain.Province"/>
+        <mapping class="com.utnphones.utnPhones.domain.City"/>
+        <mapping class="com.utnphones.utnPhones.domain.Fare"/>
+        <mapping class="com.utnphones.utnPhones.domain.LineType"/>
+        <mapping class="com.utnphones.utnPhones.domain.UserType"/>
+        <mapping class="com.utnphones.utnPhones.domain.Person"/>
+
+        <mapping class="com.utnphones.utnPhones.domain.Client"/>
+        <mapping class="com.utnphones.utnPhones.domain.PhoneLine"/>
     </session-factory>
 
 </hibernate-configuration>

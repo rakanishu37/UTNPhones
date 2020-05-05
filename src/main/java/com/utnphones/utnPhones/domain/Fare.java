@@ -5,21 +5,28 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Entity
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-//@Table(name = "fares")
+@Entity
+@Table(name = "fares")
 public class Fare {
     @Id
+    @Column(name = "id_fare")
     private Integer id;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_city_from")
     private City cityFrom;
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "id_city_to")
     private City cityTo;
 }
