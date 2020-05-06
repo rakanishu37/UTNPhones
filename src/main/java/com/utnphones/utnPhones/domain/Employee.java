@@ -9,12 +9,10 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 @SuperBuilder
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @DiscriminatorValue(value="2")
 public class Employee extends Person {
-    private String dummy;
 
 }

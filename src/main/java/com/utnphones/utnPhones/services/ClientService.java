@@ -25,4 +25,8 @@ public class ClientService {
     public List<Client> getAll(){
         return this.clientRepository.findAll();
     }
+
+    public Client create(Client client){
+        return this.clientMySQLDao.add(client);
+    }
 }

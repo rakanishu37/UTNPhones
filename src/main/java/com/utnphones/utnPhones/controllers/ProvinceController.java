@@ -21,4 +21,9 @@ public class ProvinceController {
     public List<Province> getAll(){
         return this.provinceService.getAll();
     }
+
+    @PostMapping("/")
+    public Province create(@RequestBody Province province){
+        return this.provinceService.create(province);
+    }
 }

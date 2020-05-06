@@ -25,4 +25,8 @@ public class ProvinceService {
         //return this.provinceMySQLDAO.getAll();
         return this.provinceRepository.findAll();
     }
+
+    public Province create(Province province){
+        return this.provinceRepository.save(province);
+    }
 }

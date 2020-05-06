@@ -15,9 +15,10 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "provinces")
 public class Province {
-    @Id
-    @Column(name = "id_province")
-    private Integer id;
+        @Id
+        @Basic(optional = false)
+        @Column(name = "id_province",unique=true, nullable = false)
+        private Integer id;
 
     @Column(name = "province_name")
     private String name;
