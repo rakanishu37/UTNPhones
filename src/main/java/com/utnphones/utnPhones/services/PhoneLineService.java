@@ -22,7 +22,10 @@ public class PhoneLineService {
         this.phoneLineRepository = phoneLineRepository;
     }
 
-    public List<PhoneLine> getAll(){
+    /*public List<PhoneLine> getAll(){
         return this.phoneLineMySQLDao.getAll();
+    }*/
+    public List<PhoneLine> getAll(){
+        return this.phoneLineRepository.findAll();
     }
 }

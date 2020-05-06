@@ -5,6 +5,7 @@ import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.services.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,6 +16,12 @@ import java.util.List;
 public class ClientController {
     private ClientService clientService;
 
+    @Autowired
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
+    }
+
+    @GetMapping("/")
     public List<Client> getAll(){
         return this.clientService.getAll();
     }

@@ -19,7 +19,10 @@ public class ClientService {
         this.clientRepository = clientRepository;
     }
 
-    public List<Client> getAll(){
+    /*public List<Client> getAll(){
         return this.clientMySQLDao.getAll();
+    }*/
+    public List<Client> getAll(){
+        return this.clientRepository.findAll();
     }
 }

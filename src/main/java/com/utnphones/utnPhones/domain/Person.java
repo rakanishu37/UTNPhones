@@ -16,13 +16,18 @@ import java.util.List;
 @SuperBuilder
 @Entity
 @Table(name = "persons")
+@DiscriminatorColumn(name = "id_user_type")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Person {
     @Id
     @Column(name = "id_person")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Integer id;
+
     @NotNull
     @Column(name = "firstname")
     private String firstname;
+
     @NotNull
     @Column(name = "surname")
     private String surname;
@@ -30,11 +35,13 @@ public class Person {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_city")
+    //TODO buscar y modificar para que no se ejecute 2 veces la query de city
     private City city;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "id_user_type")
+    @JoinColumn(name = "id_user_type", referencedColumnName = "id_user_type",insertable=false, updatable =false)
+    //TODO deberia dejarnos incluirla en la query de insert sino no podriamos agregar personas
     private UserType userType;
 
     @NotNull

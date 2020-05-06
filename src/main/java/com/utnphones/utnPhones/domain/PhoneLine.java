@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Entity
 @Table(name = "phone_lines")
+@Data
 public class PhoneLine {
     @Id
     @Column(name = "id_phone_line")
@@ -26,8 +27,9 @@ public class PhoneLine {
     private LineType lineType;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_person", referencedColumnName = "id_person")
     @JsonBackReference
-    private Person client;
+    private Client client;
 
     @NotNull
     @Column(name = "line_number")
@@ -36,6 +38,5 @@ public class PhoneLine {
     @NotNull
     @Enumerated(EnumType.STRING)
     private LineStatus lineStatus;
-
 
 }

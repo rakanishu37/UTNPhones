@@ -3,6 +3,7 @@ package com.utnphones.utnPhones.controllers;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.services.PhoneLineService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,6 +19,7 @@ public class PhoneLineController {
         this.phoneLineService = phoneLineService;
     }
 
+    @GetMapping("/")
     public List<PhoneLine> getAll(){
         return this.phoneLineService.getAll();
     }

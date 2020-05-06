@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 @SuperBuilder
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @Data
 @Entity
+@DiscriminatorValue(value="2")
 public class Employee extends Person {
     private String dummy;
 

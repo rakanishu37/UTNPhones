@@ -10,7 +10,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-@DiscriminatorColumn(name="id_user_type")
 @DiscriminatorValue(value="1")
 @SuperBuilder
 @AllArgsConstructor
@@ -21,6 +20,5 @@ public class Client extends Person {
     @NotNull
     @OneToMany(mappedBy = "client")
     private List<PhoneLine> phoneLines;
-
 
 }
