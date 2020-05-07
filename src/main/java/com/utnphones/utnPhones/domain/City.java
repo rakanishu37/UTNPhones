@@ -19,9 +19,9 @@ public class City {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_city",unique=true, nullable = false)
+    @Column(name = "id_city",unique=false, nullable = false)
     private Integer id;
-    @NotNull
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_province")
     private Province province;

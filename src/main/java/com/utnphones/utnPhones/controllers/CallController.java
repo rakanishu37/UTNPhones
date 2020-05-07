@@ -18,6 +18,7 @@ public class CallController {
         this.callService = callService;
     }
 
+
     public List<Call> getAll(){
         return this.callService.getAll();
     }

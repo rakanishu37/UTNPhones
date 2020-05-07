@@ -28,4 +28,8 @@ public class PhoneLineService {
     public List<PhoneLine> getAll(){
         return this.phoneLineRepository.findAll();
     }
+
+    public PhoneLine create(PhoneLine phoneLine){
+        return this.phoneLineRepository.save(phoneLine);
+    }
 }

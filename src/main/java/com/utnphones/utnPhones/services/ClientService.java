@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -27,6 +28,10 @@ public class ClientService {
     }
 
     public Client create(Client client){
-        return this.clientMySQLDao.add(client);
+        return this.clientRepository.save(client);
+    }
+
+    public Optional<Client> getById(Integer id){
+        return this.clientRepository.findById(id);
     }
 }
