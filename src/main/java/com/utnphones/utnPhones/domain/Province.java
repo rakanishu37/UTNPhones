@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,11 +16,14 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "provinces")
 public class Province {
-        @Id
-        @Basic(optional = false)
-        @Column(name = "id_province",unique=true, nullable = false)
-        private Integer id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_province",unique=true, nullable = false)
+    private Integer id;
 
+    @NotNull
     @Column(name = "province_name")
     private String name;
+
 }

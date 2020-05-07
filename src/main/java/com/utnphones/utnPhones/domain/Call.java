@@ -21,14 +21,15 @@ import java.util.Date;
 public class Call {
 
     @Id
+    @Column(name = "id_call")
     private Integer id;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", insertable=false, updatable =false)
     private PhoneLine phoneFrom;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "id", insertable=false, updatable =false)
     private PhoneLine phoneTo;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -19,8 +16,9 @@ import java.util.List;
 @Table(name = "invoices")
 public class Invoice {
     @Id
+    @Column(name = "id_invoice")
     private Integer id;
-
+//TODO completar atributos
     @OneToMany(mappedBy = "invoice")
     private List<Call> calls;
 }

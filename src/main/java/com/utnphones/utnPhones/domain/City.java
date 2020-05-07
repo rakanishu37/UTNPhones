@@ -17,10 +17,12 @@ import javax.validation.constraints.NotNull;
 @Table(name = "cities")
 public class City {
     @Id
-    @Column(name = "id_city")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_city",unique=true, nullable = false)
     private Integer id;
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_province")
     private Province province;
     @NotNull
