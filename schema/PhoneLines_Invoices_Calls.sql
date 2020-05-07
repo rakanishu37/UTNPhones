@@ -1,3 +1,4 @@
+
 delimiter //
 create procedure sp_add_phone_line(IN pLineType VARCHAR(50), IN pUsername VARCHAR(50), IN pLineNumber VARCHAR(15), IN pLineStatus ENUM('active','canceled','suspended'), IN CityName varchar(50))
 begin 
@@ -16,8 +17,39 @@ begin
 	end if;
 end; //
 
+
 delimiter //
-create procedure sp_add_call(IN pLineNumberFrom VARCHAR(15), IN pLineNumberTo VARCHAR(15), IN pDuration int)
+create trigger tbi_calls before insert on calls for each row
+begin
+	declare vPhoneLineFromId int;
+    declare vPhoneLineToId int;
+    declare vFare float;
+    declare vTotalPrice float;
+    declare vPrefixFrom int;
+    declare vPrefixTo int;
+	declare vCityFromId int;
+    declare vCityToId int;    
+    
+    
+    select id_phone_line into vPhoneLineFromId from phone_lines where line_number = new.id_phone_line_from;
+    set new.id_phone_line_from = vPhoneLineFromId;
+    
+    select id_phone_line into vPhoneLineToId from phone_lines where line_number = new.id_phone_line_to;
+    set new.id_phone_line_to = vPhoneLineToId;
+    
+    set vPrefixFrom = (select reverse(substring(reverse(pLineNumberFrom),8)));
+    set vPrefixTo = (select reverse(substring(reverse(pLineNumberTo),8)));
+	
+    select id_city into vCityFromId from cities as c where c.prefix = vPrefixFrom;
+    select id_city into vCityToId from cities as c where c.prefix = vPrefixTo;
+    
+	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
+    set new.fare = vFare;
+    set new.total_price = (new.duration * (vFare/60));
+end; //
+
+delimiter //
+create procedure sp_add_call(IN pLineNumberFrom VARCHAR(15), IN pLineNumberTo VARCHAR(15), IN pDuration int,IN pDateCall datetime)
 begin
 	declare vPhoneLineFromId int;
     declare vPhoneLineToId int;
@@ -45,7 +77,7 @@ begin
 	insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price,date_call) 
     values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice,vDateCall);
 end; //
-drop procedure sp_generate_invoice;
+
 delimiter //
 create procedure sp_generate_invoice()
 begin
