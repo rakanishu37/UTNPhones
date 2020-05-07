@@ -17,7 +17,9 @@ import javax.validation.constraints.NotNull;
 @Table(name = "fares")
 public class Fare {
     @Id
-    @Column(name = "id_fare")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(fetch = FetchType.EAGER)
+    @Column(name = "id_fare",unique=true, nullable = false)
     private Integer id;
 
     @NotNull
@@ -29,4 +31,8 @@ public class Fare {
     @ManyToOne
     @JoinColumn(name = "id_city_to")
     private City cityTo;
+
+    @NotNull
+    @Column(name = "price")
+    private Float price;
 }

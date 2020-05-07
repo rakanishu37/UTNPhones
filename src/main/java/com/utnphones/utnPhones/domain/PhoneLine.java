@@ -18,7 +18,9 @@ import javax.validation.constraints.NotNull;
 @Data
 public class PhoneLine {
     @Id
-    @Column(name = "id_phone_line")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_phone_line",unique=false, nullable = false)
     private Integer id;
 
     @NotNull

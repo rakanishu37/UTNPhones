@@ -18,8 +18,8 @@ import java.util.List;
 public class Province {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id_province",unique=true, nullable = false)
+    @Basic(fetch = FetchType.EAGER)
+    @Column(name = "id_province",unique=false, nullable = false)
     private Integer id;
 
     @NotNull
