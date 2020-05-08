@@ -35,9 +35,8 @@ public class Person {
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_city")
-    //TODO buscar y modificar para que no se ejecute 2 veces la query de city
     private City city;
-
+    //TODO buscar y modificar para que no se ejecute 2 veces la query de city
     @NotNull
     @ManyToOne
     @JoinColumn(name = "id_user_type", referencedColumnName = "id_user_type",insertable=false, updatable =false)
