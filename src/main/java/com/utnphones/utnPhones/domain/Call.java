@@ -33,24 +33,29 @@ public class Call {
     private Integer id;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable =false)
+    @JoinColumn(name = "id_phone_line_from", insertable=false, updatable =false)
     private PhoneLine phoneFrom;
 
     @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", insertable=false, updatable =false)
+    @JoinColumn(name = "id_phone_line_to", insertable=false, updatable =false)
     private PhoneLine phoneTo;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_invoice", insertable=false, updatable =false)
     @JsonBackReference
     private Invoice invoice;
 
+    @Column(name = "fare")
     private Float fare;
 
+    @Column(name = "duration")
     private Integer duration;
 
+    @Column(name = "total_price")
     private Float totalPrice;
 
-    //private LocalDateTime date;
+    @Column(name = "date_call")
     private Date date;
 
 }

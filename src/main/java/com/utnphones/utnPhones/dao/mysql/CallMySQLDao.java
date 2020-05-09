@@ -58,7 +58,7 @@ public class CallMySQLDao implements CallDao {
                         .fare(resultSet.getFloat(5))
                         .duration(resultSet.getInt(6))
                         .totalPrice(resultSet.getFloat(7))
-                        .date(resultSet.getTimestamp(8).toInstant()).build());
+                       /* .date(resultSet.getTimestamp(8).toInstant())*/.build());
             }
         } catch (SQLException e) {
             e.printStackTrace();
