@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -97,8 +98,8 @@ public class RandomGeneration {
         List<String> prefixes = cities.stream().map(City::getPrefix).collect(Collectors.toList());
 
 
-        for (int i=0; i<10000;i++) {
-            Client client = this.clientService.getById(i+3).get();
+        for (int i=0; i<4;i++) {
+            Client client = this.clientService.getById(i+1).get();
             Client cliente = Client.builder()
                     .id(client.getId())
                     .city(client.getCity())

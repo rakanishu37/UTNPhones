@@ -18,14 +18,16 @@ public class CallService {
         this.callRepository = callRepository;
     }
 
-    /**@Autowired
+    /** @Autowired
     public CallService(final CallMySQLDao callMySQLDao) {
         this.callMySQLDao = callMySQLDao;
     }*/
 
-
-
     public List<Call> getAll(){
-        return this.callMySQLDao.getAll();
+        return this.callRepository.findAll();
+    }
+
+    public Call create(Call call){
+        return this.callRepository.save(call);
     }
 }

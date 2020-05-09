@@ -99,8 +99,8 @@ begin
 			calls
 		where 
 			id_invoice is null
-        group by
-            id_call;
+        order by
+            id_phone_line_from;
     Declare continue handler for not found set cur_calls_data_finished = 1;
     Start transaction;
     set vInvoiceDate = (select current_date());

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/linetype")
+@RequestMapping("/linetypes")
 public class LineTypeController {
     private LineTypeRepository lineTypeRepository;
 
