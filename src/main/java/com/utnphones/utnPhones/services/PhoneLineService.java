@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PhoneLineService {
@@ -31,5 +32,9 @@ public class PhoneLineService {
 
     public PhoneLine create(PhoneLine phoneLine){
         return this.phoneLineRepository.save(phoneLine);
+    }
+
+    public Optional<PhoneLine> getById(Integer id){
+        return  this.phoneLineRepository.findById(id);
     }
 }

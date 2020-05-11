@@ -28,6 +28,8 @@ public class CallService {
     }
 
     public Call create(Call call){
+        Call c = this.callRepository.save(call);
+        System.out.println(c.toString());
         return this.callRepository.save(call);
     }
 }

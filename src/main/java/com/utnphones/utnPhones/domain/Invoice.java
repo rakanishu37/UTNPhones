@@ -18,7 +18,9 @@ import java.util.List;
 @Table(name = "invoices")
 public class Invoice {
     @Id
-    @Column(name = "id_invoice")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_invoice",unique=false, nullable = false)
     private Integer idInvoice;
 
     @ManyToOne(fetch = FetchType.EAGER)
