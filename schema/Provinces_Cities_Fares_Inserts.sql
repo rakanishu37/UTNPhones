@@ -82,6 +82,8 @@ end; //
 call sp_add_Fare("La Plata","La Plata",1);
 call sp_add_Fare("Mar del Plata","Mar del Plata",1);
 call sp_add_Fare("Mar del Plata","La Plata",5);
+call sp_add_Fare("San Juan", "San Juan", 15);
+call sp_add_Fare("Corrientes", "San Juan", 3);
 
 insert into user_types(user_type) values ("client"),("employee");
 

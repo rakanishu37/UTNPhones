@@ -9,12 +9,8 @@ import java.util.List;
 
 @Service
 public class EmployeeService {
-    //private EmployeeMySQLDao employeeMySQLDao;
     private EmployeeRepository employeeRepository;
-   /* @Autowired
-    public EmployeeService(final EmployeeMySQLDao employeeMySQLDao) {
-        this.employeeMySQLDao = employeeMySQLDao;
-    }*/
+
     @Autowired
     public EmployeeService(final EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;

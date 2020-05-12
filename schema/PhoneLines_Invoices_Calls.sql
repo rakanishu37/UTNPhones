@@ -1,8 +1,12 @@
+create table temp ( date_call datetime );
+alter table temp modify column date_call timestamp;
+set GLOBAL time_zone = '+0:00'   
+select @@global.time_zone 
 delimiter //
 create trigger tbi_calls before insert on calls for each row
 begin
-	declare vPhoneLineFromId int;
-    declare vPhoneLineToId int;
+	declare vPhoneLineFrom varchar(15);
+    declare vPhoneLineTo varchar(15);
     declare vFare float;
     declare vTotalPrice float;
     declare vPrefixFrom int;
@@ -11,14 +15,14 @@ begin
     declare vCityToId int;    
     
     
-    select id_phone_line into vPhoneLineFromId from phone_lines where line_number = new.id_phone_line_from;
-    set new.id_phone_line_from = vPhoneLineFromId;
+    select line_number into vPhoneLineFrom from phone_lines where id_phone_line = new.id_phone_line_from;
     
-    select id_phone_line into vPhoneLineToId from phone_lines where line_number = new.id_phone_line_to;
-    set new.id_phone_line_to = vPhoneLineToId;
     
-    set vPrefixFrom = (select reverse(substring(reverse(pLineNumberFrom),8)));
-    set vPrefixTo = (select reverse(substring(reverse(pLineNumberTo),8)));
+    select line_number into vPhoneLineTo from phone_lines where id_phone_line = new.id_phone_line_to;
+    
+    
+    set vPrefixFrom = (select reverse(substring(reverse(vPhoneLineFrom),8)));
+    set vPrefixTo = (select reverse(substring(reverse(vPhoneLineTo),8)));
 	
     select id_city into vCityFromId from cities as c where c.prefix = vPrefixFrom;
     select id_city into vCityToId from cities as c where c.prefix = vPrefixTo;
@@ -27,7 +31,7 @@ begin
     set new.fare = vFare;
     set new.total_price = (new.duration * (vFare/60));
 end; //
-
+select * from calls;
 delimiter //
 create procedure sp_add_phone_line(IN pLineType VARCHAR(50), IN pUsername VARCHAR(50), IN pLineNumber VARCHAR(15), IN pLineStatus ENUM('active','canceled','suspended'), IN CityName varchar(50))
 begin 

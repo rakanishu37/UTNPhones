@@ -19,71 +19,26 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.query.Query;
+
 @SpringBootApplication
 public class UtnPhonesApplication {
 
-	public static void main(String[] args) throws SQLException {
-		SpringApplication.run(UtnPhonesApplication.class, args);
-		/*StandardServiceRegistry ssr = new StandardServiceRegistryBuilder().configure("hibernate.cfg.xml").build();
-		Metadata meta = new MetadataSources(ssr).getMetadataBuilder().build();
+    public static void main(String[] args) throws SQLException {
+        SpringApplication.run(UtnPhonesApplication.class, args);
 
-		SessionFactory factory = meta.getSessionFactoryBuilder().build();
-		Session session = factory.openSession();
-		Transaction t = session.beginTransaction();
-
-		Query query = session.createQuery("from Person where id_user_type = 1");
-
-		List<Object> provinces = query.list();
-		session.getTransaction().commit();
-
-		provinces.forEach(obj -> System.out.println(obj));*/
-		//SpringApplication.run(UtnPhonesApplication.class, args);
-		/*try {
-			Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-		Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/utn_phones?user=root&password=root");
+        //TODO Baja, update y delete clientes y employees. Baja y suspensión de líneas. Get fare con dos ciudades y con una ciudad
+        // TODO login usuario, consulta de user logeado con sus llamadas por rango de fechas . COnsulta de destinos mas llamados
+        // TODO consulta de user logeado con sus llamadas
+        // TODO unit test 70%
+		// TODO usuarios
+		// TODO 	a) BACKOFFICE, que permitirá el manejo de clientes, líneas y tarifas.
+		// TODO 	b) CLIENTES, que permitirá consultas de llamadas y facturación.
+		// TODO 	c) INFRAESTRUCTURA , que será el sistema que enviará la información de
+		// TODO 	llamadas a la base de datos.
+		// TODO 	d) FACTURACIÓN , proceso automático de facturación.
 
 
-		ProvinceMySQLDao provinceMySQLDao = new ProvinceMySQLDao(conn);
-		ProvinceService provinceService = new ProvinceService(provinceMySQLDao);
-		ProvinceController provinceController = new ProvinceController(provinceService);
-
-		CityMySQLDao cityMySQLDao = new CityMySQLDao(conn, provinceMySQLDao);
-		LineTypeMySQLDao lineTypeMySQLDao = new LineTypeMySQLDao(conn);
-		PhoneLineMySQLDao phoneLineMySQLDao = new PhoneLineMySQLDao(conn, lineTypeMySQLDao);
-		PhoneLineService phoneLineService = new PhoneLineService(phoneLineMySQLDao);
-		PhoneLineController phoneLineController = new PhoneLineController(phoneLineService);
-
-		//phoneLineController.getAll().forEach(phoneLine -> System.out.println(phoneLine));
-
-		ClientMySQLDao clientMySQLDao = new ClientMySQLDao(conn, phoneLineMySQLDao, cityMySQLDao);
-		ClientService clientService = new ClientService(clientMySQLDao);
-		ClientController clientController = new ClientController(clientService);
-
-		//clientController.getAll().forEach(client -> System.out.println(client));
-
-		CallMySQLDao callMySQLDao = new CallMySQLDao(conn, phoneLineMySQLDao);
-		CallService callService = new CallService(callMySQLDao);
-		CallController callController = new CallController(callService);
-
-		callController.getAll().forEach(call -> System.out.println(call.toString()));
-
-		PersonMySQLDao personMySQLDao = new PersonMySQLDao(conn, cityMySQLDao);
-		PersonService personService = new PersonService(personMySQLDao);
-		PersonController personController = new PersonController(personService);
-
-		try {
-			//System.out.println(provinceController.getAll());
-		}catch (RuntimeException e){
-
-		}*/
-
-	}
+    }
 }
