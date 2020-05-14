@@ -31,16 +31,8 @@ public class ClientController {
     }
 
     @GetMapping("/{idClient}")
-    public Client getById(@PathVariable Integer idClient) /*throws ClientNotFoundException */{
-        return this.clientService.getById(idClient).get();
-
-        /*if(!client.isPresent()){
-            client.orElseThrow(() -> new ClientNotFoundException("CLient not found"));
-        }
-        return client.get();
-
-        */
-
+    public Client getById(@PathVariable Integer idClient) throws ClientNotFoundException {
+        return this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found"));
     }
 
     @PostMapping("/")
@@ -48,10 +40,23 @@ public class ClientController {
         return this.clientService.create(client);
     }
 
-    @PostMapping("/{idClient}/phoneline")
-    public PhoneLine createPhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine){
-        phoneLine.setClient(this.clientService.getById(idClient).get());
+    @PostMapping("/{idClient}/phonelines")
+    public PhoneLine createPhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
+        phoneLine.setClient(this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found")));
         return this.phoneLineService.create(phoneLine);
     }
 
+    @PutMapping("/{idClient}/phonelines")
+    //todo 200 en duda
+    public PhoneLine updatePhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
+        phoneLine.setClient(this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found")));
+        return phoneLineService.updatePhoneLine(phoneLine);
+    }
+
+    @DeleteMapping("/{idClient}/phonelines")
+    //todo 200
+    public Integer deletePhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
+        phoneLine.setClient(this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found")));
+        return phoneLineService.deletePhoneLine(phoneLine);
+    }
 }

@@ -11,21 +11,14 @@ import java.util.Optional;
 
 @Service
 public class PhoneLineService {
-    private PhoneLineMySQLDao phoneLineMySQLDao;
     private PhoneLineRepository phoneLineRepository;
 
-    /*@Autowired
-    public PhoneLineService(final PhoneLineMySQLDao phoneLineMySQLDao) {
-        this.phoneLineMySQLDao = phoneLineMySQLDao;
-    }*/
     @Autowired
     public PhoneLineService(final PhoneLineRepository phoneLineRepository) {
         this.phoneLineRepository = phoneLineRepository;
     }
 
-    /*public List<PhoneLine> getAll(){
-        return this.phoneLineMySQLDao.getAll();
-    }*/
+
     public List<PhoneLine> getAll(){
         return this.phoneLineRepository.findAll();
     }
@@ -36,5 +29,13 @@ public class PhoneLineService {
 
     public Optional<PhoneLine> getById(Integer id){
         return  this.phoneLineRepository.findById(id);
+    }
+
+    public Integer deletePhoneLine(PhoneLine phoneLine) {
+        return phoneLineRepository.deletePhoneLine(phoneLine.getId());
+    }
+
+    public PhoneLine updatePhoneLine(PhoneLine phoneLine) {
+        return phoneLineRepository.saveAndFlush(phoneLine);
     }
 }
