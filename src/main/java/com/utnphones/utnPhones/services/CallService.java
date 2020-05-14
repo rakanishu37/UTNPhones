@@ -10,7 +10,6 @@ import java.util.List;
 
 @Service
 public class CallService {
-    private CallMySQLDao callMySQLDao;
     private CallRepository callRepository;
 
     @Autowired

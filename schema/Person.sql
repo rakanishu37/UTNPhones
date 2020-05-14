@@ -1,3 +1,4 @@
+
 delimiter $$
 create procedure sp_add_person(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50),IN pUserTypeId int, OUT pPersonId int)
 begin
@@ -5,7 +6,7 @@ begin
     select id_city into vCityId from cities as c where c.city_name =  pCity_name;
     
     if(vCityId <> 0) then
-		insert into persons(id_city, firstname, surname, DNI,username,password,id_user_type) values(vCityId, pFirstname, pSurname, pDNI, pUsername, pPassword, pUserTypeId);
+		insert into persons(id_city, firstname, surname, DNI,username,password,id_user_type, is_active) values(vCityId, pFirstname, pSurname, pDNI, pUsername, pPassword, pUserTypeId, true);
         set pPersonId = last_insert_id();
 	else
 		signal sqlstate '10001' SET MESSAGE_TEXT = 'City does not exists', MYSQL_ERRNO = 1000 ;
@@ -44,6 +45,27 @@ begin
 		signal sqlstate '10001' SET MESSAGE_TEXT = 'Username already exists', MYSQL_ERRNO = 2000 ;
     end if;
 end; $$
+
+delimiter $$
+create trigger tbi_persons before insert on persons for each row
+begin
+		set new.is_active = true;
+end; $$
+
+delimiter $$
+create trigger tbu_persons before update on persons for each row
+begin
+		if(new.is_active = false) then
+			call sp_cancel_client_phone_lines(old.id_person);
+		end if;
+end; $$
+
+delimiter $$
+create procedure sp_cancel_client_phone_lines(IN p_id_person int)
+begin
+	update phone_lines set line_status = 'canceled' where phone_lines.id_person = p_id_person;
+end; $$
+
 
 create view v_client_public_info
 as
