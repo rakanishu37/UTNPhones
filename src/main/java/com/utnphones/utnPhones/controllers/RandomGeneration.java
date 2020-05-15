@@ -1,7 +1,9 @@
 package com.utnphones.utnPhones.controllers;
 
+import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.Invoice;
 import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.Person;
@@ -10,8 +12,10 @@ import com.utnphones.utnPhones.domain.UserType;
 import com.utnphones.utnPhones.repository.CityRepository;
 import com.utnphones.utnPhones.repository.LineTypeRepository;
 import com.utnphones.utnPhones.repository.UserTypeRepository;
+import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.services.CityService;
 import com.utnphones.utnPhones.services.ClientService;
+import com.utnphones.utnPhones.services.InvoiceService;
 import com.utnphones.utnPhones.services.PhoneLineService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,10 +43,13 @@ public class RandomGeneration {
     private UserTypeRepository userTypeRepository;
     private LineTypeRepository lineTypeRepository;
     private PhoneLineService phoneLineService;
+    private CallService callService;
     private List<String> firstnames;
     private List<String> surnames;
     private List<PhoneLine> phoneLines;
     private ClientService clientService;
+    private InvoiceService invoiceService;
+    private PhoneLineController phoneLineController;
     //private UserTypeService userTypeService;
     private List<City> cities;
     private List<String> fullNumbers;
@@ -50,7 +57,8 @@ public class RandomGeneration {
     @Autowired
     public RandomGeneration(CityRepository cityRepository, CityService cityService, UserTypeRepository userTypeRepository,
                             ClientService clientService, PhoneLineService phoneLineService,
-                            LineTypeRepository lineTypeRepository/*, UserTypeService userTypeService*/) {
+                            LineTypeRepository lineTypeRepository/*, UserTypeService userTypeService*/, CallService callService,
+                            InvoiceService invoiceService, PhoneLineController phoneLineController) {
         this.cityRepository = cityRepository;
         this.cityService = cityService;
         this.userTypeRepository = userTypeRepository;
@@ -58,8 +66,12 @@ public class RandomGeneration {
         this.phoneLineService = phoneLineService;
         this.lineTypeRepository = lineTypeRepository;
         this.fullNumbers = new ArrayList<>();
+        this.callService = callService;
+        this.invoiceService = invoiceService;
+        this.phoneLineController = phoneLineController;
        // this.userTypeService = userTypeService;
-        this.fillData();
+       // this.fillData();
+     //   this.insertCalls();
     }
 
     @PostMapping("/clients/")
@@ -86,7 +98,7 @@ public class RandomGeneration {
         return clients;
     }
 
-    @PostMapping("/phoneLines/")
+    @PostMapping("/phonelines/")
     public List<PhoneLine> insertPhoneLines(){
         this.phoneLines = new ArrayList<>();
         Set<String> numbers = new HashSet<String>();
@@ -98,7 +110,7 @@ public class RandomGeneration {
         List<String> prefixes = cities.stream().map(City::getPrefix).collect(Collectors.toList());
 
 
-        for (int i=0; i<4;i++) {
+        for (int i=0; i<10000;i++) {
             Client client = this.clientService.getById(i+1).get();
             Client cliente = Client.builder()
                     .id(client.getId())
@@ -121,6 +133,41 @@ public class RandomGeneration {
             phoneLines.add(this.phoneLineService.create(phoneLine));
         }
         return phoneLines;
+    }
+
+    /*@GetMapping("/calls/")
+    public List<PhoneLine> insertCalls(){
+        List<PhoneLine> phoneLineList = this.phoneLineService.getAll();
+        System.out.println(phoneLineList.get(58));
+        phoneLineList.forEach(p -> System.out.println(p));
+
+        return this.phoneLineService.getAll();
+    }
+*/
+    @PostMapping("/calls/")
+    public List<Call> insertCalls(){
+        List<PhoneLine> phoneLineList = this.phoneLineController.getAll();
+        List<Call> calls = new ArrayList<>();
+
+        PhoneLine number1 = null;
+        PhoneLine number2 = null;
+
+        for (int i=0; i<10000;i++) {
+            number1 = null;
+            number2 = null;
+            number1 = phoneLineList.get((int)(Math.random() * phoneLineList.size()) + 0);
+            do{
+                number2 = phoneLineList.get((int)(Math.random() * phoneLineList.size()) + 0);
+            }while(number1.getNumber().equals(number2.getNumber()));
+            calls.add(this.callService.create(Call.builder().phoneTo(number1).phoneFrom(number2)
+                    .invoice(this.invoiceService.getById(1).get())
+                    .fare((float) 0)
+                    .duration((int)(Math.random() * 7000) + 5)
+                    .totalPrice((float) 0)
+                    .date(new Date())
+                    .build()));
+        }
+        return calls;
     }
 
     public void fillData(){
