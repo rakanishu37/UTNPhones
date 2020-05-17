@@ -114,7 +114,7 @@ public class RandomGeneration {
             Client client = this.clientService.getById(i+1).get();
             Client cliente = Client.builder()
                     .id(client.getId())
-                    .city(client.getCity())
+                     .city(client.getCity())
                     .firstname(client.getFirstname())
                     .surname(client.getSurname())
                     .DNI(client.getDNI())
