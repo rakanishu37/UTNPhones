@@ -53,5 +53,7 @@ public class Person {
     @Column(name = "password")
     private String password;
 
-    
+    @NotNull
+    @Column(name = "is_active")
+    private Boolean isActive;
 }

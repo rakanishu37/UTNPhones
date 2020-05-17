@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -53,4 +54,8 @@ public class InvoiceController {
         List<Message> messages = messageController.getMessages(currentUser.getUserId());
         return (messages.size() > 0) ? ResponseEntity.ok(messages) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }*/
+    @GetMapping("/{idInvoice}")
+    public Invoice getById(@PathVariable Integer id){
+        return this.invoiceService.getById(id).get();
+    }
 }

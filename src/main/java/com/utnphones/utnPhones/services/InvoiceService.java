@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InvoiceService {
@@ -28,5 +29,9 @@ public class InvoiceService {
 
     public Invoice create(Invoice invoice){
         return this.invoiceRepository.save(invoice);
+    }
+
+    public Optional<Invoice> getById(Integer id){
+        return this.invoiceRepository.findById(id);
     }
 }
