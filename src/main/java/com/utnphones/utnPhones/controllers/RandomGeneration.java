@@ -34,8 +34,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 
-@RestController
-@RequestMapping("/generate")
+//@RestController
+//@RequestMapping("/generate")
 public class RandomGeneration {
 
     private CityRepository cityRepository;
