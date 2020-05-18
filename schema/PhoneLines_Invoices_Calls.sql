@@ -61,7 +61,6 @@ begin
     declare vPrefixTo int;
 	declare vCityFromId int;
     declare vCityToId int;
-    declare vDateCall datetime;
     select id_phone_line into vPhoneLineFromId from phone_lines where line_number = pLineNumberFrom;
     select id_phone_line into vPhoneLineToId from phone_lines where line_number = pLineNumberTo;
     
@@ -74,10 +73,9 @@ begin
 	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
     
     set vTotalPrice = (pDuration * (vFare/60));
-    set vDateCall = (select now());
     
 	insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price,date_call) 
-    values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice,vDateCall);
+    values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice,pDateCall);
 end; //
 
 delimiter //
