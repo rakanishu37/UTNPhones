@@ -81,21 +81,6 @@ select
 		plFrom.id_person = p_id_person;
 end; $$
 
-delimiter $$
-create procedure sp_show_client_callsV2(IN p_id_person int)
-begin
-	select			
-		plFrom.line_number,
-		plTo.line_number,
-		c.fare,
-		c.duration,
-		c.total_price,
-		c.date_call
-	from 
-		calls as c
-		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
-		inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and plFrom.id_person =p_id_person;
-end; $$
 
 delimiter $$
 create procedure sp_show_client_calls_by_dates(IN p_id_person int, IN p_date_from date,IN p_date_to date)
@@ -116,23 +101,7 @@ select
         c.date_call between p_date_from and p_date_to;
 end; $$
 
-delimiter $$
-create procedure sp_show_client_calls_by_datesV2(IN p_id_person int, IN p_date_from date,IN p_date_to date)
-begin
-	select			
-		plFrom.line_number,
-        plTo.line_number,
-		c.fare,
-        c.duration,
-        c.total_price,
-        c.date_call
-	from 
-		calls as c
-		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
-		inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and plFrom.id_person =p_id_person
-	where		
-        c.date_call between p_date_from and p_date_to;
-end; $$
+
 
 delimiter $$
 create procedure sp_show_client_invoices(IN p_id_person int)
