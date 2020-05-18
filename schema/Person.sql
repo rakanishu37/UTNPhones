@@ -1,4 +1,3 @@
-
 delimiter $$
 create procedure sp_add_person(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50),IN pUserTypeId int, OUT pPersonId int)
 begin
@@ -75,9 +74,8 @@ select
         c.total_price,
         c.date_call
 	from 
-
 		calls as c
-        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and 
+        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line
 		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
 	where
 		plFrom.id_person = p_id_person;
@@ -136,15 +134,38 @@ begin
         c.date_call between p_date_from and p_date_to;
 end; $$
 
+delimiter $$
+create procedure sp_show_client_invoices(IN p_id_person int)
+begin
+	select			
+		pl.line_number,
+		inv.number_of_calls, 
+		inv.price_cost, 
+		inv.total_price, 
+		inv.invoice_date, 
+		inv.due_date, 
+		inv.paid
+	from 
+		invoices as inv
+		inner join phone_lines as pl on inv.id_line = pl.id_phone_line		
+	where
+		pl.id_person = p_id_person;
+end; $$
 
-truncate calls;
-select * from calls;
-call sp_show_client_calls(1);
-call sp_show_client_callsV2(1);
-call sp_show_client_calls_by_dates(1,'2010-05-16 11:50:00','2020-02-16 11:50:00');
-insert into calls(id_phone_line_from,id_phone_line_to,duration,date_call) values('1','3',30,'2020-05-18 15:42:30');
-insert into calls(id_phone_line_from,id_phone_line_to,duration,date_call) values
-('1','3',30,'2020-05-17 15:00:00'),
-('1','3',30,'2020-05-16 11:50:00'),
-('1','3',30,'2020-01-17 12:00:00');
-select * from persons
+create procedure sp_show_client_invoices_by_dates(IN p_id_person int, IN p_date_from date, IN p_date_to date)
+begin
+	select			
+		pl.line_number,
+		inv.number_of_calls, 
+		inv.price_cost, 
+		inv.total_price, 
+		inv.invoice_date, 
+		inv.due_date, 
+		inv.paid
+	from 
+		invoices as inv
+		inner join phone_lines as pl on inv.id_line = pl.id_phone_line		
+	where
+		pl.id_person = p_id_person and
+		inv.invoice_date between p_date_from and p_date_to;
+end; $$

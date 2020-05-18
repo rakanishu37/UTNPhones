@@ -86,14 +86,3 @@ call sp_add_Fare("San Juan", "San Juan", 15);
 call sp_add_Fare("Corrientes", "San Juan", 3);
 
 insert into user_types(user_type) values ("client"),("employee");
-
-create view v_cities_fares
-as
-select 
-	cf.city_name as "city caller",
-    ct.city_name as "city called",
-    f.price as "Price per minute"
-from 
-	fares as f 
-    inner join cities as cf on f.id_city_from = cf.id_city 
-	inner join cities as ct on f.id_city_to = ct.id_city;
