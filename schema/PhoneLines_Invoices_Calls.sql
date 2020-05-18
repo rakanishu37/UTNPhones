@@ -1,7 +1,6 @@
-create table temp ( date_call datetime );
-alter table temp modify column date_call timestamp;
-set GLOBAL time_zone = '+0:00'   
-select @@global.time_zone 
+
+set GLOBAL time_zone = '-3:00'   
+
 delimiter //
 create trigger tbi_calls before insert on calls for each row
 begin
@@ -31,7 +30,7 @@ begin
     set new.fare = vFare;
     set new.total_price = (new.duration * (vFare/60));
 end; //
-select * from calls;
+
 delimiter //
 create procedure sp_add_phone_line(IN pLineType VARCHAR(50), IN pUsername VARCHAR(50), IN pLineNumber VARCHAR(15), IN pLineStatus ENUM('active','canceled','suspended'), IN CityName varchar(50))
 begin 
