@@ -27,9 +27,6 @@ begin
     end if;
 end; $$
 
-call sp_add_client("Mar del Plata", "Susana", "Gimenez", "8448563", "susana_gim", "123456",@clientId);
-call sp_add_client("La Plata", "Ricardo", "Lev", "54412658", "ricardo_@ar", "123456",@clientId);
-call sp_add_client("Mar del Plata", "AAAA", "AAAAA", "11112658", "BBBBB", "123456",@clientId);
 delimiter $$
 create procedure sp_add_employee(IN pCity_name varchar(50), IN pFirstname varchar(50), IN pSurname varchar(50), IN pDNI VARCHAR(9),IN pUsername varchar(50),IN pPassword varchar(50), OUT pEmployeeId int)
 begin
@@ -67,17 +64,87 @@ begin
 end; $$
 
 
-create view v_client_public_info
-as
-select 
-	p.id_person,
-	p.firstname,
-    p.surname,
-    p.DNI,
-    p.username, 
-    c.city_name, 
-    pl.line_number
-from 
-	persons as p 
-    inner join cities as c on p.id_city = c.id_city
-	inner join phone_lines as pl on p.id_person = pl.id_person and p.id_user_type = 1
+delimiter $$
+create procedure sp_show_client_calls(IN p_id_person int)
+begin
+select			
+		plFrom.line_number,
+        plTo.line_number,
+		c.fare,
+        c.duration,
+        c.total_price,
+        c.date_call
+	from 
+
+		calls as c
+        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and 
+		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
+	where
+		plFrom.id_person = p_id_person;
+end; $$
+
+delimiter $$
+create procedure sp_show_client_callsV2(IN p_id_person int)
+begin
+	select			
+		plFrom.line_number,
+		plTo.line_number,
+		c.fare,
+		c.duration,
+		c.total_price,
+		c.date_call
+	from 
+		calls as c
+		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
+		inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and plFrom.id_person =p_id_person;
+end; $$
+
+delimiter $$
+create procedure sp_show_client_calls_by_dates(IN p_id_person int, IN p_date_from date,IN p_date_to date)
+begin
+select			
+		plFrom.line_number,
+        plTo.line_number,
+		c.fare,
+        c.duration,
+        c.total_price,
+        c.date_call
+	from 
+		calls as c
+        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
+        inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line		 				
+	where
+		plFrom.id_person = p_id_person and
+        c.date_call between p_date_from and p_date_to;
+end; $$
+
+delimiter $$
+create procedure sp_show_client_calls_by_datesV2(IN p_id_person int, IN p_date_from date,IN p_date_to date)
+begin
+	select			
+		plFrom.line_number,
+        plTo.line_number,
+		c.fare,
+        c.duration,
+        c.total_price,
+        c.date_call
+	from 
+		calls as c
+		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
+		inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and plFrom.id_person =p_id_person
+	where		
+        c.date_call between p_date_from and p_date_to;
+end; $$
+
+
+truncate calls;
+select * from calls;
+call sp_show_client_calls(1);
+call sp_show_client_callsV2(1);
+call sp_show_client_calls_by_dates(1,'2010-05-16 11:50:00','2020-02-16 11:50:00');
+insert into calls(id_phone_line_from,id_phone_line_to,duration,date_call) values('1','3',30,'2020-05-18 15:42:30');
+insert into calls(id_phone_line_from,id_phone_line_to,duration,date_call) values
+('1','3',30,'2020-05-17 15:00:00'),
+('1','3',30,'2020-05-16 11:50:00'),
+('1','3',30,'2020-01-17 12:00:00');
+select * from persons
