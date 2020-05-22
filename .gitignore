@@ -89,7 +89,7 @@ local.properties
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
-
+.idea/**/misc.xml
 # Gradle
 .idea/**/gradle.xml
 .idea/**/libraries
@@ -101,7 +101,7 @@ local.properties
 # .idea/modules.xml
 # .idea/*.iml
 # .idea/modules
-# *.iml
+ *.iml
 # *.ipr
 
 # CMake

@@ -19,8 +19,7 @@ import java.util.List;
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id_invoice",unique=false, nullable = false)
+    @Column(name = "id_invoice")
     private Integer idInvoice;
 
     @ManyToOne(fetch = FetchType.EAGER)

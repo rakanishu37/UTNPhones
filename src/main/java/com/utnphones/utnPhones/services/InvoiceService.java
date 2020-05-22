@@ -11,13 +11,9 @@ import java.util.Optional;
 
 @Service
 public class InvoiceService {
-    private InvoiceMySQLDao invoiceMySQLDao;
     private InvoiceRepository invoiceRepository;
 
-    /*@Autowired
-    public InvoiceService(final InvoiceMySQLDao invoiceMySQLDao) {
-        this.invoiceMySQLDao = invoiceMySQLDao;
-    }*/
+
     @Autowired
     public InvoiceService(final InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;

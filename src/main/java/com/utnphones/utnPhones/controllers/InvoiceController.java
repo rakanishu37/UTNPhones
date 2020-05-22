@@ -25,9 +25,8 @@ public class InvoiceController {
     private SessionManager sessionManager;
 
     @Autowired
-    public InvoiceController(final InvoiceService invoiceService,final SessionManager sessionManager) {
+    public InvoiceController(final InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
-        this.sessionManager = sessionManager;
     }
 //TODO verificar que sea un empleado quien accede a las url
     @GetMapping("/")

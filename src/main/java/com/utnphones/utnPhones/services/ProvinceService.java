@@ -11,13 +11,8 @@ import java.util.Optional;
 
 @Service
 public class ProvinceService {
-    //private ProvinceMySQLDao provinceMySQLDAO;
     private final ProvinceRepository provinceRepository;
 
-    /*@Autowired
-    public ProvinceService(final ProvinceMySQLDao provinceMySQLDAO) {
-        this.provinceMySQLDAO = provinceMySQLDAO;
-    }*/
     @Autowired
     public ProvinceService(final ProvinceRepository provinceRepository){
         this.provinceRepository = provinceRepository;

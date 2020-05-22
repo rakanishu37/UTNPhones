@@ -1,6 +1,7 @@
 package com.utnphones.utnPhones.controllers;
 
 
+import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
@@ -32,7 +33,8 @@ public class ClientController {
 
     @GetMapping("/{idClient}")
     public Client getById(@PathVariable Integer idClient) throws ClientNotFoundException {
-        return this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found"));
+        return this.clientService.getById(idClient)
+                .orElseThrow(() -> new ClientNotFoundException("client not found"));
     }
 
     @PostMapping("/")
@@ -42,21 +44,44 @@ public class ClientController {
 
     @PostMapping("/{idClient}/phonelines")
     public PhoneLine createPhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
-        phoneLine.setClient(this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found")));
+        phoneLine.setClient(this.clientService.getById(idClient)
+                .orElseThrow(() -> new ClientNotFoundException("client not found")));
         return this.phoneLineService.create(phoneLine);
     }
 
     @PutMapping("/{idClient}/phonelines")
     //todo 200 en duda
     public PhoneLine updatePhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
-        phoneLine.setClient(this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found")));
+        phoneLine.setClient(this.clientService.getById(idClient)
+                .orElseThrow(() -> new ClientNotFoundException("client not found")));
         return phoneLineService.updatePhoneLine(phoneLine);
     }
 
     @DeleteMapping("/{idClient}/phonelines")
     //todo 200
     public Integer deletePhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
-        phoneLine.setClient(this.clientService.getById(idClient).orElseThrow(() -> new ClientNotFoundException("client not found")));
+        phoneLine.setClient(this.clientService.getById(idClient)
+                .orElseThrow(() -> new ClientNotFoundException("client not found")));
         return phoneLineService.deletePhoneLine(phoneLine);
     }
+
+    @PutMapping("/{idClient}")
+    //todo 200 en duda
+    public Client updateClient(@PathVariable Integer idClient, @RequestBody Client updatedClient) throws ClientNotFoundException {
+        this.clientService.getById(idClient)
+                .orElseThrow(() -> new ClientNotFoundException("client not found"));
+        return clientService.update(updatedClient);
+    }
+
+    @DeleteMapping("/{idClient}")
+    public Integer deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException {
+        Client client = this.clientService.getById(idClient)
+                .orElseThrow(() -> new ClientNotFoundException("client not found"));
+        return clientService.delete(client);
+    }
+
+
+    @GetMapping("/{idClient}/registry?dateFrom=xxxx&dateTo=XXXXX")
+
+    public ResponseEntity<Map<String,List<Call>>(el token @RequestParam(required = false))
 }

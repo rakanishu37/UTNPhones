@@ -28,17 +28,25 @@ public class UtnPhonesApplication {
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(UtnPhonesApplication.class, args);
 
-        //TODO Baja, update y delete clientes y employees. Baja y suspensión de líneas. Get fare con dos ciudades y con una ciudad
+        // TODO update y delete clientes y
+        // TODO update y delete employees.
+        // TODO "consulta de tarifa" Get fare con dos ciudades y con una ciudad
         // TODO login usuario, consulta de user logeado con sus llamadas por rango de fechas . COnsulta de destinos mas llamados
         // TODO consulta de user logeado con sus llamadas
         // TODO unit test 70%
 		// TODO usuarios
 		// TODO 	a) BACKOFFICE, que permitirá el manejo de clientes, líneas y tarifas.
 		// TODO 	b) CLIENTES, que permitirá consultas de llamadas y facturación.
-		// TODO 	c) INFRAESTRUCTURA , que será el sistema que enviará la información de
-		// TODO 	llamadas a la base de datos.
 		// TODO 	d) FACTURACIÓN , proceso automático de facturación.
-
+        // TODO Este reporte incluirá
+        //:
+        //i) Número de origen
+        //ii) Ciudad de origen
+        //iii) Número de destino
+        //iv) Ciudad de destino
+        //v) Precio total
+        //vi) Duración
+        //vii) Fecha y hora de llamada.
 
     }
 }

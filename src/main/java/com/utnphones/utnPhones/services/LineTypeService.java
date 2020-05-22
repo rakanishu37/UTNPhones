@@ -7,12 +7,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LineTypeService {
-    private LineTypeMySQLDao lineTypeMySQLDao;
     private LineTypeRepository lineTypeRepository;
-    /*@Autowired
-    public LineTypeService(final LineTypeMySQLDao lineTypeMySQLDao) {
-        this.lineTypeMySQLDao = lineTypeMySQLDao;
-    }*/
+
     @Autowired
     public LineTypeService(final LineTypeRepository lineTypeRepository) {
         this.lineTypeRepository = lineTypeRepository;
