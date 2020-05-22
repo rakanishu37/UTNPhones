@@ -16,18 +16,20 @@ import javax.validation.constraints.NotNull;
 @Builder
 @Table(name = "cities")
 public class City {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(optional = false)
-    @Column(name = "id_city",unique=false, nullable = false)
+    @Column(name = "id_city")
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_province")
     private Province province;
+
     @NotNull
     @Column(name = "city_name")
     private String name;
+
     @NotNull
     @Column(name = "prefix")
     private String prefix;

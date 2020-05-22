@@ -81,27 +81,30 @@ select
 		plFrom.id_person = p_id_person;
 end; $$
 
+<<<<<<< HEAD
+=======
+drop procedure sp_show_client_callsV2
+>>>>>>> c27af19c2b38bf7480aaf550ed00743c6f17cf09
 
 delimiter $$
 create procedure sp_show_client_calls_by_dates(IN p_id_person int, IN p_date_from date,IN p_date_to date)
 begin
-select			
-		plFrom.line_number,
-        plTo.line_number,
-		c.fare,
-        c.duration,
-        c.total_price,
-        c.date_call
-	from 
-		calls as c
-        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
-        inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line		 				
+	select 
+		* 
+    from
+		v_clients_calls
 	where
 		plFrom.id_person = p_id_person and
         c.date_call between p_date_from and p_date_to;
 end; $$
 
+<<<<<<< HEAD
 
+=======
+call sp_show_client_calls_by_dates(1,"2020-5-01","2020-5-21");
+
+drop procedure sp_show_client_calls_by_datesV2
+>>>>>>> c27af19c2b38bf7480aaf550ed00743c6f17cf09
 
 delimiter $$
 create procedure sp_show_client_invoices(IN p_id_person int)
@@ -121,20 +124,105 @@ begin
 		pl.id_person = p_id_person;
 end; $$
 
+delimiter $$
 create procedure sp_show_client_invoices_by_dates(IN p_id_person int, IN p_date_from date, IN p_date_to date)
 begin
-	select			
-		pl.line_number,
-		inv.number_of_calls, 
-		inv.price_cost, 
-		inv.total_price, 
-		inv.invoice_date, 
-		inv.due_date, 
-		inv.paid
+	select 
+		*
 	from 
-		invoices as inv
-		inner join phone_lines as pl on inv.id_line = pl.id_phone_line		
+		v_clients_invoices
 	where
 		pl.id_person = p_id_person and
 		inv.invoice_date between p_date_from and p_date_to;
 end; $$
+
+create view 
+	v_clients_calls
+as 
+	select			
+		plFrom.line_number as "origin",
+        plTo.line_number as "destiny",
+		c.fare as "fare",
+        c.duration as "duration",
+        c.total_price as "total price",
+        c.date_call "date"
+	from 
+		calls as c
+        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
+        inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
+	where
+create view 
+	v_clients_invoices
+as 
+	select			
+		pl.line_number as "line number",
+		inv.number_of_calls as "number of calls", 
+		inv.price_cost as "cost price", 
+		inv.total_price as "total price", 
+		inv.invoice_date as "invoice date", 
+		inv.due_date as "due date", 
+		inv.paid as "paid"
+	from 
+		invoices as inv
+		inner join phone_lines as pl on inv.id_line = pl.id_phone_line;
+
+select 
+	*
+from   
+phone_lines
+
+
+select 
+	*
+from   
+	calls as c
+    inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
+	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
+/*where 
+	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1)*/
+order by
+	c.id_phone_line_from desc;        
+    
+select 
+	*
+from   
+	calls as c
+    inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line
+	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
+where 
+	c.id_phone_line_from in (1,2)
+order by
+	c.id_phone_line_from desc;        
+
+
+
+select 
+	*
+from   
+	calls as c
+    inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and (c.id_phone_line_from = 1 or c.id_phone_line_from = 2)
+	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
+/*where 
+	c.id_phone_line_from  (1,2)*/
+order by
+	c.id_phone_line_from desc;        
+
+
+
+    
+select 
+	plFrom.line_number as "origin",
+	plTo.line_number as "destiny",
+	c.fare as "fare",
+	c.duration as "duration",
+	c.total_price as "total price",
+	c.date_call "date"
+from   
+	calls as c
+    inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
+	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
+where 
+	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1)
+order by
+	c.id_phone_line_from asc;        
+	

@@ -11,13 +11,8 @@ import java.util.Optional;
 
 @Service
 public class ProvinceService {
-    //private ProvinceMySQLDao provinceMySQLDAO;
     private final ProvinceRepository provinceRepository;
 
-    /*@Autowired
-    public ProvinceService(final ProvinceMySQLDao provinceMySQLDAO) {
-        this.provinceMySQLDAO = provinceMySQLDAO;
-    }*/
     @Autowired
     public ProvinceService(final ProvinceRepository provinceRepository){
         this.provinceRepository = provinceRepository;
@@ -31,7 +26,7 @@ public class ProvinceService {
         return this.provinceRepository.save(province);
     }
 
-    public Optional<Province> getById(Integer id){
-        return this.provinceRepository.findById(id);
+    public Province getById(Integer id) throws Exception {
+        return this.provinceRepository.findById(id).orElseThrow(Exception::new);
     }
 }

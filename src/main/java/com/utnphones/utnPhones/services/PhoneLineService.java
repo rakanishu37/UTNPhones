@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.dao.mysql.PhoneLineMySQLDao;
 import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,8 +28,8 @@ public class PhoneLineService {
         return this.phoneLineRepository.save(phoneLine);
     }
 
-    public Optional<PhoneLine> getById(Integer id){
-        return  this.phoneLineRepository.findById(id);
+    public PhoneLine getById(Integer id) throws PhoneLineNotFoundException {
+        return  this.phoneLineRepository.findById(id).orElseThrow(()-> new PhoneLineNotFoundException("Phoneline not found"));
     }
 
     public Integer deletePhoneLine(PhoneLine phoneLine) {

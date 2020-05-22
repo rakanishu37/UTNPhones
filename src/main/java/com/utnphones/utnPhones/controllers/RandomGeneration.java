@@ -9,6 +9,7 @@ import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.domain.UserType;
+import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.repository.CityRepository;
 import com.utnphones.utnPhones.repository.LineTypeRepository;
 import com.utnphones.utnPhones.repository.UserTypeRepository;
@@ -99,7 +100,7 @@ public class RandomGeneration {
     }
 
     @PostMapping("/phonelines/")
-    public List<PhoneLine> insertPhoneLines(){
+    public List<PhoneLine> insertPhoneLines() throws ClientNotFoundException {
         this.phoneLines = new ArrayList<>();
         Set<String> numbers = new HashSet<String>();
         do{
@@ -111,7 +112,7 @@ public class RandomGeneration {
 
 
         for (int i=0; i<10000;i++) {
-            Client client = this.clientService.getById(i+1).get();
+            Client client = this.clientService.getById(i+1);
             Client cliente = Client.builder()
                     .id(client.getId())
                      .city(client.getCity())
@@ -145,7 +146,7 @@ public class RandomGeneration {
     }
 */
     @PostMapping("/calls/")
-    public List<Call> insertCalls(){
+    public List<Call> insertCalls() throws Exception {
         List<PhoneLine> phoneLineList = this.phoneLineController.getAll();
         List<Call> calls = new ArrayList<>();
 
@@ -160,7 +161,7 @@ public class RandomGeneration {
                 number2 = phoneLineList.get((int)(Math.random() * phoneLineList.size()) + 0);
             }while(number1.getNumber().equals(number2.getNumber()));
             calls.add(this.callService.create(Call.builder().phoneTo(number1).phoneFrom(number2)
-                    .invoice(this.invoiceService.getById(1).get())
+                    .invoice(this.invoiceService.getById(1))
                     .fare((float) 0)
                     .duration((int)(Math.random() * 7000) + 5)
                     .totalPrice((float) 0)

@@ -18,8 +18,7 @@ import javax.validation.constraints.NotNull;
 public class Fare {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Basic(fetch = FetchType.EAGER)
-    @Column(name = "id_fare",unique=true, nullable = false)
+    @Column(name = "id_fare")
     private Integer id;
 
     @NotNull

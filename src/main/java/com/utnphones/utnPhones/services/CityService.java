@@ -12,12 +12,8 @@ import java.util.List;
 
 @Service
 public class CityService {
-    private CityMySQLDao cityMySQLDao;
     private CityRepository cityRepository;
-    /*@Autowired
-    public CityService(final CityMySQLDao cityMySQLDao) {
-        this.cityMySQLDao = cityMySQLDao;
-    }*/
+
     @Autowired
     public CityService(CityRepository cityRepository) {
         this.cityRepository = cityRepository;

@@ -10,12 +10,8 @@ import java.util.List;
 
 @Service
 public class FareService {
-    private FareMySQLDao fareMySQLDao;
     private FareRepository fareRepository;
-    /*@Autowired
-    public FareService(final FareMySQLDao fareMySQLDao) {
-        this.fareMySQLDao = fareMySQLDao;
-    }*/
+
     @Autowired
     public FareService(final FareRepository fareRepository) {
         this.fareRepository = fareRepository;

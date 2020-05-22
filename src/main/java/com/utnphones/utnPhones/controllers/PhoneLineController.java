@@ -1,6 +1,7 @@
 package com.utnphones.utnPhones.controllers;
 
 import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.services.PhoneLineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,7 +35,9 @@ public class PhoneLineController {
     }
 
     @GetMapping("/{idPhoneLine}")
-    public PhoneLine getById(@PathVariable Integer idPhoneLine){
-        return this.phoneLineService.getById(idPhoneLine).get();
+    public PhoneLine getById(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException {
+        return this.phoneLineService.getById(idPhoneLine);
     }
+
+
 }

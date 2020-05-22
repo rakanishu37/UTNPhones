@@ -1,7 +1,8 @@
 package com.utnphones.utnPhones.exceptions;
 
-public class ClientNotFoundException extends Exception {
-    public ClientNotFoundException(String s) {
-        super(s);
+
+public class ClientNotFoundException extends Throwable {
+    public ClientNotFoundException(String message){
+        super(message);
     }
 }

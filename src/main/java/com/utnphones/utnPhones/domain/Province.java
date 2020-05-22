@@ -19,7 +19,7 @@ public class Province {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(fetch = FetchType.EAGER)
-    @Column(name = "id_province",unique=false, nullable = false)
+    @Column(name = "id_province")
     private Integer id;
 
     @NotNull

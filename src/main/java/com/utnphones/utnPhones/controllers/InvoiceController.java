@@ -25,9 +25,8 @@ public class InvoiceController {
     private SessionManager sessionManager;
 
     @Autowired
-    public InvoiceController(final InvoiceService invoiceService,final SessionManager sessionManager) {
+    public InvoiceController(final InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
-        this.sessionManager = sessionManager;
     }
 //TODO verificar que sea un empleado quien accede a las url
     @GetMapping("/")
@@ -55,7 +54,7 @@ public class InvoiceController {
         return (messages.size() > 0) ? ResponseEntity.ok(messages) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }*/
     @GetMapping("/{idInvoice}")
-    public Invoice getById(@PathVariable Integer id){
-        return this.invoiceService.getById(id).get();
+    public Invoice getById(@PathVariable Integer id) throws Exception {
+        return this.invoiceService.getById(id);
     }
 }
