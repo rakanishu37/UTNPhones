@@ -2,16 +2,22 @@ package com.utnphones.utnPhones.controllers;
 
 
 import com.utnphones.utnPhones.dto.ErrorResponseDto;
+import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.InvalidLoginException;
+import com.utnphones.utnPhones.exceptions.ParseDateException;
+import com.utnphones.utnPhones.exceptions.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
+
 @RestControllerAdvice
-public class ControllerAdvice extends ResponseEntityExceptionHandler {
+public class AdviceController extends ResponseEntityExceptionHandler {
 //TODO agregar todas
-    /*
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidLoginException.class)
     public ErrorResponseDto handleLoginException(InvalidLoginException exc) {
@@ -25,15 +31,15 @@ public class ControllerAdvice extends ResponseEntityExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(UserNotexistException.class)
+    @ExceptionHandler(ClientNotFoundException.class)
     public ErrorResponseDto handleUserNotExists() {
-        return new ErrorResponseDto(3, "User not exists");
+        return new ErrorResponseDto(3, "Client not exists");
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ParseException.class)
+    @ExceptionHandler(ParseDateException.class)
     public ErrorResponseDto handleParseException() {
         return new ErrorResponseDto(4, "Not valid dates");
     }
-    */
+
 }
