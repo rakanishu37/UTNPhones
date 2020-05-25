@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -22,4 +23,5 @@ public class Client extends Person {
     @OneToMany(mappedBy = "client")
     private List<PhoneLine> phoneLines;
 
+    //Todo verificar que no haga un stackoverflow debugeando
 }

@@ -5,6 +5,7 @@ import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.UserType;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.repository.ClientRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -17,7 +18,7 @@ import static org.mockito.MockitoAnnotations.initMocks;
 public class ClientServiceTest {
 
     @Mock
-    ClientDao clientDao;
+    ClientRepository clientRepository;
 
     @Before
     public void setUp(){
