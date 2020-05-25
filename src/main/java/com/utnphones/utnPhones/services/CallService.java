@@ -7,6 +7,7 @@ import com.utnphones.utnPhones.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,10 +39,10 @@ public class CallService {
     }
 
     public Map<String, List<CallsDates>> getCallsBetweenDates(Integer idClient, Date from, Date to){
-        List<CallsDates> calls = callRepository.getCallsBetweenDates(idClient,from,to);
+        List<CallsDates> calls = callRepository.findByDateBetween(idClient,from,to);
 
         return calls.stream()
-            .collect(Collectors.groupingBy(CallsDates::getPhoneLineFrom));
-
+            .sorted(Comparator.comparing(CallsDates::getDate))
+            .collect(Collectors.groupingBy(CallsDates::getOrigin));
     }
 }

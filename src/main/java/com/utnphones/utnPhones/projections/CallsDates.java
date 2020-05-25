@@ -3,8 +3,8 @@ package com.utnphones.utnPhones.projections;
 import java.util.Date;
 
 public interface CallsDates {
-    String getPhoneLineFrom();
-    String getPhoneLineTo();
+    String getOrigin();
+    String getDestiny();
     Float getFare();
     Integer getDuration();
     Float getTotalPrice();
