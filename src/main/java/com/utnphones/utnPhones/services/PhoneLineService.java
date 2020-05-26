@@ -1,12 +1,15 @@
 package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.dao.mysql.PhoneLineMySQLDao;
+import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.sound.sampled.Line;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +22,6 @@ public class PhoneLineService {
         this.phoneLineRepository = phoneLineRepository;
     }
 
-
     public List<PhoneLine> getAll(){
         return this.phoneLineRepository.findAll();
     }
@@ -28,15 +30,22 @@ public class PhoneLineService {
         return this.phoneLineRepository.save(phoneLine);
     }
 
+
+
     public PhoneLine getById(Integer id) throws PhoneLineNotFoundException {
-        return  this.phoneLineRepository.findById(id).orElseThrow(()-> new PhoneLineNotFoundException("Phoneline not found"));
+        return this.phoneLineRepository.findById(id)
+                .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
-    public Integer deletePhoneLine(PhoneLine phoneLine) {
-        return phoneLineRepository.deletePhoneLine(phoneLine.getId());
+    public Integer activatePhoneLine(Integer idPhoneLine) {
+        return phoneLineRepository.changePhoneLineStatus(LineStatus.active,idPhoneLine);
     }
 
-    public PhoneLine updatePhoneLine(PhoneLine phoneLine) {
-        return phoneLineRepository.saveAndFlush(phoneLine);
+    public Integer cancelPhoneLine(Integer idPhoneLine) {
+        return phoneLineRepository.changePhoneLineStatus(LineStatus.canceled,idPhoneLine);
+    }
+
+    public Integer suspendPhoneLine(Integer idPhoneline){
+        return phoneLineRepository.changePhoneLineStatus(LineStatus.suspended,idPhoneline);
     }
 }

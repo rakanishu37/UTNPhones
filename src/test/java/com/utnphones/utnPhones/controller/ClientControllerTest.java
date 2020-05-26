@@ -25,20 +25,16 @@ public class ClientControllerTest {
 
     @Mock
     ClientService clientService;
-    @Mock
-    PhoneLineService phoneLineService;
-    @Mock
-    CallService callService;
 
     @Before
     public void setUp(){
         initMocks(this);
-        clientController = new ClientController(clientService,phoneLineService,callService);
+        clientController = new ClientController(clientService);
     }
 
     @Test(expected = ClientNotFoundException.class)
     public void testGetClientByIdNotFound() throws ClientNotFoundException {
-       when(clientService.getById(15)).thenThrow(new ClientNotFoundException("Client not found"));
+       when(clientService.getById(15)).thenThrow(new ClientNotFoundException());
        clientController.getById(15);
     }
 

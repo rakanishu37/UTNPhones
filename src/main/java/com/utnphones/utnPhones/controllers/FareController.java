@@ -30,4 +30,6 @@ public class FareController {
     public Fare create(@RequestBody Fare fare){
         return this.fareService.create(fare);
     }
+
+    //todo consulta de la tarifa entre la 2 ciudades consultadas
 }

@@ -18,7 +18,6 @@ public class ProvinceService {
         this.provinceRepository = provinceRepository;
     }
     public List<Province> getAll(){
-        //return this.provinceMySQLDAO.getAll();
         return this.provinceRepository.findAll();
     }
 

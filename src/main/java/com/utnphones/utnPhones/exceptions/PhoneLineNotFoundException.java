@@ -1,7 +1,7 @@
 package com.utnphones.utnPhones.exceptions;
 
 public class PhoneLineNotFoundException extends Throwable {
-    public PhoneLineNotFoundException(String s) {
-        super(s);
+    public PhoneLineNotFoundException() {
+        super();
     }
 }

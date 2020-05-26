@@ -81,10 +81,7 @@ select
 		plFrom.id_person = p_id_person;
 end; $$
 
-<<<<<<< HEAD
-=======
 drop procedure sp_show_client_callsV2
->>>>>>> c27af19c2b38bf7480aaf550ed00743c6f17cf09
 
 delimiter $$
 create procedure sp_show_client_calls_by_dates(IN p_id_person int, IN p_date_from date,IN p_date_to date)
@@ -98,13 +95,9 @@ begin
         c.date_call between p_date_from and p_date_to;
 end; $$
 
-<<<<<<< HEAD
-
-=======
 call sp_show_client_calls_by_dates(1,"2020-5-01","2020-5-21");
 
 drop procedure sp_show_client_calls_by_datesV2
->>>>>>> c27af19c2b38bf7480aaf550ed00743c6f17cf09
 
 delimiter $$
 create procedure sp_show_client_invoices(IN p_id_person int)
@@ -177,38 +170,14 @@ select
 from   
 	calls as c
     inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
-	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
-/*where 
-	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1)*/
+	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
+where 
+	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1)
 order by
 	c.id_phone_line_from desc;        
     
-select 
-	*
-from   
-	calls as c
-    inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line
-	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
-where 
-	c.id_phone_line_from in (1,2)
-order by
-	c.id_phone_line_from desc;        
-
-
-
-select 
-	*
-from   
-	calls as c
-    inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line and (c.id_phone_line_from = 1 or c.id_phone_line_from = 2)
-	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
-/*where 
-	c.id_phone_line_from  (1,2)*/
-order by
-	c.id_phone_line_from desc;        
-
-
-
+    use utn_phones
+    
     
 select 
 	plFrom.line_number as "origin",
@@ -220,9 +189,10 @@ select
 from   
 	calls as c
     inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
-	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
+	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
 where 
-	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1)
+	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1) and
+    c.date_call between '2020-05-16 00:00:00' and '2020-05-17 00:00:00'
 order by
 	c.id_phone_line_from asc;        
 	

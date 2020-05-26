@@ -35,14 +35,7 @@ public class CallService {
 
     public Call getById(Integer idCall) throws CallNotFoundException {
         return callRepository.findById(idCall)
-                .orElseThrow(() -> new CallNotFoundException("Client not found"));
+                .orElseThrow(() -> new CallNotFoundException());
     }
 
-    public Map<String, List<CallsDates>> getCallsBetweenDates(Integer idClient, Date from, Date to){
-        List<CallsDates> calls = callRepository.findByDateBetween(idClient,from,to);
-
-        return calls.stream()
-            .sorted(Comparator.comparing(CallsDates::getDate))
-            .collect(Collectors.groupingBy(CallsDates::getOrigin));
-    }
 }
