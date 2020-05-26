@@ -30,7 +30,7 @@ public class ClientController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<Client>> getAll() {
+    public ResponseEntity<List<Client>> getAll(){
         List<Client> list = clientService.getAll();
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
