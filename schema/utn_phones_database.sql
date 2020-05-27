@@ -43,10 +43,11 @@ CREATE TABLE persons(
 
 
 CREATE TABLE Fares(
+	id_fare INT AUTO_INCREMENT,
     id_city_from INT NOT NULL,
     id_city_to INT NOT NULL,
     price FLOAT NOT NULL,
-    CONSTRAINT PK_FARES PRIMARY KEY (id_city_from,id_city_to),
+    CONSTRAINT PK_FARES PRIMARY KEY (id_fare),
     CONSTRAINT FK_CITY_FROM_CITIES FOREIGN KEY(id_city_from) REFERENCES cities(id_city),
     CONSTRAINT FK_CITY_TO_CITIES FOREIGN KEY(id_city_to) REFERENCES cities(id_city)
 );
