@@ -23,6 +23,7 @@ public class ClientService {
     private PhoneLineRepository phoneLineRepository;
     private CallRepository callRepository;
 
+
     @Autowired
     public ClientService(final ClientRepository clientRepository,PhoneLineRepository phoneLineRepository,CallRepository callRepository) {
         this.clientRepository = clientRepository;
@@ -47,12 +48,24 @@ public class ClientService {
                 .orElseThrow(() -> new ClientNotFoundException());
     }
 
+    //TODO ESTA MAL V
     public Client update(Client client) throws ClientNotFoundException {
 		return clientRepository.findById(client.getId())
             .map(clientRepository::save)
             .orElseThrow(() -> new ClientNotFoundException());
     }
+/*
+    public Client update(Integer idclient, Client clientUpdated) throws ClientNotFoundException {
+		Client c = clientRepository.findById(idclient)
+            .orElseThrow(() -> new ClientNotFoundException());
 
+		clientUpdated(clientUpdated);
+    }
+    //todo
+    private Client updateClient (Client oldClient, Client newClient){
+        return clientRepository.save(client);
+    }
+*/
     public Integer delete(Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
         Client clientToBeDeleted = getById(idClient);
         if(!clientToBeDeleted.getIsActive()){

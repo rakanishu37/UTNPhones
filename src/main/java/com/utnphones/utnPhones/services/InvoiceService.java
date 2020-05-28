@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.dao.mysql.InvoiceMySQLDao;
 import com.utnphones.utnPhones.domain.Invoice;
+import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,5 +30,9 @@ public class InvoiceService {
 
     public Invoice getById(Integer id) throws Exception {
         return this.invoiceRepository.findById(id).orElseThrow(Exception::new);
+    }
+
+    public List<InvoicesDates> getByIdClientDateBetween(Integer clientId,){
+        return invoiceRepository.getByIdClientDateBetween();
     }
 }

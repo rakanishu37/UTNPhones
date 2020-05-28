@@ -53,7 +53,7 @@ public class ClientController {
 
     @PutMapping("/{idClient}")
     public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody Client updatedClient) throws ClientNotFoundException {
-        return ResponseEntity.ok(clientService.update(updatedClient));
+        return ResponseEntity.ok(clientService.update(idClient,updatedClient));
     }
 
     @DeleteMapping("/{idClient}")
@@ -61,8 +61,20 @@ public class ClientController {
         return ResponseEntity.ok(clientService.delete(idClient));
     }
 
-    @GetMapping("/{idClient}/registry")
+    @GetMapping("/{idClient}/calls")
     public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@PathVariable Integer idClient,
+                                                                              @RequestParam(name = "dateFrom") String dateFrom,
+                                                                              @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
+        Client client = this.clientService.getById(idClient);
+        Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
+        Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
+        Map<String, List<CallsDates>> callsBetweenDates = clientService.getCallsBetweenDates(client.getId(), from, to);
+
+        return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/{idClient}/invoices")
+    public ResponseEntity<Map<String, List<CallsDates>>> getInvoicesBetweenDates(@PathVariable Integer idClient,
                                                                               @RequestParam(name = "dateFrom") String dateFrom,
                                                                               @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
         Client client = this.clientService.getById(idClient);
