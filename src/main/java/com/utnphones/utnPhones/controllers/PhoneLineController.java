@@ -42,18 +42,10 @@ public class PhoneLineController {
         return this.phoneLineService.getById(idPhoneLine);
     }
 
-    @PutMapping("/{idPhoneline}/activate")
-    public ResponseEntity<Integer> activatePhoneLine(@PathVariable Integer idPhoneline){
-        return ResponseEntity.ok(phoneLineService.activatePhoneLine(idPhoneline));
+    @PutMapping("/{idPhoneline}/")
+    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLine phoneLine) throws PhoneLineNotFoundException{
+        phoneLine.setClient(phoneLineService.getById(idPhoneline).getClient());
+        return ResponseEntity.ok(phoneLineService.updatePhoneLine(phoneLine));
     }
 
-    @PutMapping("/{idPhoneline}/suspend")
-    public ResponseEntity<Integer> suspendPhoneLine(@PathVariable Integer idPhoneline){
-        return ResponseEntity.ok(phoneLineService.suspendPhoneLine(idPhoneline));
-    }
-
-    @PutMapping("/{idPhoneline}/cancel")
-    public ResponseEntity<Integer> cancelPhoneLine(@PathVariable Integer idPhoneline){
-        return ResponseEntity.ok(phoneLineService.cancelPhoneLine(idPhoneline));
-    }
 }

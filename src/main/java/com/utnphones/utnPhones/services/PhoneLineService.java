@@ -30,22 +30,12 @@ public class PhoneLineService {
         return this.phoneLineRepository.save(phoneLine);
     }
 
-
-
     public PhoneLine getById(Integer id) throws PhoneLineNotFoundException {
         return this.phoneLineRepository.findById(id)
                 .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
-    public Integer activatePhoneLine(Integer idPhoneLine) {
-        return phoneLineRepository.changePhoneLineStatus(LineStatus.active,idPhoneLine);
-    }
-
-    public Integer cancelPhoneLine(Integer idPhoneLine) {
-        return phoneLineRepository.changePhoneLineStatus(LineStatus.canceled,idPhoneLine);
-    }
-
-    public Integer suspendPhoneLine(Integer idPhoneline){
-        return phoneLineRepository.changePhoneLineStatus(LineStatus.suspended,idPhoneline);
+    public PhoneLine updatePhoneLine(PhoneLine phoneLine) {
+        return phoneLineRepository.save(phoneLine);
     }
 }

@@ -1,5 +1,5 @@
 package com.utnphones.utnPhones.projections;
 
-public interface FareByCities {
+public interface FarePriceBetweenCities {
     Float getPrice();
 }
