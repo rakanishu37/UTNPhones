@@ -1,6 +1,7 @@
 package com.utnphones.utnPhones.session;
 
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.Person;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -12,9 +13,9 @@ public class SessionManager {
 
         int sesionExpiration = 60;
 
-        public String createSession(Client client) {
+        public String createSession(Person person) {
             String token = UUID.randomUUID().toString();
-            sessionMap.put(token, new Session(token, client, new Date(System.currentTimeMillis())));
+            sessionMap.put(token, new Session(token, person, new Date(System.currentTimeMillis())));
             return token;
         }
 

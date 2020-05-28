@@ -13,7 +13,7 @@ public class Session {
     Person loggedUser;
     Date lastAction;
 
-    public Session(String token, Client loggedUser, Date lastAction) {
+    public Session(String token, Person loggedUser, Date lastAction) {
         this.token = token;
         this.loggedUser = loggedUser;
         this.lastAction = lastAction;
