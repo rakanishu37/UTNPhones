@@ -7,6 +7,7 @@ import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
+import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -74,14 +75,13 @@ public class ClientController {
     }
 
     @GetMapping("/{idClient}/invoices")
-    public ResponseEntity<Map<String, List<CallsDates>>> getInvoicesBetweenDates(@PathVariable Integer idClient,
-                                                                              @RequestParam(name = "dateFrom") String dateFrom,
-                                                                              @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
-        Client client = this.clientService.getById(idClient);
+    public ResponseEntity<List<InvoicesDates>> getInvoicesBetweenDates(@PathVariable Integer idClient,
+                                                                       @RequestParam(name = "dateFrom") String dateFrom,
+                                                                       @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
+
         Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
-        Map<String, List<CallsDates>> callsBetweenDates = clientService.getCallsBetweenDates(client.getId(), from, to);
-
-        return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        List<InvoicesDates> invoices = clientService.getInvoicesBetweenDates(idClient, from, to);
+        return (!invoices.isEmpty()) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }

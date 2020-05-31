@@ -36,7 +36,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ErrorResponseDto(2, exc.getMessage());
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ClientNotFoundException.class)
     public ErrorResponseDto handleUserNotExists() {
         return new ErrorResponseDto(3, CLIENT_NOT_EXISTS_MESSAGE);

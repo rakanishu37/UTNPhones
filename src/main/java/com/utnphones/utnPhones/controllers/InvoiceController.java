@@ -39,20 +39,6 @@ public class InvoiceController {
         return this.invoiceService.create(invoice);
     }
 
-    /* token para tener la sesion que contiene adentro el objeto Client
-      @RequestBody DateCRequestDto datesDto, el token
-      Consulta de facturas del usuario logueado por rango de fechas.
-
-       */
-  /*  @GetMapping("")
-    public ResponseEntity<List<Invoice>> getMessages(@RequestHeader("Authorization") String sessionToken) {
-        Client currentUser = sessionManager.getCurrentUser(sessionToken);
-        if (currentUser == null) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        List<Message> messages = messageController.getMessages(currentUser.getUserId());
-        return (messages.size() > 0) ? ResponseEntity.ok(messages) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }*/
     @GetMapping("/{idInvoice}")
     public Invoice getById(@PathVariable Integer id) throws Exception {
         return this.invoiceService.getById(id);

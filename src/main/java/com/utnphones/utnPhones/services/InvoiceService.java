@@ -7,6 +7,7 @@ import com.utnphones.utnPhones.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,5 @@ public class InvoiceService {
         return this.invoiceRepository.findById(id).orElseThrow(Exception::new);
     }
 
-    public List<InvoicesDates> getByIdClientDateBetween(Integer clientId,){
-        return invoiceRepository.getByIdClientDateBetween();
-    }
+
 }
