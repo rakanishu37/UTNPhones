@@ -82,18 +82,7 @@ select
 end; $$
 
 drop procedure sp_show_client_callsV2
-
-delimiter $$
-create procedure sp_show_client_calls_by_dates(IN p_id_person int, IN p_date_from date,IN p_date_to date)
-begin
-	select 
-		* 
-    from
-		v_clients_calls
-	where
-		plFrom.id_person = p_id_person and
-        c.date_call between p_date_from and p_date_to;
-end; $$
+drop procedure sp_show_client_calls_by_dates
 
 call sp_show_client_calls_by_dates(1,"2020-5-01","2020-5-21");
 
@@ -116,22 +105,9 @@ begin
 	where
 		pl.id_person = p_id_person;
 end; $$
+drop procedure sp_show_client_invoices_by_dates;
 
-delimiter $$
-create procedure sp_show_client_invoices_by_dates(IN p_id_person int, IN p_date_from date, IN p_date_to date)
-begin
-	select 
-		*
-	from 
-		v_clients_invoices
-	where
-		pl.id_person = p_id_person and
-		inv.invoice_date between p_date_from and p_date_to;
-end; $$
 
-create view 
-	v_clients_calls
-as 
 	select			
 		plFrom.line_number as "origin",
         plTo.line_number as "destiny",
@@ -143,10 +119,8 @@ as
 		calls as c
         inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
         inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
-	where
-create view 
-	v_clients_invoices
-as 
+
+
 	select			
 		pl.line_number as "line number",
 		inv.number_of_calls as "number of calls", 
@@ -159,11 +133,6 @@ as
 		invoices as inv
 		inner join phone_lines as pl on inv.id_line = pl.id_phone_line;
 
-select 
-	*
-from   
-phone_lines
-
 
 select 
 	*
@@ -175,9 +144,7 @@ where
 	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1)
 order by
 	c.id_phone_line_from desc;        
-    
-    use utn_phones
-    
+        
     
 select 
 	plFrom.line_number as "origin",

@@ -1,6 +1,51 @@
-
 set GLOBAL time_zone = '-3:00'   
 
+delimiter //
+create procedure sp_add_call(IN pLineNumberFrom VARCHAR(15), IN pLineNumberTo VARCHAR(15), IN pDuration int,IN pDateCall datetime)
+begin
+	declare vPhoneLineFromId int;
+    declare vPhoneLineToId int;
+    declare vFare float;
+    declare vTotalPrice float;
+	declare vCityFromId int;
+    declare vCityToId int;
+    
+    select id_phone_line into vPhoneLineFromId from phone_lines where line_number = pLineNumberFrom;
+    select id_phone_line into vPhoneLineToId from phone_lines where line_number = pLineNumberTo; 
+
+	select 
+		id_city 
+	into 
+		vCityFromId
+    from 
+		cities 
+    where 
+		pLineNumberFrom like CONCAT(prefix,'%') 
+	order by 
+		LENGTH(prefix) DESC 
+	LIMIT 1;
+
+	select 
+		id_city 
+	into 
+		vCityToId 
+    from 
+		cities 
+    where 
+		pLineNumberTo like CONCAT(prefix,'%') 
+	order by 
+		LENGTH(prefix) DESC 
+	LIMIT 1;	
+    
+	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
+    set vTotalPrice = (pDuration * (vFare/60));
+    
+	insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price,date_call) 
+    values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice,pDateCall);
+    set idCall = last_insert_id();
+end; //
+
+drop trigger tbi_calls 
 delimiter //
 create trigger tbi_calls before insert on calls for each row
 begin
@@ -8,23 +53,36 @@ begin
     declare vPhoneLineTo varchar(15);
     declare vFare float;
     declare vTotalPrice float;
-    declare vPrefixFrom int;
-    declare vPrefixTo int;
 	declare vCityFromId int;
     declare vCityToId int;    
     
     
     select line_number into vPhoneLineFrom from phone_lines where id_phone_line = new.id_phone_line_from;
+    select line_number into vPhoneLineTo from phone_lines where id_phone_line = new.id_phone_line_to;    
+
+	select 
+		id_city 
+	into 
+		vCityFromId
+    from 
+		cities 
+    where 
+		vPhoneLineFrom like CONCAT(prefix,'%') 
+	order by 
+		LENGTH(prefix) DESC 
+        LIMIT 1;
     
-    
-    select line_number into vPhoneLineTo from phone_lines where id_phone_line = new.id_phone_line_to;
-    
-    
-    set vPrefixFrom = (select reverse(substring(reverse(vPhoneLineFrom),8)));
-    set vPrefixTo = (select reverse(substring(reverse(vPhoneLineTo),8)));
-	
-    select id_city into vCityFromId from cities as c where c.prefix = vPrefixFrom;
-    select id_city into vCityToId from cities as c where c.prefix = vPrefixTo;
+	select 
+		id_city 
+	into 
+		vCityToId 
+    from 
+		cities 
+    where 
+		vPhoneLineTo like CONCAT(prefix,'%') 
+	order by 
+		LENGTH(prefix) DESC 
+        LIMIT 1;
     
 	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
     set new.fare = vFare;
@@ -47,34 +105,6 @@ begin
         
 		insert into phone_lines(id_line_type,id_person,line_number,line_status) values(vLineTypeId,vPersonId, vPhoneNumber, pLineStatus);
 	end if;
-end; //
-
-delimiter //
-create procedure sp_add_call(IN pLineNumberFrom VARCHAR(15), IN pLineNumberTo VARCHAR(15), IN pDuration int,IN pDateCall datetime)
-begin
-	declare vPhoneLineFromId int;
-    declare vPhoneLineToId int;
-    declare vFare float;
-    declare vTotalPrice float;
-    declare vPrefixFrom int;
-    declare vPrefixTo int;
-	declare vCityFromId int;
-    declare vCityToId int;
-    select id_phone_line into vPhoneLineFromId from phone_lines where line_number = pLineNumberFrom;
-    select id_phone_line into vPhoneLineToId from phone_lines where line_number = pLineNumberTo;
-    
-    set vPrefixFrom = (select reverse(substring(reverse(pLineNumberFrom),8)));
-    set vPrefixTo = (select reverse(substring(reverse(pLineNumberTo),8)));
-	
-    select id_city into vCityFromId from cities as c where c.prefix = vPrefixFrom;
-    select id_city into vCityToId from cities as c where c.prefix = vPrefixTo;
-    
-	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
-    
-    set vTotalPrice = (pDuration * (vFare/60));
-    
-	insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price,date_call) 
-    values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice,pDateCall);
 end; //
 
 delimiter //
@@ -136,13 +166,18 @@ begin
     commit;
 end; //
 
-call sp_add_phone_line("home", "susana_gim", "4758196", "active", "Mar del Plata");
-call sp_add_phone_line("mobile", "susana_gim", "5797650", "active", "Mar del Plata");
-call sp_add_phone_line("mobile", "ricardo_@ar", "4888999", "active", "La Plata");
+call sp_add_client("Mar del Plata","federico","anastasi","37753328","fede37","123",@id)
+call sp_add_client("La Plata","test1","test1","11111111","test1","123",@id);
 
+call sp_add_phone_line("home", "fede37", "4758196", "active", "Mar del Plata");
+call sp_add_phone_line("mobile", "test1", "5797650", "active", "Mar del Plata");
+call sp_add_phone_line("mobile", "test1", "4888999", "active", "Bahia Blanca");
 
-call sp_add_call('2234758196','2214888999',30);
-call sp_add_call('2234758196','2214888999',60);
+select * from phone_lines
+
+call sp_add_call('2234758196','2235797650',30);
+insert into calls
+call sp_add_call('2234758196','2914888999',60);
 call sp_add_call('2234758196','2214888999',300);
 call sp_add_call('2214888999','2234758196',150);
 

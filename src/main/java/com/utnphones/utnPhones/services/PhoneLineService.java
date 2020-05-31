@@ -35,6 +35,11 @@ public class PhoneLineService {
                 .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
+    public PhoneLine getByPhoneNumber(String phoneNumber) throws PhoneLineNotFoundException {
+        return this.phoneLineRepository.findByLineNumber(phoneNumber)
+                .orElseThrow(()-> new PhoneLineNotFoundException());
+    }
+
     public PhoneLine updatePhoneLine(PhoneLine phoneLine) {
         return phoneLineRepository.save(phoneLine);
     }

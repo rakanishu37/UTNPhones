@@ -9,6 +9,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface PhoneLineRepository extends JpaRepository<PhoneLine,Integer> {
 
@@ -21,4 +23,6 @@ public interface PhoneLineRepository extends JpaRepository<PhoneLine,Integer> {
     @Modifying(clearAutomatically = true)
     @Query(value = "update phone_lines set is_active = false where id_phone_line = ?1", nativeQuery = true)
     Integer deletePhoneLine(Integer idPhoneline);
+
+    Optional<PhoneLine> findByLineNumber(String phoneNumber);
 }

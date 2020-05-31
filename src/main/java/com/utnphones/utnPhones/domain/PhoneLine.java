@@ -44,7 +44,7 @@ public class PhoneLine {
 
     @NotNull
     @Column(name = "line_number")
-    private String number;
+    private String lineNumber;
 
     @NotNull
     @Enumerated(EnumType.STRING)
