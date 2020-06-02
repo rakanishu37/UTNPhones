@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 public class ClientService {
     private ClientRepository clientRepository;
+
     private PhoneLineRepository phoneLineRepository;
     private CallRepository callRepository;
     private InvoiceRepository invoiceRepository;
