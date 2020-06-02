@@ -3,6 +3,7 @@ package com.utnphones.utnPhones.repository;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.PersonDuration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -39,4 +40,19 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
     @Modifying(clearAutomatically = true)
     @Query(value ="insert into calls(id_phone_line_from, id_phone_line_to, duration, date_call) values (?1,?2,?3,?4)" ,nativeQuery =   true)
     Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);
+
+
+    @Query(value = "select \n" +
+            "   p.firstname as 'name',\n" +
+            "   p.surname as 'lastname',\n" +
+            "   sum(c.duration) as 'totalDuration' \n" +
+            "from\n" +
+            "    calls as c\n" +
+            "    inner join phone_lines as pl on c.id_phone_line_from = pl.id_phone_line\n" +
+            "    inner join persons as p on pl.id_person = pl.id_person\n" +
+            "where \n" +
+            "   c.date_call like CONCAT(:month,'%')\n" +
+            "group by\n" +
+            "   p.id_person", nativeQuery = true)
+    List<PersonDuration> getDurationInMonth(@Param("month") Date month);
 }

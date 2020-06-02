@@ -5,6 +5,8 @@ import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
+import com.utnphones.utnPhones.projections.InvoicesDates;
+import com.utnphones.utnPhones.projections.PersonDuration;
 import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
@@ -42,10 +45,10 @@ public class CallController {
         return this.callService.create(call);
     }
 
-    //Paginacion para esto, un dto con el id del cliente y que pagina y cantidad de registros a devolver
-    /*@GetMapping("/")  calls?idClient=654
-    public List<Call> getAllByClient(){
-        return callService.getAllByClient();
-    }*/
+    @GetMapping("")
+    public ResponseEntity<List<PersonDuration>> getPersonDurationInMonth(@RequestParam(name = "yearMonth") String date) throws ParseException {
+        List<PersonDuration> list = callService.getDurationInMonth(date);
+        return (!list.isEmpty()) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 }

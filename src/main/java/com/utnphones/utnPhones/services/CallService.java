@@ -1,11 +1,13 @@
 package com.utnphones.utnPhones.services;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.PersonDuration;
 import com.utnphones.utnPhones.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,9 +48,8 @@ public class CallService {
                 .orElseThrow(() -> new CallNotFoundException());
     }
 
-    //Paginacion
-    /*
-    public List<Call> getAllByClient() {
-
-    }*/
+    public List<PersonDuration> getDurationInMonth(String yearMonth) throws ParseException {
+        Date date = new SimpleDateFormat("yyyy-MM").parse(yearMonth);
+        return callRepository.getDurationInMonth(date);
+    }
 }
