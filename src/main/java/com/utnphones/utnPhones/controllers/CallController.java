@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
@@ -36,15 +37,22 @@ public class CallController {
     }
 
     @GetMapping("/")
-    public List<Call> getAll(@RequestHeader("Authorization") String token) throws UserNotLoggedException {
+    public ResponseEntity<List<Call>> getAll(@RequestHeader("Authorization") String token) throws UserNotLoggedException {
         Person person = this.sessionManager.getCurrentUser(token);
-        System.out.println(person.toString());
-        return this.callService.getAll();
+        List<Call> calls = callService.getAll();
+        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping("/")
-    public Integer create(@RequestBody CallDto call) throws CallNotFoundException, PhoneLineNotFoundException, ParseException {
-        return this.callService.create(call);
+    public ResponseEntity<?> create(@RequestBody CallDto call){
+        ResponseEntity responseEntity;
+        try {
+            callService.create(call);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).build();
+        } catch (PhoneLineNotFoundException e) {
+            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return responseEntity;
     }
 
     //Paginacion para esto, un dto con el id del cliente y que pagina y cantidad de registros a devolver

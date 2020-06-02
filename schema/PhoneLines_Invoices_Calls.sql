@@ -49,8 +49,8 @@ drop trigger tbi_calls
 delimiter //
 create trigger tbi_calls before insert on calls for each row
 begin
-	declare vPhoneLineFrom varchar(15);
-    declare vPhoneLineTo varchar(15);
+	declare vPhoneLineFrom varchar(20);
+    declare vPhoneLineTo varchar(20);
     declare vFare float;
     declare vTotalPrice float;
 	declare vCityFromId int;

@@ -5,18 +5,12 @@ import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
-import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class CallService {
@@ -33,12 +27,21 @@ public class CallService {
         return this.callRepository.findAll();
     }
 
-    public Integer create(CallDto call) throws CallNotFoundException, PhoneLineNotFoundException, ParseException {
+    public void create(CallDto callDto) throws PhoneLineNotFoundException {
 
-        Integer idNumberFrom = phoneLineService.getByPhoneNumber(call.getNumberFrom()).getId();
-        Integer idNumberTo = phoneLineService.getByPhoneNumber(call.getNumberTo()).getId();
-        //Date date = new SimpleDateFormat("yyyy/MM/dd").parse(call.getDate());
-        return callRepository.saveCall(idNumberFrom,idNumberTo,call.getDuration(),call.getDate());
+        PhoneLine numberFrom = phoneLineService.getByPhoneNumber(callDto.getNumberFrom());
+        PhoneLine numberTo = phoneLineService.getByPhoneNumber(callDto.getNumberTo());
+
+        //return callRepository.saveCall(idNumberFrom,idNumberTo,callDto.getDuration(),call.getDate());
+
+        //Dos consultas a la bdd para obtener los objetos enteros de phoneline justifican esto?
+        callRepository.save(Call.builder()
+                        .phoneFrom(numberFrom)
+                        .phoneTo(numberTo)
+                        .duration(callDto.getDuration())
+                        .date(callDto.getDate())
+                        .build());
+
     }
 
     public Call getById(Integer idCall) throws CallNotFoundException {
