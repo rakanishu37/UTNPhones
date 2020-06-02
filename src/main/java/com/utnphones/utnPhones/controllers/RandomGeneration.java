@@ -110,7 +110,7 @@ public class RandomGeneration {
 
         List<String> prefixes = cities.stream().map(City::getPrefix).collect(Collectors.toList());
 
-
+/*
         for (int i=0; i<10000;i++) {
             Client client = this.clientService.getById(i+1);
             Client cliente = Client.builder()
@@ -132,7 +132,7 @@ public class RandomGeneration {
                            .build();
 
             phoneLines.add(this.phoneLineService.create(phoneLine));
-        }
+        }*/
         return phoneLines;
     }
 
@@ -153,7 +153,7 @@ public class RandomGeneration {
         PhoneLine number1 = null;
         PhoneLine number2 = null;
 
-        for (int i=0; i<10000;i++) {
+      /*  for (int i=0; i<10000;i++) {
             number1 = null;
             number2 = null;
             number1 = phoneLineList.get((int)(Math.random() * phoneLineList.size()) + 0);
@@ -167,7 +167,7 @@ public class RandomGeneration {
                     .totalPrice((float) 0)
                     .date(new Date())
                     .build()));
-        }
+        }*/
         return calls;
     }
 

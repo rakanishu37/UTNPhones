@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.session;
 
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
+import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -11,7 +12,7 @@ public class SessionManager {
 
         Map<String, Session> sessionMap = new Hashtable<>();
 
-        int sesionExpiration = 60;
+        int sessionExpiration = 300000;
 
         public String createSession(Person person) {
             String token = UUID.randomUUID().toString();
@@ -19,10 +20,14 @@ public class SessionManager {
             return token;
         }
 
-        public Session getSession(String token) {
+        public Session getSession(String token) throws UserNotLoggedException {
             Session session = sessionMap.get(token);
+            System.out.println("saddddddddddddddddddddddddddddd");
             if (session!=null) {
                 session.setLastAction(new Date(System.currentTimeMillis()));
+            }else{
+                System.out.println("saddddddddddddddddddddddddddddd");
+                throw new UserNotLoggedException();
             }
             return session;
         }
@@ -34,15 +39,16 @@ public class SessionManager {
         public void expireSessions() {
             for (String k : sessionMap.keySet()) {
                 Session v = sessionMap.get(k);
-                if (v.getLastAction().getTime() < System.currentTimeMillis() + (sesionExpiration*1000)) {
+                if (v.getLastAction().getTime() < System.currentTimeMillis() + (sessionExpiration*1000)) {
                     System.out.println("Expiring session " + k);
                     sessionMap.remove(k);
                 }
             }
         }
 
-        public Client getCurrentUser(String token) {
+        public Person getCurrentUser(String token) throws UserNotLoggedException {
             //TODO verificar que no haga un nullpointer
+
             return getSession(token).getLoggedUser();
         }
 }

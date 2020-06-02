@@ -2,9 +2,11 @@ package com.utnphones.utnPhones.controllers;
 
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
+import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +30,15 @@ public class CallController {
     private SessionManager sessionManager;
 
     @Autowired
-    public CallController(final CallService callService) {
+    public CallController(final CallService callService, final SessionManager sessionManager) {
         this.callService = callService;
+        this.sessionManager = sessionManager;
     }
 
     @GetMapping("/")
-    public List<Call> getAll(){
+    public List<Call> getAll(@RequestHeader("Authorization") String token) throws UserNotLoggedException {
+        Person person = this.sessionManager.getCurrentUser(token);
+        System.out.println(person.toString());
         return this.callService.getAll();
     }
 

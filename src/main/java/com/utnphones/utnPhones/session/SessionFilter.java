@@ -1,5 +1,6 @@
 package com.utnphones.utnPhones.session;
 
+import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,10 @@ public class SessionFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String sessionToken = request.getHeader("Authorization");
-        Session session = sessionManager.getSession(sessionToken);
+        Session session = null;
+
+        session = sessionManager.getSession(sessionToken);
+
         if (null != session) {
             filterChain.doFilter(request, response);
         } else {

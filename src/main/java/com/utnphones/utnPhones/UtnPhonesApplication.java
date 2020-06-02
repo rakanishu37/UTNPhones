@@ -21,8 +21,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.query.Query;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-
+@EnableScheduling
+@EnableAsync
 @SpringBootApplication
 public class UtnPhonesApplication {
 

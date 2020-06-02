@@ -27,15 +27,11 @@ public class Session {
         this.token = token;
     }
 
-    public Client getLoggedUser() {
-        return (Client)loggedUser;
+    public Person getLoggedUser() {
+        return loggedUser;
     }
 
-    public Employee getLoggedEmployee() {
-        return (Employee) loggedUser;
-    }
-
-    public void setLoggedUser(Client loggedUser) {
+    public void setLoggedUser(Person loggedUser) {
         this.loggedUser = loggedUser;
     }
 
