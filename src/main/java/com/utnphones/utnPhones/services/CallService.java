@@ -7,6 +7,8 @@ import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -23,8 +25,9 @@ public class CallService {
     }
 
 
-    public List<Call> getAll(){
-        return this.callRepository.findAll();
+    public List<Call> getAll(Integer page){
+        Pageable pageable = PageRequest.of(page, 4);
+        return this.callRepository.findAll(pageable).toList();
     }
 
     public void create(CallDto callDto) throws PhoneLineNotFoundException {
