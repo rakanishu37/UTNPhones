@@ -26,8 +26,7 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/calls")
+@Controller
 public class CallController {
     private CallService callService;
     private SessionManager sessionManager;
@@ -38,10 +37,8 @@ public class CallController {
         this.sessionManager = sessionManager;
     }
 
-    @GetMapping("/{page}")
-    public ResponseEntity<List<Call>> getAll(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException {
-        List<Call> calls = this.callService.getAll(page);
-        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public List<Call> getAll( Integer page){
+        return this.callService.getAll(page);
     }
 
 

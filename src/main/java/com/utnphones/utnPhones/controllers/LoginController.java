@@ -30,7 +30,6 @@ public class LoginController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequestDto loginRequestDto) throws InvalidLoginException, ValidationException {
         ResponseEntity<?> response;
-        System.out.println("dsfaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
         try {
             Person person = personController.login(loginRequestDto.getUsername(), loginRequestDto.getPassword());
             String token = sessionManager.createSession(person);

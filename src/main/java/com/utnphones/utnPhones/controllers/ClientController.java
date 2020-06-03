@@ -40,5 +40,8 @@ public class ClientController {
         this.sessionManager = sessionManager;
     }
 
+    public List<Client> getAll(Integer page){
+        return this.clientService.getAll(page);
+    }
 
 }

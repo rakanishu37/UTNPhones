@@ -33,8 +33,6 @@ public class UtnPhonesApplication {
         SpringApplication.run(UtnPhonesApplication.class, args);
 
         // TODO update y delete employees.
-        // TODO login usuario ???????
-        // TODO login employee ????????
         // TODO Consulta de TOP 10 destinos más llamados por el usuario.
         // TODO Consulta de llamadas por usuario.
         // todo Consulta de facturas del usuario logueado por rango de fechas.

@@ -59,26 +59,25 @@ public class SuperUserController {
         this.invoiceController = invoiceController;
         this.callController = callController;
     }
-/*
-    @GetMapping("/{page}")
-    public ResponseEntity<List<Call>> getAll(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException {
+
+    @GetMapping("/calls/{page}")
+    public ResponseEntity<List<Call>> getAllCalls(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException {
         List<Call> calls = this.callController.getAll(page);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }*/
-    //TODO
-    //Paginacion para esto, un dto con el id del cliente y que pagina y cantidad de registros a devolver
+    }
+
     /*@GetMapping("/")  calls?idClient=654
     public List<Call> getAllByClient(){
         return callService.getAllByClient();
     }*/
 
-/*
-    @GetMapping("/")
-    public ResponseEntity<List<Client>> getAll(@RequestHeader("Authorization") String token) throws UserNotLoggedException, UnauthorizedAccessException {
-        List<Client> list = clientService.getAll();
+
+    @GetMapping("/clients/{page}")
+    public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {
+        List<Client> list = this.clientController.getAll(page);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
+/*
     @GetMapping("/{idClient}")
     public ResponseEntity<Client> getById(@PathVariable Integer idClient) throws ClientNotFoundException {
         return ResponseEntity.ok(clientService.getById(idClient));

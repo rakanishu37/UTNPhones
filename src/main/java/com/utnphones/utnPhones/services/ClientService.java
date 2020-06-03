@@ -11,6 +11,8 @@ import com.utnphones.utnPhones.repository.ClientRepository;
 import com.utnphones.utnPhones.repository.InvoiceRepository;
 import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -36,8 +38,9 @@ public class ClientService {
         this.invoiceRepository = invoiceRepository;
     }
 
-    public List<Client> getAll(){
-        return this.clientRepository.findAll();
+    public List<Client> getAll(Integer page){
+        Pageable pageable = PageRequest.of(page, 16);
+        return this.clientRepository.findAll(pageable).toList();
     }
 
     public Client create(Client client){
