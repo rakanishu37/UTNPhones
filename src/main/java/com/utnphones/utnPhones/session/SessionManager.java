@@ -15,7 +15,9 @@ public class SessionManager {
     int sessionExpiration = 300000;
 
     public String createSession(Person person) {
-        String token = UUID.randomUUID().toString();
+        //TODO dejar como antes
+        //String token = UUID.randomUUID().toString();
+        String token = "token";
         sessionMap.put(token, new Session(token, person, new Date(System.currentTimeMillis())));
         return token;
     }
@@ -41,10 +43,6 @@ public class SessionManager {
             }
         }
     }
-
-  /*  public Person getCurrentUser(String token) throws UserNotLoggedException {
-        return getSession(token).getLoggedUser();
-    }*/
 
     public Person getCurrentUser(String token) throws UserNotLoggedException {
         return Optional.ofNullable(getSession(token).getLoggedUser()).orElseThrow(UserNotLoggedException::new);

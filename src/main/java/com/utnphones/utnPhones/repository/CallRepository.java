@@ -37,10 +37,10 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
             "            c.id_phone_line_from desc;", nativeQuery = true)
     List<CallsDates> findByDateBetween(@Param("clientId")Integer clientId,@Param("from") Date from,@Param("to") Date to);
 
-    @Transactional
+    /*@Transactional
     @Modifying(clearAutomatically = true)
     @Query(value ="insert into calls(id_phone_line_from, id_phone_line_to, duration, date_call) values (?1,?2,?3,?4)" ,nativeQuery =   true)
-    Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);
+    Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);*/
 
     Page<Call> findAll(Pageable pageable);
 }

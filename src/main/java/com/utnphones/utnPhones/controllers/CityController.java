@@ -5,12 +5,12 @@ import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.services.CityService;
 import com.utnphones.utnPhones.services.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/cities")
+@Controller
 public class CityController {
     private CityService cityService;
     private ProvinceService provinceService;
@@ -20,12 +20,12 @@ public class CityController {
         this.cityService = cityService;
     }
 
-    @GetMapping("/")
+    //@GetMapping("/")
     public List<City> getAll(){
         return this.cityService.getAll();
     }
 
-    @PostMapping("/")//Si le ponemos un id cualquiera en el post funciona bien
+    //@PostMapping("/")//Si le ponemos un id cualquiera en el post funciona bien
     public City create(@RequestBody City city){
         return this.cityService.create(city);
     }

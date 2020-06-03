@@ -9,4 +9,5 @@ public class Constants {
     public static String UNAUTHORIZED_ACCESS_MESSAGE = "Unauthorized access";
     public static String USER_TYPE_CLIENT = "client";
     public static String USER_TYPE_EMPLOYEE = "employee";
+    public static String ANTENNA_CODE = "antenna";
 }

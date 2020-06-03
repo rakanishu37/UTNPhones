@@ -5,6 +5,7 @@ import com.utnphones.utnPhones.services.ProvinceService;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +17,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 
-@RestController
-@RequestMapping("/provinces")
+@Controller
 public class ProvinceController {
     private final ProvinceService provinceService;
 

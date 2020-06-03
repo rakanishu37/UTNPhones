@@ -8,6 +8,7 @@ import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/invoices")
+@Controller
 public class InvoiceController {
     private InvoiceService invoiceService;
     private SessionManager sessionManager;
@@ -28,7 +28,7 @@ public class InvoiceController {
     public InvoiceController(final InvoiceService invoiceService) {
         this.invoiceService = invoiceService;
     }
-//TODO verificar que sea un empleado quien accede a las url
+
     @GetMapping("/")
     public List<Invoice> getAll(){
         return this.invoiceService.getAll();

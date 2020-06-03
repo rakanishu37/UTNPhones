@@ -69,6 +69,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     public ErrorResponseDto handleUserNotLoggedExceptionException() {
         return new ErrorResponseDto(7, USER_NOT_LOGGED_MESSAGE);
     }
+
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedAccessException.class)
     public ErrorResponseDto handleUnauthorizedAccessException(){

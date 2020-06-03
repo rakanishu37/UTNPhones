@@ -1,6 +1,5 @@
 package com.utnphones.utnPhones.session;
 
-import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -12,8 +11,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.utnphones.utnPhones.utils.Constants.ANTENNA_CODE;
+import static com.utnphones.utnPhones.utils.Constants.USER_TYPE_EMPLOYEE;
+
 @Service
-public class SessionFilter extends OncePerRequestFilter {
+public class AntennaSessionFilter extends OncePerRequestFilter {
 
     @Autowired
     private SessionManager sessionManager;
@@ -24,11 +26,8 @@ public class SessionFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String sessionToken = request.getHeader("Authorization");
-        Session session = null;
 
-        session = sessionManager.getSession(sessionToken);
-
-        if (null != session) {
+        if(ANTENNA_CODE.equals(sessionToken)){
             filterChain.doFilter(request, response);
         } else {
             response.setStatus(HttpStatus.FORBIDDEN.value());
