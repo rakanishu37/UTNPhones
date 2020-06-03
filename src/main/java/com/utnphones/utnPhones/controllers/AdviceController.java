@@ -5,6 +5,8 @@ import com.utnphones.utnPhones.dto.ErrorResponseDto;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.InvalidLoginException;
 import com.utnphones.utnPhones.exceptions.ParseDateException;
+import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
+import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
@@ -18,6 +20,8 @@ import static com.utnphones.utnPhones.utils.Constants.CLIENT_NOT_EXISTS_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_DATE_FORMAT_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_LOGIN_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.PHONELINE_NOT_EXISTS_MESSAGE;
+import static com.utnphones.utnPhones.utils.Constants.UNAUTHORIZED_ACCESS_MESSAGE;
+import static com.utnphones.utnPhones.utils.Constants.USER_NOT_LOGGED_MESSAGE;
 
 
 @RestControllerAdvice
@@ -45,21 +49,29 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(PhoneLineNotFoundException.class)
     public ErrorResponseDto handlePhoneLineNotExists() {
-        return new ErrorResponseDto(3, PHONELINE_NOT_EXISTS_MESSAGE);
+        return new ErrorResponseDto(4, PHONELINE_NOT_EXISTS_MESSAGE);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ParseDateException.class)
     public ErrorResponseDto handleParseException() {
-        return new ErrorResponseDto(4, INVALID_DATE_FORMAT_MESSAGE);
+        return new ErrorResponseDto(5, INVALID_DATE_FORMAT_MESSAGE);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ClientIsAlreadyDeletedException.class)
     public ErrorResponseDto handleClientIsAlreadyDeletedException() {
-        return new ErrorResponseDto(4, CLIENT_NOT_EXISTS_MESSAGE);
+        return new ErrorResponseDto(6, CLIENT_NOT_EXISTS_MESSAGE);
     }
 
-
-
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    @ExceptionHandler(UserNotLoggedException.class)
+    public ErrorResponseDto handleUserNotLoggedExceptionException() {
+        return new ErrorResponseDto(7, USER_NOT_LOGGED_MESSAGE);
+    }
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ErrorResponseDto handleUnauthorizedAccessException(){
+        return new ErrorResponseDto(8, UNAUTHORIZED_ACCESS_MESSAGE);
+    }
 }

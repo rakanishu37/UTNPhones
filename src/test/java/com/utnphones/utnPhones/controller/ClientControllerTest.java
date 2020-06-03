@@ -8,6 +8,7 @@ import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.services.ClientService;
 import com.utnphones.utnPhones.services.PhoneLineService;
+import com.utnphones.utnPhones.session.SessionManager;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,11 +26,11 @@ public class ClientControllerTest {
 
     @Mock
     ClientService clientService;
-
+    SessionManager sessionManager;
     @Before
     public void setUp(){
         initMocks(this);
-        clientController = new ClientController(clientService);
+        clientController = new ClientController(clientService,sessionManager);
     }
 
     @Test(expected = ClientNotFoundException.class)

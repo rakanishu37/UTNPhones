@@ -10,45 +10,43 @@ import java.util.*;
 @Component
 public class SessionManager {
 
-        Map<String, Session> sessionMap = new Hashtable<>();
+    Map<String, Session> sessionMap = new Hashtable<>();
 
-        int sessionExpiration = 300000;
+    int sessionExpiration = 300000;
 
-        public String createSession(Person person) {
-            String token = UUID.randomUUID().toString();
-            sessionMap.put(token, new Session(token, person, new Date(System.currentTimeMillis())));
-            return token;
+    public String createSession(Person person) {
+        String token = UUID.randomUUID().toString();
+        sessionMap.put(token, new Session(token, person, new Date(System.currentTimeMillis())));
+        return token;
+    }
+
+    public Session getSession(String token) throws UserNotLoggedException {
+        Session session = sessionMap.get(token);
+        if (session!=null) {
+            session.setLastAction(new Date(System.currentTimeMillis()));
         }
+        return session;
+    }
 
-        public Session getSession(String token) throws UserNotLoggedException {
-            Session session = sessionMap.get(token);
-            System.out.println("saddddddddddddddddddddddddddddd");
-            if (session!=null) {
-                session.setLastAction(new Date(System.currentTimeMillis()));
-            }else{
-                System.out.println("saddddddddddddddddddddddddddddd");
-                throw new UserNotLoggedException();
-            }
-            return session;
-        }
+    public void removeSession(String token) {
+        sessionMap.remove(token);
+    }
 
-        public void removeSession(String token) {
-            sessionMap.remove(token);
-        }
-
-        public void expireSessions() {
-            for (String k : sessionMap.keySet()) {
-                Session v = sessionMap.get(k);
-                if (v.getLastAction().getTime() < System.currentTimeMillis() + (sessionExpiration*1000)) {
-                    System.out.println("Expiring session " + k);
-                    sessionMap.remove(k);
-                }
+    public void expireSessions() {
+        for (String k : sessionMap.keySet()) {
+            Session v = sessionMap.get(k);
+            if (v.getLastAction().getTime() < System.currentTimeMillis() + (sessionExpiration*1000)) {
+                System.out.println("Expiring session " + k);
+                sessionMap.remove(k);
             }
         }
+    }
 
-        public Person getCurrentUser(String token) throws UserNotLoggedException {
-            //TODO verificar que no haga un nullpointer
+  /*  public Person getCurrentUser(String token) throws UserNotLoggedException {
+        return getSession(token).getLoggedUser();
+    }*/
 
-            return getSession(token).getLoggedUser();
-        }
+    public Person getCurrentUser(String token) throws UserNotLoggedException {
+        return Optional.ofNullable(getSession(token).getLoggedUser()).orElseThrow(UserNotLoggedException::new);
+    }
 }
