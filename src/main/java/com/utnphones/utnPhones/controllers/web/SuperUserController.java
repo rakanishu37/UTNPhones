@@ -1,5 +1,10 @@
 package com.utnphones.utnPhones.controllers.web;
 
+import com.utnphones.utnPhones.controllers.CallController;
+import com.utnphones.utnPhones.controllers.ClientController;
+import com.utnphones.utnPhones.controllers.FareController;
+import com.utnphones.utnPhones.controllers.InvoiceController;
+import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
@@ -9,6 +14,8 @@ import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.session.SessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,12 +41,28 @@ public class SuperUserController {
      * 5) Consulta de llamadas por usuario.
      * 6) Consulta de facturación .
      */
+    private SessionManager sessionManager;
+    private PhoneLineController phoneLineController;
+    private FareController fareController;
+    private ClientController clientController;
+    private InvoiceController invoiceController;
+    private CallController callController;
+
+    @Autowired
+    public SuperUserController(SessionManager sessionManager, PhoneLineController phoneLineController,
+                               FareController fareController, ClientController clientController,
+                               InvoiceController invoiceController, CallController callController) {
+        this.sessionManager = sessionManager;
+        this.phoneLineController = phoneLineController;
+        this.fareController = fareController;
+        this.clientController = clientController;
+        this.invoiceController = invoiceController;
+        this.callController = callController;
+    }
 
     @GetMapping("/{page}")
     public ResponseEntity<List<Call>> getAll(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException {
-        Person person = this.sessionManager.getCurrentUser(token);
-
-        List<Call> calls = this.callService.getAll(page);
+        List<Call> calls = this.callController.getAll(page);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     //TODO
@@ -49,7 +72,7 @@ public class SuperUserController {
         return callService.getAllByClient();
     }*/
 
-
+/*
     @GetMapping("/")
     public ResponseEntity<List<Client>> getAll(@RequestHeader("Authorization") String token) throws UserNotLoggedException, UnauthorizedAccessException {
         List<Client> list = clientService.getAll();
@@ -113,5 +136,5 @@ public class SuperUserController {
                 .path("/{id}")
                 .buildAndExpand(message.getMessageId())
                 .toUri();
-    }
+    }*/
 }

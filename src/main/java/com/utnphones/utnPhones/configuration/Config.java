@@ -9,9 +9,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @org.springframework.context.annotation.Configuration
-@PropertySource("app.properties")
+@PropertySource("application.yml")
 @EnableScheduling
-public class Configuration {
+public class Config {
 
     @Autowired
     SessionFilter sessionFilter;
@@ -32,7 +32,7 @@ public class Configuration {
     String password;*/
 
     @Bean
-    public FilterRegistrationBean sessionFilter() {
+    public FilterRegistrationBean sessionExistsFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(sessionFilter);
         registration.addUrlPatterns("/api/*");
@@ -40,7 +40,7 @@ public class Configuration {
     }
 
     @Bean
-    public FilterRegistrationBean superUserSessionFilter() {
+    public FilterRegistrationBean superUserSessionExistsFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(superUserSessionFilter);
         registration.addUrlPatterns("/superuser/*");

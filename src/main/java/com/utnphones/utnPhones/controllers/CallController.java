@@ -37,7 +37,9 @@ public class CallController {
         this.sessionManager = sessionManager;
     }
 
-
+    public List<Call> getAll(Integer page){
+        return this.callService.getAll(page);
+    }
 
 
 

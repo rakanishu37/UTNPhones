@@ -29,17 +29,17 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-    @GetMapping("/")
+  //  @GetMapping("/")
     public List<Invoice> getAll(){
         return this.invoiceService.getAll();
     }
 
-    @PostMapping //todo illegalrequestexception
+  //  @PostMapping //todo illegalrequestexception
     public Invoice create(@RequestBody Invoice invoice){
         return this.invoiceService.create(invoice);
     }
 
-    @GetMapping("/{idInvoice}")
+  //  @GetMapping("/{idInvoice}")
     public Invoice getById(@PathVariable Integer id) throws Exception {
         return this.invoiceService.getById(id);
     }

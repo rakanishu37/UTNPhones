@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public class AntennaController {
 
-    @PostMapping("/")
+   /*@PostMapping("/")
     public ResponseEntity<?> create(@RequestBody CallDto call){
         ResponseEntity responseEntity;
         try {
@@ -19,5 +19,5 @@ public class AntennaController {
             responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return responseEntity;
-    }
+    }*/
 }

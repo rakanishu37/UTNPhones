@@ -26,12 +26,12 @@ public class ProvinceController {
         this.provinceService = provinceService;
     }
 
-    @GetMapping("/")
+   // @GetMapping("/")
     public List<Province> getAll(){
         return this.provinceService.getAll();
     }
 
-    @PostMapping("/")
+   // @PostMapping("/")
     public Province create(@RequestBody Province province){
         return this.provinceService.create(province);
     }

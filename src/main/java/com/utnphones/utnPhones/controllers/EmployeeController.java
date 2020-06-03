@@ -22,12 +22,12 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @GetMapping("/")
+   // @GetMapping("/")
     public List<Employee> getAll(){
         return this.employeeService.getAll();
     }
 
-    @PostMapping("/")
+   // @PostMapping("/")
     public Employee create(@RequestBody Employee employee){
         return this.employeeService.create(employee);
     }

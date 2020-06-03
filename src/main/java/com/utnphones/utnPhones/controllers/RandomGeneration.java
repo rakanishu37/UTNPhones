@@ -75,7 +75,7 @@ public class RandomGeneration {
      //   this.insertCalls();
     }
 
-    @PostMapping("/clients/")
+  //  @PostMapping("/clients/")
     public List<Client> insertPerson(){
 
         List<Client> clients = new ArrayList<>();
@@ -99,7 +99,7 @@ public class RandomGeneration {
         return clients;
     }
 
-    @PostMapping("/phonelines/")
+  //  @PostMapping("/phonelines/")
     public List<PhoneLine> insertPhoneLines() throws ClientNotFoundException {
         this.phoneLines = new ArrayList<>();
         Set<String> numbers = new HashSet<String>();
@@ -145,13 +145,13 @@ public class RandomGeneration {
         return this.phoneLineService.getAll();
     }
 */
-    @PostMapping("/calls/")
+ //   @PostMapping("/calls/")
     public List<Call> insertCalls() throws Exception {
-        List<PhoneLine> phoneLineList = this.phoneLineController.getAll();
+       /*List<PhoneLine> phoneLineList = this.phoneLineController.getAll();
         List<Call> calls = new ArrayList<>();
 
         PhoneLine number1 = null;
-        PhoneLine number2 = null;
+        PhoneLine number2 = null;*/
 
       /*  for (int i=0; i<10000;i++) {
             number1 = null;
@@ -168,7 +168,7 @@ public class RandomGeneration {
                     .date(new Date())
                     .build()));
         }*/
-        return calls;
+        return null;
     }
 
     public void fillData(){

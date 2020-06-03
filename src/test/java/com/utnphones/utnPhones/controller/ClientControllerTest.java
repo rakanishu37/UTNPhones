@@ -32,7 +32,7 @@ public class ClientControllerTest {
         initMocks(this);
         clientController = new ClientController(clientService,sessionManager);
     }
-
+/*
     @Test(expected = ClientNotFoundException.class)
     public void testGetClientByIdNotFound() throws ClientNotFoundException {
        when(clientService.getById(15)).thenThrow(new ClientNotFoundException());

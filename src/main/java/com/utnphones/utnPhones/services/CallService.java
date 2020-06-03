@@ -26,7 +26,7 @@ public class CallService {
 
 
     public List<Call> getAll(Integer page){
-        Pageable pageable = PageRequest.of(page, 4);
+        Pageable pageable = PageRequest.of(page, 16);
         return this.callRepository.findAll(pageable).toList();
     }
 

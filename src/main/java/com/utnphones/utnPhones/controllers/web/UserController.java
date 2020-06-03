@@ -29,7 +29,7 @@ public class UserController {
      * 3) Consulta de facturas del usuario logueado por rango de fechas.
      * 4) Consulta de TOP 10 destinos más llamados por el usuario.
      */
-    @GetMapping("/me/calls")
+   /* @GetMapping("/me/calls")
     public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@PathVariable Integer idClient,
                                                                               @RequestParam(name = "dateFrom") String dateFrom,
                                                                               @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
@@ -50,5 +50,5 @@ public class UserController {
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
         List<InvoicesDates> invoices = clientService.getInvoicesBetweenDates(idClient, from, to);
         return (!invoices.isEmpty()) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    }*/
 }

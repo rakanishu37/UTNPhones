@@ -28,22 +28,22 @@ public class FareController {
         this.fareService = fareService;
     }
 
-    @GetMapping("/")
+    //@GetMapping("/")
     public List<Fare> getAll(){
         return this.fareService.getAll();
     }
 
-    @PostMapping("/")
+   // @PostMapping("/")
     public Fare create(@RequestBody Fare fare){
         return this.fareService.create(fare);
     }
 
-    @GetMapping("/{idFare}")
+   // @GetMapping("/{idFare}")
     public ResponseEntity<Fare> getById(@PathVariable Integer idFare) throws FareNotFoundException {
         return ResponseEntity.ok(fareService.getById(idFare));
     }
     //TODO getByCity
-    @GetMapping("")
+   // @GetMapping("")
     public FarePriceBetweenCities getFareByCities(@RequestParam(name = "cityFrom") Integer idCityFrom
                                             , @RequestParam(name = "cityTo") Integer idCityTo){
         return this.fareService.getFareByCities(idCityFrom, idCityTo);
