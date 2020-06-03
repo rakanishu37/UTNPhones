@@ -3,6 +3,8 @@ package com.utnphones.utnPhones.repository;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.projections.CallsDates;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -39,4 +41,6 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
     @Modifying(clearAutomatically = true)
     @Query(value ="insert into calls(id_phone_line_from, id_phone_line_to, duration, date_call) values (?1,?2,?3,?4)" ,nativeQuery =   true)
     Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);
+
+    Page<Call> findAll(Pageable pageable);
 }
