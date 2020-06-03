@@ -59,12 +59,12 @@ public class SuperUserController {
         this.invoiceController = invoiceController;
         this.callController = callController;
     }
-
+/*
     @GetMapping("/{page}")
     public ResponseEntity<List<Call>> getAll(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException {
         List<Call> calls = this.callController.getAll(page);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    }*/
     //TODO
     //Paginacion para esto, un dto con el id del cliente y que pagina y cantidad de registros a devolver
     /*@GetMapping("/")  calls?idClient=654

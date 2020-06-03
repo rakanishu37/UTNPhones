@@ -30,7 +30,7 @@ public class AntennaSessionFilter extends OncePerRequestFilter {
         if(ANTENNA_CODE.equals(sessionToken)){
             filterChain.doFilter(request, response);
         } else {
-            response.setStatus(HttpStatus.FORBIDDEN.value());
+            response.setStatus(HttpStatus.I_AM_A_TEAPOT.value());
         }
     }
 }

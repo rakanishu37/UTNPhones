@@ -63,12 +63,12 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     public ErrorResponseDto handleClientIsAlreadyDeletedException() {
         return new ErrorResponseDto(6, CLIENT_NOT_EXISTS_MESSAGE);
     }
-
+/*
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(UserNotLoggedException.class)
     public ErrorResponseDto handleUserNotLoggedExceptionException() {
         return new ErrorResponseDto(7, USER_NOT_LOGGED_MESSAGE);
-    }
+    }*/
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(UnauthorizedAccessException.class)

@@ -1,5 +1,6 @@
 package com.utnphones.utnPhones.configuration;
 
+import com.utnphones.utnPhones.session.AntennaSessionFilter;
 import com.utnphones.utnPhones.session.SessionFilter;
 import com.utnphones.utnPhones.session.SuperUserSessionFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ public class Config {
     SessionFilter sessionFilter;
     @Autowired
     SuperUserSessionFilter superUserSessionFilter;
+    @Autowired
+    AntennaSessionFilter antennaSessionFilter;
 
    /* @Value("${db.driver}")
     String driver;
@@ -44,6 +47,14 @@ public class Config {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(superUserSessionFilter);
         registration.addUrlPatterns("/superuser/*");
+        return registration;
+    }
+
+    @Bean
+    public FilterRegistrationBean antennaRequestFilter() {
+        FilterRegistrationBean registration = new FilterRegistrationBean();
+        registration.setFilter(antennaSessionFilter);
+        registration.addUrlPatterns("/antenna/*");
         return registration;
     }
 
