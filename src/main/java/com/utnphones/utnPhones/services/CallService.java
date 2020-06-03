@@ -32,16 +32,12 @@ public class CallService {
         PhoneLine numberFrom = phoneLineService.getByPhoneNumber(callDto.getNumberFrom());
         PhoneLine numberTo = phoneLineService.getByPhoneNumber(callDto.getNumberTo());
 
-        //return callRepository.saveCall(idNumberFrom,idNumberTo,callDto.getDuration(),call.getDate());
-
-        //Dos consultas a la bdd para obtener los objetos enteros de phoneline justifican esto?
         callRepository.save(Call.builder()
                         .phoneFrom(numberFrom)
                         .phoneTo(numberTo)
                         .duration(callDto.getDuration())
                         .date(callDto.getDate())
                         .build());
-
     }
 
     public Call getById(Integer idCall) throws CallNotFoundException {
