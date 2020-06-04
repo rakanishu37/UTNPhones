@@ -52,12 +52,12 @@ public class ClientController {
         return this.clientService.create(client);
     }
 
-    /*public Client update(Client client){
+    public Client update(Integer id,Client client){
+
         return this.clientService.update(client);
     }
 
 
-*/
     public Integer delete(Integer id) throws ClientIsAlreadyDeletedException, ClientNotFoundException {
         return this.clientService.delete(id);
     }

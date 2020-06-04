@@ -95,14 +95,13 @@ public class SuperUserController {
         phoneLine.setClient(this.clientController.getById(idClient));
         return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.createPhoneLine(idClient,phoneLine));
     }
-/*
-VER
-    @PutMapping("/{idClient}")
-    public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody Client updatedClient) throws ClientNotFoundException {
-        return ResponseEntity.ok(clientService.update(idClient,updatedClient));
-    }
-*/
 
+    @PutMapping("/clients/{idClient}")
+    public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody Client updatedClient) throws ClientNotFoundException {
+        return ResponseEntity.ok(this.clientController.update(idClient,updatedClient));
+    }
+
+/*
     @DeleteMapping("/clients/{idClient}")
     public ResponseEntity<Integer> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
         return ResponseEntity.ok(this.clientController.delete(idClient));
