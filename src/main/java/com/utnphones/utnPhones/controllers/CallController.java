@@ -4,6 +4,7 @@ import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.dto.CallDto;
+import com.utnphones.utnPhones.dto.PageableResponse;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
@@ -37,7 +38,7 @@ public class CallController {
         this.sessionManager = sessionManager;
     }
 
-    public List<Call> getAll( Integer page){
+    public PageableResponse<Call> getAll(Integer page){
         return this.callService.getAll(page);
     }
 

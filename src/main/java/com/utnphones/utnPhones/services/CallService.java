@@ -3,15 +3,16 @@ package com.utnphones.utnPhones.services;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.CallDto;
+import com.utnphones.utnPhones.dto.PageableResponse;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
 import java.util.List;
 
 @Service
@@ -24,10 +25,10 @@ public class CallService {
         this.phoneLineService = phoneLineService;
     }
 
-
-    public List<Call> getAll(Integer page){
+    public PageableResponse<Call> getAll(Integer page){
         Pageable pageable = PageRequest.of(page, 16);
-        return this.callRepository.findAll(pageable).toList();
+        Page<Call> result = this.callRepository.findAll(pageable);
+        return new PageableResponse<>(result.toList(),result.getTotalPages(),result.getTotalElements());
     }
 
     public void create(CallDto callDto) throws PhoneLineNotFoundException {
