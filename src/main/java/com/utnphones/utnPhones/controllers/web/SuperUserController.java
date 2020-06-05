@@ -129,14 +129,6 @@ public class SuperUserController {
         return ResponseEntity.ok(phoneLineService.updatePhoneLine(phoneLine));
     }
 
+*/
 
-    client/5
-    //Todo acomodar
-    private URI getLocation(Message message) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(message.getMessageId())
-                .toUri();
-    }*/
 }
