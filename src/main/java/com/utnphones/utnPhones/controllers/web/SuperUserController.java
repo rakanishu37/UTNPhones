@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -61,17 +62,17 @@ public class SuperUserController {
         this.callController = callController;
     }
     // todo cambiar a lo que dijo pablo
-    @GetMapping("/calls/page={page}")
-    public ResponseEntity<List<Call>> getAllCalls(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException {
-        PageableResponse<Call> calls = this.callController.getAll(page);
-        return (calls.getCurrentPage().size() > 0) ? ResponseEntity.ok(calls.getCurrentPage()) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    @GetMapping("/calls")
+    public ResponseEntity<List<Call>> getAllCalls(@RequestHeader("Authorization") String token, @RequestParam("from") Integer from, @RequestParam("to") Integer to) throws UserNotLoggedException {
+        List<Call> calls = this.callController.getAll(to, from);
+        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    /*@GetMapping("/")  calls?idClient=654
-    public List<Call> getAllByClient(){
-        return callService.getAllByClient();
-    }*/
-
+    @GetMapping("/calls/client/{idClient}")
+    public ResponseEntity<List<Call>> getAllCallsByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient){
+        List<Call> calls = this.callController.getAllByClient(idClient);
+        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
     @GetMapping("/clients/{page}")
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {

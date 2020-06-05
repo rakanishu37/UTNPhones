@@ -38,11 +38,13 @@ public class CallController {
         this.sessionManager = sessionManager;
     }
 
-    public PageableResponse<Call> getAll(Integer page){
-        return this.callService.getAll(page);
+    public List<Call> getAll(Integer to, Integer from){
+        return this.callService.getAll(to, from);
     }
 
-
+    public List<Call> getAllByClient(Integer id){
+        return this.callService.getAllByClient(id);
+    }
 
 
 }

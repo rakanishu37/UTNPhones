@@ -25,10 +25,8 @@ public class CallService {
         this.phoneLineService = phoneLineService;
     }
 
-    public PageableResponse<Call> getAll(Integer page){
-        Pageable pageable = PageRequest.of(page, 16);
-        Page<Call> result = this.callRepository.findAll(pageable);
-        return new PageableResponse<>(result.toList(),result.getTotalPages(),result.getTotalElements());
+    public List<Call> getAll(Integer to, Integer from){
+        return this.callRepository.findAll(to, from);
     }
 
     public void create(CallDto callDto) throws PhoneLineNotFoundException {
@@ -49,9 +47,8 @@ public class CallService {
                 .orElseThrow(() -> new CallNotFoundException());
     }
 
-    //Paginacion
-    /*
-    public List<Call> getAllByClient() {
 
-    }*/
+    public List<Call> getAllByClient(Integer id) {
+        return this.callRepository.getAllCallByClient(id);
+    }
 }

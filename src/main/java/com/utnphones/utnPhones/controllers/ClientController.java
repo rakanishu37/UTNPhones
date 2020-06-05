@@ -52,9 +52,9 @@ public class ClientController {
         return this.clientService.create(client);
     }
 
-    public Client update(Integer id,Client client){
+    public Client update(Integer id,Client client) throws ClientNotFoundException {
 
-        return this.clientService.update(client);
+        return this.clientService.update(id, client);
     }
 
 

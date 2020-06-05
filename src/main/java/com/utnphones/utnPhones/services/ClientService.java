@@ -58,7 +58,7 @@ public class ClientService {
 
     public Client update(Integer idclient, Client modifiedClient) throws ClientNotFoundException {
 		Client outdatedClient = clientRepository.findById(idclient)
-            .orElseThrow(() -> new ClientNotFoundException());
+            .orElseThrow(ClientNotFoundException::new);
 
 		Client updated = updateClient(outdatedClient, modifiedClient);
 		return clientRepository.save(updated);

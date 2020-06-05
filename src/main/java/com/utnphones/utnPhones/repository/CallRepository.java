@@ -42,5 +42,12 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
     @Query(value ="insert into calls(id_phone_line_from, id_phone_line_to, duration, date_call) values (?1,?2,?3,?4)" ,nativeQuery =   true)
     Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);*/
 
-    Page<Call> findAll(Pageable pageable);
+    @Query(value = "select * from calls LIMIT :to OFFSET :from ", nativeQuery = true)
+    List<Call> findAll(@Param("to") Integer to, @Param("from") Integer from);
+
+    @Query(value = "select calls.* from calls \n" +
+                   "inner join phone_lines as pl on calls.id_phone_line_from = pl.id_phone_line \n" +
+                   "where pl.id_person = :id_person", nativeQuery = true)
+    List<Call> getAllCallByClient(@Param("id_person") Integer id);
+
 }
