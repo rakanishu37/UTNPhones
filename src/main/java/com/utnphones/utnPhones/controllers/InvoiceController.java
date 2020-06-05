@@ -3,6 +3,7 @@ package com.utnphones.utnPhones.controllers;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Invoice;
+import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.services.InvoiceService;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -42,5 +44,9 @@ public class InvoiceController {
   //  @GetMapping("/{idInvoice}")
     public Invoice getById(@PathVariable Integer id) throws Exception {
         return this.invoiceService.getById(id);
+    }
+
+    public List<InvoicesDates> getInvoicesBetweenDates(Integer idClient, Date from, Date to) {
+        return invoiceService.getInvoicesBetweenDates(idClient,from,to);
     }
 }

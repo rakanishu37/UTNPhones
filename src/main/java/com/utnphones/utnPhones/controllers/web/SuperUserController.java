@@ -71,13 +71,13 @@ public class SuperUserController {
         return callService.getAllByClient();
     }*/
 
-
+/*
     @GetMapping("/clients/{page}")
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {
         List<Client> list = this.clientController.getAll(page);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-/*
+
     @GetMapping("/{idClient}")
     public ResponseEntity<Client> getById(@PathVariable Integer idClient) throws ClientNotFoundException {
         return ResponseEntity.ok(clientService.getById(idClient));

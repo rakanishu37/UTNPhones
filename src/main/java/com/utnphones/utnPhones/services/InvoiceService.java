@@ -33,5 +33,7 @@ public class InvoiceService {
         return this.invoiceRepository.findById(id).orElseThrow(Exception::new);
     }
 
-
+    public List<InvoicesDates> getInvoicesBetweenDates(Integer idClient, Date from, Date to) {
+        return invoiceRepository.getByIdClientDateBetween(idClient,from,to);
+    }
 }

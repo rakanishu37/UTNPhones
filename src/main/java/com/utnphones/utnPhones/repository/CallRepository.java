@@ -19,8 +19,8 @@ import java.util.List;
 @Repository
 public interface CallRepository extends JpaRepository<Call,Integer> {
 
-    @Query(value = "select\n" +
-            "            plFrom.line_number as 'origin',\n" +
+    /*@Query(value = "select " +
+            "            plFrom.line_number as 'origin', " +
             "            plTo.line_number as 'destiny',\n" +
             "            c.fare as 'fare',\n" +
             "            c.duration as 'duration',\n" +
@@ -35,7 +35,9 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
             "            c.date_call between :from and :to\n" +
             "        order by\n" +
             "            c.id_phone_line_from desc;", nativeQuery = true)
-    List<CallsDates> findByDateBetween(@Param("clientId")Integer clientId,@Param("from") Date from,@Param("to") Date to);
+    List<CallsDates> findByDateBetween(@Param("clientId")Integer clientId,@Param("from") Date from,@Param("to") Date to);*/
+    @Query(value = "call sp_show_report_by_idClient_dates(:idClient,:from,:to);")
+    List<CallsDates> getAllByIdClientBetweenDates(@Param("idClient") Integer idClient,Date from, Date to);
 
     /*@Transactional
     @Modifying(clearAutomatically = true)

@@ -107,59 +107,45 @@ begin
 end; $$
 drop procedure sp_show_client_invoices_by_dates;
 
-
-	select			
-		plFrom.line_number as "origin",
-        plTo.line_number as "destiny",
-		c.fare as "fare",
-        c.duration as "duration",
-        c.total_price as "total price",
-        c.date_call "date"
-	from 
-		calls as c
-        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
-        inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line;
-
-
-	select			
-		pl.line_number as "line number",
-		inv.number_of_calls as "number of calls", 
-		inv.price_cost as "cost price", 
-		inv.total_price as "total price", 
-		inv.invoice_date as "invoice date", 
-		inv.due_date as "due date", 
-		inv.paid as "paid"
-	from 
-		invoices as inv
-		inner join phone_lines as pl on inv.id_line = pl.id_phone_line;
+select			
+	pl.line_number as "line number",
+	inv.number_of_calls as "number of calls", 
+	inv.price_cost as "cost price", 
+	inv.total_price as "total price", 
+	inv.invoice_date as "invoice date", 
+	inv.due_date as "due date", 
+	inv.paid as "paid"
+from 
+	invoices as inv
+	inner join phone_lines as pl on inv.id_line = pl.id_phone_line;
 
 
-select 
-	*
-from   
-	calls as c
-    inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
-	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
-where 
-	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1)
-order by
-	c.id_phone_line_from desc;        
-        
-    
-select 
-	plFrom.line_number as "origin",
-	plTo.line_number as "destiny",
-	c.fare as "fare",
+
+create view v_report as
+select	
+	cto.city_name as "cityOrigin",
+	plFrom.line_number as "phoneNumberOrigin",
+	ctd.city_name as "cityDestiny",
+    plTo.line_number as "phoneNumberDestiny",	
 	c.duration as "duration",
-	c.total_price as "total price",
+	c.total_price as "totalPrice",
 	c.date_call "date"
 from   
 	calls as c
     inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
 	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
+    inner join cities as cto on cto.id_city = (select id_city from cities where plFrom.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1)
+    inner join cities as ctd on ctd.id_city = (select id_city from cities where plTo.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1);
+
+//
+delimiter //
+create procedure sp_show_report_by_idClient_dates(IN pIdClient int,IN pDateFrom date, IN pDateTo date)
+begin
+	select 
+	* 
+from 
+	v_report
 where 
-	c.id_phone_line_from in (select id_phone_line from phone_lines where id_person = 1) and
-    c.date_call between '2020-05-16 00:00:00' and '2020-05-17 00:00:00'
-order by
-	c.id_phone_line_from asc;        
-	
+	phoneNumberDestiny in (select  line_number from phone_lines where id_person = pIdClient) and
+    date between pDateFrom and pDateTo;
+end //

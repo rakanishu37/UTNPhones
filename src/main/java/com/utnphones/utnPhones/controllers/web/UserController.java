@@ -1,15 +1,22 @@
 package com.utnphones.utnPhones.controllers.web;
 
 
+import com.utnphones.utnPhones.controllers.CallController;
+import com.utnphones.utnPhones.controllers.ClientController;
+import com.utnphones.utnPhones.controllers.InvoiceController;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoicesDates;
+import com.utnphones.utnPhones.session.SessionManager;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,32 +30,41 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api")
 public class UserController {
-    //url lo que sea/me (el me significa que tenemos que scarlo de la session su info)
-    /**
-     * 2) Consulta de llamadas del usuario logueado por rango de fechas.
-     * 3) Consulta de facturas del usuario logueado por rango de fechas.
-     * 4) Consulta de TOP 10 destinos más llamados por el usuario.
-     */
-   /* @GetMapping("/me/calls")
-    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@PathVariable Integer idClient,
-                                                                              @RequestParam(name = "dateFrom") String dateFrom,
-                                                                              @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
-        Client client = this.clientService.getById(idClient);
+    private ClientController clientController;
+    private CallController callController;
+    private InvoiceController invoiceController;
+    private SessionManager sessionManager;
+
+    @Autowired
+    public UserController(ClientController clientController,CallController callController,SessionManager sessionManager,InvoiceController invoiceController) {
+        this.clientController = clientController;
+        this.invoiceController= invoiceController;
+        this.callController = callController;
+        this.sessionManager= sessionManager;
+    }
+
+    @GetMapping("/me/calls")
+    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,@RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException {
         Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
-        Map<String, List<CallsDates>> callsBetweenDates = clientService.getCallsBetweenDates(client.getId(), from, to);
+        Integer idClient = sessionManager.getCurrentUser(token).getId();
+        Map<String, List<CallsDates>> callsBetweenDates = callController.getCallsBetweenDates(idClient, from, to);
 
-        return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) :
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/me/invoices")
-    public ResponseEntity<List<InvoicesDates>> getInvoicesBetweenDates(@PathVariable Integer idClient,
-                                                                       @RequestParam(name = "dateFrom") String dateFrom,
-                                                                       @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
+    public ResponseEntity<List<InvoicesDates>> getInvoicesBetweenDates(@RequestHeader("Authorization") String token,
+                                                                        @RequestParam(name = "dateFrom") String dateFrom,
+                                                                        @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException {
 
         Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
-        List<InvoicesDates> invoices = clientService.getInvoicesBetweenDates(idClient, from, to);
+        Integer idClient = sessionManager.getCurrentUser(token).getId();
+        List<InvoicesDates> invoices = invoiceController.getInvoicesBetweenDates(idClient, from, to);
         return (!invoices.isEmpty()) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }*/
+    }
+
+
 }
