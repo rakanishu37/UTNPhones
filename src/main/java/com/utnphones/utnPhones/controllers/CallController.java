@@ -4,6 +4,7 @@ import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.dto.CallDto;
+import com.utnphones.utnPhones.dto.PageableResponse;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URI;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
@@ -39,12 +41,24 @@ public class CallController {
         this.sessionManager = sessionManager;
     }
 
-    public List<Call> getAll( Integer page){
-        return this.callService.getAll(page);
+    public URI create(CallDto callDto) throws PhoneLineNotFoundException {
+        return this.callService.create(callDto);
     }
 
+<<<<<<< HEAD
     //todo
     public Map<String, List<CallsDates>> getCallsBetweenDates(Integer idClient, Date from, Date to) {
         return callService.
     }
+=======
+    public List<Call> getAll(Integer to, Integer from){
+        return this.callService.getAll(to, from);
+    }
+
+    public List<Call> getAllByClient(Integer id){
+        return this.callService.getAllByClient(id);
+    }
+
+
+>>>>>>> e0825604494cc3c3b6648e0fcf90ba42889d5576
 }

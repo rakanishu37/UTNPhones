@@ -3,15 +3,18 @@ package com.utnphones.utnPhones.services;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.CallDto;
+import com.utnphones.utnPhones.dto.PageableResponse;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.text.ParseException;
+import java.net.URI;
 import java.util.List;
 
 @Service
@@ -24,23 +27,22 @@ public class CallService {
         this.phoneLineService = phoneLineService;
     }
 
-
-    public List<Call> getAll(Integer page){
-        Pageable pageable = PageRequest.of(page, 16);
-        return this.callRepository.findAll(pageable).toList();
+    public List<Call> getAll(Integer to, Integer from){
+        return this.callRepository.findAll(to, from);
     }
 
-    public void create(CallDto callDto) throws PhoneLineNotFoundException {
+    public URI create(CallDto callDto) throws PhoneLineNotFoundException {
 
         PhoneLine numberFrom = phoneLineService.getByPhoneNumber(callDto.getNumberFrom());
         PhoneLine numberTo = phoneLineService.getByPhoneNumber(callDto.getNumberTo());
 
-        callRepository.save(Call.builder()
+        Call created = callRepository.save(Call.builder()
                         .phoneFrom(numberFrom)
                         .phoneTo(numberTo)
                         .duration(callDto.getDuration())
                         .date(callDto.getDate())
                         .build());
+         return getLocation(created);
     }
 
     public Call getById(Integer idCall) throws CallNotFoundException {
@@ -48,9 +50,16 @@ public class CallService {
                 .orElseThrow(() -> new CallNotFoundException());
     }
 
-    //Paginacion
-    /*
-    public List<Call> getAllByClient() {
 
-    }*/
+    public List<Call> getAllByClient(Integer id) {
+        return this.callRepository.getAllCallByClient(id);
+    }
+
+    private URI getLocation(Call call) {
+        return ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(call.getId())
+                .toUri();
+    }
 }

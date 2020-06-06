@@ -44,4 +44,27 @@ public class ClientController {
         return this.clientService.getAll(page);
     }
 
+    public Client getById(Integer id) throws ClientNotFoundException {
+        return this.clientService.getById(id);
+    }
+
+    public Client create(Client client){
+        return this.clientService.create(client);
+    }
+
+    public Client update(Integer id,Client client) throws ClientNotFoundException {
+
+        return this.clientService.update(id, client);
+    }
+
+
+    public Integer delete(Integer id) throws ClientIsAlreadyDeletedException, ClientNotFoundException {
+        return this.clientService.delete(id);
+    }
+
+    public PhoneLine createPhoneLine(Integer idClient, PhoneLine phoneLine) throws ClientNotFoundException {
+        phoneLine.setClient(clientService.getById(idClient));
+        return clientService.setPhoneline(phoneLine);
+    }
+
 }

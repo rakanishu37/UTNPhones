@@ -9,6 +9,7 @@ import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.dto.PageableResponse;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -59,81 +61,89 @@ public class SuperUserController {
         this.invoiceController = invoiceController;
         this.callController = callController;
     }
-
-    @GetMapping("/calls/{page}")
-    public ResponseEntity<List<Call>> getAllCalls(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException {
-        List<Call> calls = this.callController.getAll(page);
+    // todo cambiar a lo que dijo pablo
+    @GetMapping("/calls")
+    public ResponseEntity<List<Call>> getAllCalls(@RequestHeader("Authorization") String token, @RequestParam("from") Integer from, @RequestParam("to") Integer to) throws UserNotLoggedException {
+        List<Call> calls = this.callController.getAll(to, from);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+<<<<<<< HEAD
     /*@GetMapping("/")  calls?idClient=654
     public List<Call> getAllByClient(){
         return callService.getAllByClient();
     }*/
 
 /*
+=======
+    @GetMapping("/calls/client/{idClient}")
+    public ResponseEntity<List<Call>> getAllCallsByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient){
+        List<Call> calls = this.callController.getAllByClient(idClient);
+        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+>>>>>>> e0825604494cc3c3b6648e0fcf90ba42889d5576
     @GetMapping("/clients/{page}")
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {
         List<Client> list = this.clientController.getAll(page);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+<<<<<<< HEAD
     @GetMapping("/{idClient}")
     public ResponseEntity<Client> getById(@PathVariable Integer idClient) throws ClientNotFoundException {
         return ResponseEntity.ok(clientService.getById(idClient));
+=======
+    @GetMapping("/clients/{idClient}")
+    public ResponseEntity<Client> getClientById(@PathVariable Integer idClient) throws ClientNotFoundException {
+        return ResponseEntity.ok(clientController.getById(idClient));
+>>>>>>> e0825604494cc3c3b6648e0fcf90ba42889d5576
     }
 
 
-    @PostMapping("/")
-    public ResponseEntity<Client> create(@RequestBody Client client) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.create(client));
+    @PostMapping("/clients")
+    public ResponseEntity<Client> createClient(@RequestBody Client client) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.create(client));
     }
 
-    @PostMapping("/{idClient}/phonelines")
+    @PostMapping("/clients/{idClient}/phonelines")
     public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
-        phoneLine.setClient(clientService.getById(idClient));
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.setPhoneline(phoneLine));
+        phoneLine.setClient(this.clientController.getById(idClient));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.createPhoneLine(idClient,phoneLine));
     }
 
-    @PutMapping("/{idClient}")
+    @PutMapping("/clients/{idClient}")
     public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody Client updatedClient) throws ClientNotFoundException {
-        return ResponseEntity.ok(clientService.update(idClient,updatedClient));
+        return ResponseEntity.ok(this.clientController.update(idClient,updatedClient));
     }
 
-    @DeleteMapping("/{idClient}")
+/*
+    @DeleteMapping("/clients/{idClient}")
     public ResponseEntity<Integer> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
-        return ResponseEntity.ok(clientService.delete(idClient));
+        return ResponseEntity.ok(this.clientController.delete(idClient));
     }
-
+/*
     @GetMapping("/")
     public List<PhoneLine> getAll(){
         return this.phoneLineService.getAll();
     }
-
-    @PostMapping("/")
-    public PhoneLine create(@RequestBody PhoneLine phoneLine){
-        return this.phoneLineService.create(phoneLine);
+*/
+    @PostMapping("/phonelines")
+    public ResponseEntity<PhoneLine> createPhoneline(@RequestBody PhoneLine phoneLine){
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(phoneLine));
     }
 
-    @GetMapping("/{idPhoneLine}")
-    public PhoneLine getById(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException {
-        return this.phoneLineService.getById(idPhoneLine);
+    @GetMapping("/phonelines/{idPhoneLine}")
+    public ResponseEntity<PhoneLine> getPhonelineById(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException {
+        return ResponseEntity.ok(this.phoneLineController.getById(idPhoneLine));
     }
-
+/*
     @PutMapping("/{idPhoneline}/")
     public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLine phoneLine) throws PhoneLineNotFoundException{
         phoneLine.setClient(phoneLineService.getById(idPhoneline).getClient());
         return ResponseEntity.ok(phoneLineService.updatePhoneLine(phoneLine));
     }
 
+*/
 
-    client/5
-    //Todo acomodar
-    private URI getLocation(Message message) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(message.getMessageId())
-                .toUri();
-    }*/
 }

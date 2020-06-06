@@ -27,6 +27,12 @@ public class PhoneLineController {
         this.phoneLineService = phoneLineService;
     }
 
+    public PhoneLine create(PhoneLine phoneLine){
+        return this.phoneLineService.create(phoneLine);
+    }
 
 
+    public PhoneLine getById(Integer idPhoneLine) throws PhoneLineNotFoundException {
+        return this.phoneLineService.getById(idPhoneLine);
+    }
 }
