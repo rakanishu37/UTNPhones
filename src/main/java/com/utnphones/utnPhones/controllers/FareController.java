@@ -4,6 +4,7 @@ import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.FareNotFoundException;
+import com.utnphones.utnPhones.exceptions.InvalidCityException;
 import com.utnphones.utnPhones.projections.FarePriceBetweenCities;
 import com.utnphones.utnPhones.services.FareService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,8 +45,7 @@ public class FareController {
     }
     //TODO getByCity
    // @GetMapping("")
-    public FarePriceBetweenCities getFareByCities(@RequestParam(name = "cityFrom") Integer idCityFrom
-                                            , @RequestParam(name = "cityTo") Integer idCityTo){
+    public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws InvalidCityException {
         return this.fareService.getFareByCities(idCityFrom, idCityTo);
     }
 }

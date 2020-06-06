@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.awt.print.Pageable;
 import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
@@ -40,11 +41,12 @@ public class CallController {
     }
 
     public URI create(CallDto callDto) throws PhoneLineNotFoundException {
+
         return this.callService.create(callDto);
     }
 
-    public List<Call> getAll(Integer to, Integer from){
-        return this.callService.getAll(to, from);
+    public List<Call> getAllRange(Integer to, Integer from){
+        return this.callService.getAllRange(to, from);
     }
 
     public List<Call> getAllByClient(Integer id){

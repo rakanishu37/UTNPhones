@@ -3,6 +3,7 @@ package com.utnphones.utnPhones.controllers;
 
 import com.utnphones.utnPhones.dto.ErrorResponseDto;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.InvalidCityException;
 import com.utnphones.utnPhones.exceptions.InvalidLoginException;
 import com.utnphones.utnPhones.exceptions.ParseDateException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import static com.utnphones.utnPhones.utils.Constants.CLIENT_NOT_EXISTS_MESSAGE;
+import static com.utnphones.utnPhones.utils.Constants.INVALID_CITY_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_DATE_FORMAT_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_LOGIN_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.PHONELINE_NOT_EXISTS_MESSAGE;
@@ -75,4 +77,12 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     public ErrorResponseDto handleUnauthorizedAccessException(){
         return new ErrorResponseDto(8, UNAUTHORIZED_ACCESS_MESSAGE);
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(InvalidCityException.class)
+    public ErrorResponseDto handleInvalidCityException(){
+        return new ErrorResponseDto(6, INVALID_CITY_MESSAGE);
+    }
+
+
 }

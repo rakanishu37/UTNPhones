@@ -7,11 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface FareRepository extends JpaRepository<Fare,Integer> {
     @Query(value = "select" +
-                   " fares.price" +
+                   " *" +
                    " from fares " +
                    " where fares.id_city_from = :id_city_from and fares.id_city_to = :id_city_to", nativeQuery = true)
-    FarePriceBetweenCities getFareByCities(@Param("id_city_from") Integer idCityFrom, @Param("id_city_to") Integer idCityTo);
+    Optional<Fare> getFareByCities(@Param("id_city_from") Integer idCityFrom, @Param("id_city_to") Integer idCityTo);
 }

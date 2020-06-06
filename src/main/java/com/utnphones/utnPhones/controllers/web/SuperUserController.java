@@ -7,14 +7,17 @@ import com.utnphones.utnPhones.controllers.InvoiceController;
 import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.PageableResponse;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.InvalidCityException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.projections.FarePriceBetweenCities;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,12 +40,13 @@ import java.util.List;
 public class SuperUserController {
 
     /**
-     * 2) Manejo de clientes.
-     * 3) Alta , baja y suspensión de líneas.
-     * 4) Consulta de tarifas.
-     * 5) Consulta de llamadas por usuario.
+     * 2) Manejo de clientes casi ok.
+     * 3) Alta , baja y suspensión de líneas .
+     * 4) Consulta de tarifas ok.
+     * 5) Consulta de llamadas por usuario casi ok.
      * 6) Consulta de facturación .
      */
+
     private SessionManager sessionManager;
     private PhoneLineController phoneLineController;
     private FareController fareController;
@@ -61,10 +65,10 @@ public class SuperUserController {
         this.invoiceController = invoiceController;
         this.callController = callController;
     }
-    // todo cambiar a lo que dijo pablo
+    // todo cambiar a lo que dijo pablo, hacaer metodo dinamico para filtrado de fechas
     @GetMapping("/calls")
     public ResponseEntity<List<Call>> getAllCalls(@RequestHeader("Authorization") String token, @RequestParam("from") Integer from, @RequestParam("to") Integer to) throws UserNotLoggedException {
-        List<Call> calls = this.callController.getAll(to, from);
+        List<Call> calls = this.callController.getAllRange(to, from);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -73,6 +77,7 @@ public class SuperUserController {
         List<Call> calls = this.callController.getAllByClient(idClient);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 
     @GetMapping("/clients/{page}")
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {
@@ -93,8 +98,7 @@ public class SuperUserController {
 
     @PostMapping("/clients/{idClient}/phonelines")
     public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
-        phoneLine.setClient(this.clientController.getById(idClient));
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.createPhoneLine(idClient,phoneLine));
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient,phoneLine));
     }
 
     @PutMapping("/clients/{idClient}")
@@ -102,20 +106,10 @@ public class SuperUserController {
         return ResponseEntity.ok(this.clientController.update(idClient,updatedClient));
     }
 
-/*
     @DeleteMapping("/clients/{idClient}")
     public ResponseEntity<Integer> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
-        return ResponseEntity.ok(this.clientController.delete(idClient));
-    }
-/*
-    @GetMapping("/")
-    public List<PhoneLine> getAll(){
-        return this.phoneLineService.getAll();
-    }
-*/
-    @PostMapping("/phonelines")
-    public ResponseEntity<PhoneLine> createPhoneline(@RequestBody PhoneLine phoneLine){
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(phoneLine));
+        this.clientController.delete(idClient);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/phonelines/{idPhoneLine}")
@@ -128,7 +122,12 @@ public class SuperUserController {
         phoneLine.setClient(phoneLineService.getById(idPhoneline).getClient());
         return ResponseEntity.ok(phoneLineService.updatePhoneLine(phoneLine));
     }
-
 */
+
+    @GetMapping("/fares")
+    public ResponseEntity<Fare> getFareByCities(@RequestParam(name = "cityFrom") Integer idCityFrom
+                                                , @RequestParam(name = "cityTo") Integer idCityTo) throws InvalidCityException {
+        return ResponseEntity.ok(this.fareController.getFareByCities(idCityFrom, idCityTo));
+    }
 
 }

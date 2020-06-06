@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,8 +29,19 @@ public class CallService {
         this.phoneLineService = phoneLineService;
     }
 
-    public List<Call> getAll(Integer to, Integer from){
-        return this.callRepository.findAll(to, from);
+
+    public List<Call> getAll(Integer to, Integer from, Date dateFrom, Date dateTo){
+
+
+        if(dateFrom==null || dateTo==null){
+            return this.callRepository.findAll(to, from);
+        }else{
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String fromDate = simpleDateFormat.format(dateFrom);
+            String toDate = simpleDateFormat.format(dateTo);
+            return this.callRepository.findAll(to, from, dateFrom, dateTo);
+        }
+
     }
 
     public URI create(CallDto callDto) throws PhoneLineNotFoundException {

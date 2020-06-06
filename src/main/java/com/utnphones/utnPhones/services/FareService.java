@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.exceptions.FareNotFoundException;
+import com.utnphones.utnPhones.exceptions.InvalidCityException;
 import com.utnphones.utnPhones.projections.FarePriceBetweenCities;
 import com.utnphones.utnPhones.repository.FareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,8 @@ public class FareService {
         return this.fareRepository.save(fare);
     }
 
-    public FarePriceBetweenCities getFareByCities(Integer idCityFrom, Integer idCityTo){
-        return fareRepository.getFareByCities(idCityFrom, idCityTo);
+    public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws InvalidCityException {
+        return fareRepository.getFareByCities(idCityFrom, idCityTo).orElseThrow(InvalidCityException::new);
     }
 
     public Fare getById(Integer idFare) throws FareNotFoundException {
