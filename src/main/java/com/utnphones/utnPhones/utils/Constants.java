@@ -5,6 +5,7 @@ public class Constants {
     public static String CLIENT_NOT_EXISTS_MESSAGE = "Client not exists";
     public static String PHONELINE_NOT_EXISTS_MESSAGE = "Phoneline not exists";
     public static String INVALID_DATE_FORMAT_MESSAGE = "Invalid date format";
+    public static String INVALID_FORMAT_MESSAGE = "Invalid format";
     public static String INVALID_CITY_MESSAGE = "Invalid city";
     public static String USER_NOT_LOGGED_MESSAGE = "User not logged";
     public static String UNAUTHORIZED_ACCESS_MESSAGE = "Unauthorized access";

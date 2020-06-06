@@ -82,13 +82,7 @@ public class ClientService {
         return clientRepository.deleteClient(clientToBeDeleted.getId());
     }
 
-    public Map<String, List<CallsDates>> getCallsBetweenDates(Integer idClient, Date from, Date to){
-        List<CallsDates> calls = callRepository.findByDateBetween(idClient,from,to);
 
-        return calls.stream()
-                .sorted(Comparator.comparing(CallsDates::getDate))
-                .collect(Collectors.groupingBy(CallsDates::getOrigin));
-    }
 
     public List<InvoicesDates> getInvoicesBetweenDates(Integer clientId, Date from, Date to){
         return invoiceRepository.getByIdClientDateBetween(clientId,from,to);

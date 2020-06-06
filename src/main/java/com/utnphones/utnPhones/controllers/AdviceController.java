@@ -17,9 +17,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.text.ParseException;
+
 import static com.utnphones.utnPhones.utils.Constants.CLIENT_NOT_EXISTS_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_CITY_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_DATE_FORMAT_MESSAGE;
+import static com.utnphones.utnPhones.utils.Constants.INVALID_FORMAT_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_LOGIN_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.PHONELINE_NOT_EXISTS_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.UNAUTHORIZED_ACCESS_MESSAGE;
@@ -56,8 +59,14 @@ public class AdviceController extends ResponseEntityExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ParseDateException.class)
-    public ErrorResponseDto handleParseException() {
+    public ErrorResponseDto handleParseDateException() {
         return new ErrorResponseDto(5, INVALID_DATE_FORMAT_MESSAGE);
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(ParseException.class)
+    public ErrorResponseDto handleParseException() {
+        return new ErrorResponseDto(5, INVALID_FORMAT_MESSAGE);
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

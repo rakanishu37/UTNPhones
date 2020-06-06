@@ -36,7 +36,7 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
             "        order by\n" +
             "            c.id_phone_line_from desc;", nativeQuery = true)
     List<CallsDates> findByDateBetween(@Param("clientId")Integer clientId,@Param("from") Date from,@Param("to") Date to);*/
-    @Query(value = "call sp_show_report_by_idClient_dates(:idClient,:from,:to);")
+    @Query(value = "call sp_show_report_by_idClient_dates(:idClient,:from,:to);", nativeQuery = true)
     List<CallsDates> getAllByIdClientBetweenDates(@Param("idClient") Integer idClient,Date from, Date to);
 
     /*@Transactional
@@ -44,12 +44,14 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
     @Query(value ="insert into calls(id_phone_line_from, id_phone_line_to, duration, date_call) values (?1,?2,?3,?4)" ,nativeQuery =   true)
     Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);*/
 
-    @Query(value = "select * from calls LIMIT :to OFFSET :from ", nativeQuery = true)
-    List<Call> findAll(@Param("to") Integer to, @Param("from") Integer from);
+    @Query(value = "select * from v_report LIMIT :to OFFSET :from ", nativeQuery = true)
+    List<CallsDates> findAll(@Param("to") Integer to, @Param("from") Integer from);
 
-    @Query(value = "select calls.* from calls \n" +
-                   "inner join phone_lines as pl on calls.id_phone_line_from = pl.id_phone_line \n" +
-                   "where pl.id_person = :id_person", nativeQuery = true)
-    List<Call> getAllCallByClient(@Param("id_person") Integer id);
+    @Query(value = "select * from v_report WHERE v_report.date BETWEEN :datefrom and :dateTo LIMIT :to OFFSET :from ", nativeQuery = true)
+    List<CallsDates> findAllByDates(@Param("from") Integer from, @Param("to") Integer to
+                                , @Param("datefrom") String dateFrom, @Param("dateTo") String dateTo);
+
+    @Query(value = "call sp_show_report_by_idClient(:id_person);", nativeQuery = true)
+    List<CallsDates> getAllCallByClient(@Param("id_person") Integer id);
 
 }

@@ -17,6 +17,7 @@ import com.utnphones.utnPhones.exceptions.InvalidCityException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.FarePriceBetweenCities;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/superuser")
@@ -67,8 +71,15 @@ public class SuperUserController {
     }
     // todo cambiar a lo que dijo pablo, hacaer metodo dinamico para filtrado de fechas
     @GetMapping("/calls")
-    public ResponseEntity<List<Call>> getAllCalls(@RequestHeader("Authorization") String token, @RequestParam("from") Integer from, @RequestParam("to") Integer to) throws UserNotLoggedException {
-        List<Call> calls = this.callController.getAllRange(to, from);
+    public ResponseEntity<List<CallsDates>> getAllCalls(@RequestHeader("Authorization") String token,
+                                                        @RequestParam(required = true, value = "from") Integer from
+                                                , @RequestParam(required = true, value = "to") Integer to
+                                                , @RequestParam(required = false, value = "dateFrom") String dateFrom,
+                                                  @RequestParam(required = false, value = "dateTo") String dateTo)
+            throws UserNotLoggedException, ParseException {
+        System.out.println(dateFrom);
+        System.out.println(dateTo);
+        List<CallsDates> calls = this.callController.getAllRange(to, from, dateFrom, dateTo);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -77,22 +88,22 @@ public class SuperUserController {
         return callService.getAllByClient();
     }*/
 
-/*
+
 
     @GetMapping("/calls/client/{idClient}")
-    public ResponseEntity<List<Call>> getAllCallsByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient){
-        List<Call> calls = this.callController.getAllByClient(idClient);
-        return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient) throws ClientNotFoundException {
+        Client client = this.clientController.getById(idClient);
+        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId());
+        return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 
-
->>>>>>> ebd7ff1bac4cbe3588737e85ca0dce1c760fd0e1
+/*
     @GetMapping("/clients/{page}")
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {
         List<Client> list = this.clientController.getAll(page);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    }*/
 
     @GetMapping("/clients/{idClient}")
     public ResponseEntity<Client> getClientById(@PathVariable Integer idClient) throws ClientNotFoundException {

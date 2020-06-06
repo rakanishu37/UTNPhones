@@ -135,9 +135,10 @@ from
     inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
 	inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
     inner join cities as cto on cto.id_city = (select id_city from cities where plFrom.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1)
-    inner join cities as ctd on ctd.id_city = (select id_city from cities where plTo.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1);
+    inner join cities as ctd on ctd.id_city = (select id_city from cities where plTo.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1) 
+	ORDER BY c.date_call;
 
-//
+
 delimiter //
 create procedure sp_show_report_by_idClient_dates(IN pIdClient int,IN pDateFrom date, IN pDateTo date)
 begin
