@@ -72,6 +72,13 @@ public class SuperUserController {
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    /*@GetMapping("/")  calls?idClient=654
+    public List<Call> getAllByClient(){
+        return callService.getAllByClient();
+    }*/
+
+/*
+
     @GetMapping("/calls/client/{idClient}")
     public ResponseEntity<List<Call>> getAllCallsByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient){
         List<Call> calls = this.callController.getAllByClient(idClient);
@@ -79,6 +86,8 @@ public class SuperUserController {
     }
 
 
+
+>>>>>>> ebd7ff1bac4cbe3588737e85ca0dce1c760fd0e1
     @GetMapping("/clients/{page}")
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {
         List<Client> list = this.clientController.getAll(page);

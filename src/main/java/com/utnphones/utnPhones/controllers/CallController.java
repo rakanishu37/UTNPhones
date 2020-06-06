@@ -8,6 +8,7 @@ import com.utnphones.utnPhones.dto.PageableResponse;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.awt.print.Pageable;
 import java.net.URI;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +49,13 @@ public class CallController {
 
     public List<Call> getAllRange(Integer to, Integer from){
         return this.callService.getAllRange(to, from);
+
+
+    public Map<String, List<CallsDates>> getCallsBetweenDates(Integer idClient, Date from, Date to) {
+        return callService.
+    }
+    public List<Call> getAll(Integer to, Integer from){
+        return this.callService.getAll(to, from);
     }
 
     public List<Call> getAllByClient(Integer id){
@@ -54,4 +63,5 @@ public class CallController {
     }
 
 
+>>>>>>> e0825604494cc3c3b6648e0fcf90ba42889d5576
 }
