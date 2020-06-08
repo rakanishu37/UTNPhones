@@ -5,20 +5,17 @@ import com.utnphones.utnPhones.controllers.ClientController;
 import com.utnphones.utnPhones.controllers.FareController;
 import com.utnphones.utnPhones.controllers.InvoiceController;
 import com.utnphones.utnPhones.controllers.PhoneLineController;
-import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Fare;
-import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.domain.PhoneLine;
-import com.utnphones.utnPhones.dto.PageableResponse;
+import com.utnphones.utnPhones.dto.ClientCreatedDTO;
+import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
-import com.utnphones.utnPhones.exceptions.InvalidCityException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
-import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.projections.CallsDates;
-import com.utnphones.utnPhones.projections.FarePriceBetweenCities;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,7 +32,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +40,7 @@ import java.util.Map;
 public class SuperUserController {
 
     /**
-     * 2) Manejo de clientes casi ok.
+     * 2) Manejo de clientes ok.
      * 3) Alta , baja y suspensión de líneas .
      * 4) Consulta de tarifas ok.
      * 5) Consulta de llamadas por usuario casi ok.
@@ -112,7 +108,7 @@ public class SuperUserController {
 
 
     @PostMapping("/clients")
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
+    public ResponseEntity<Client> createClient(@RequestBody ClientCreatedDTO client) throws CityNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.create(client));
     }
 
@@ -122,7 +118,7 @@ public class SuperUserController {
     }
 
     @PutMapping("/clients/{idClient}")
-    public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody Client updatedClient) throws ClientNotFoundException {
+    public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody ClientUpdatedDTO updatedClient) throws ClientNotFoundException, CityNotFoundException {
         return ResponseEntity.ok(this.clientController.update(idClient,updatedClient));
     }
 
@@ -146,7 +142,7 @@ public class SuperUserController {
 
     @GetMapping("/fares")
     public ResponseEntity<Fare> getFareByCities(@RequestParam(name = "cityFrom") Integer idCityFrom
-                                                , @RequestParam(name = "cityTo") Integer idCityTo) throws InvalidCityException {
+                                                , @RequestParam(name = "cityTo") Integer idCityTo) throws CityNotFoundException {
         return ResponseEntity.ok(this.fareController.getFareByCities(idCityFrom, idCityTo));
     }
 

@@ -5,6 +5,9 @@ import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.domain.UserType;
+import com.utnphones.utnPhones.dto.ClientCreatedDTO;
+import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
@@ -48,11 +51,11 @@ public class ClientController {
         return this.clientService.getById(id);
     }
 
-    public Client create(Client client){
+    public Client create(ClientCreatedDTO client) throws CityNotFoundException {
         return this.clientService.create(client);
     }
 
-    public Client update(Integer id,Client client) throws ClientNotFoundException {
+    public Client update(Integer id, ClientUpdatedDTO client) throws ClientNotFoundException, CityNotFoundException {
 
         return this.clientService.update(id, client);
     }
