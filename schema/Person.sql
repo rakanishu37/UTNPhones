@@ -147,6 +147,17 @@ begin
 from 
 	v_report
 where 
-	phoneNumberDestiny in (select  line_number from phone_lines where id_person = pIdClient) and
+	phoneNumberOrigin in (select  line_number from phone_lines where id_person = pIdClient) and
     date between pDateFrom and pDateTo;
+end //
+
+delimiter //
+create procedure sp_show_report_by_idClient(IN pIdClient int)
+begin
+	select 
+	* 
+from 
+	v_report
+where 
+	phoneNumberOrigin in (select  line_number from phone_lines where id_person = pIdClient);
 end //
