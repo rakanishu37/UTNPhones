@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.dao.mysql.CityMySQLDao;
 import com.utnphones.utnPhones.domain.City;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,5 +27,9 @@ public class CityService {
     public City create(City city){
         return this.cityRepository.save(city);
 
+    }
+
+    public City getByName(String cityName) throws CityNotFoundException {
+        return this.cityRepository.findByName(cityName).orElseThrow(CityNotFoundException::new);
     }
 }

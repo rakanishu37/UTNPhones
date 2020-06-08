@@ -12,7 +12,7 @@ public class SessionManager {
 
     Map<String, Session> sessionMap = new Hashtable<>();
 
-    int sessionExpiration = 300000;
+    long sessionExpiration = 30000000000000000L;
 
     public String createSession(Person person) {
         //TODO dejar como antes

@@ -19,7 +19,7 @@ import java.util.List;
 @Entity
 @DiscriminatorValue(value="1")
 public class Client extends Person {
-    @NotNull
+
     @OneToMany(mappedBy = "client")
     private List<PhoneLine> phoneLines;
 

@@ -174,6 +174,19 @@ create view v_report as
 		ORDER BY c.date_call;
 
 
+
+delimiter //
+create procedure sp_show_report_by_idClient(IN pIdClient int)
+begin
+	select 
+	* 
+from 
+	v_report
+where 
+	phoneNumberOrigin in (select  line_number from phone_lines where id_person = pIdClient);
+end //
+
+
 delimiter //
 create procedure sp_show_report_by_idClient_dates(IN pIdClient int,IN pDateFrom date, IN pDateTo date)
 begin
