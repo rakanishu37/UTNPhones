@@ -21,7 +21,8 @@ CREATE TABLE cities(
 CREATE TABLE user_types(
 	id_user_type INT AUTO_INCREMENT,
     user_type VARCHAR(50),
-    CONSTRAINT PK_USER_TYPES PRIMARY KEY (id_user_type)
+    CONSTRAINT PK_USER_TYPES PRIMARY KEY (id_user_type),
+    CONSTRAINT UNQ_USER_TYPE unique(user_type)
 );
 
 CREATE TABLE persons(
@@ -55,7 +56,8 @@ CREATE TABLE Fares(
 CREATE TABLE line_types(
     id_line_type INT AUTO_INCREMENT,
     type_name VARCHAR(50) NOT NULL,
-    CONSTRAINT PK_LINE_TYPES PRIMARY KEY (id_line_type)
+    CONSTRAINT PK_LINE_TYPES PRIMARY KEY (id_line_type),
+    CONSTRAINT UNQ_TYPE_NAME unique(type_name)
 );
 
 CREATE TABLE phone_lines(
@@ -97,5 +99,3 @@ CREATE TABLE calls(
     CONSTRAINT FK_CALLS_PHONE_LINE_TO FOREIGN KEY (id_phone_line_to) REFERENCES phone_lines(id_phone_line),
     CONSTRAINT FK_CALLS_INVOICES FOREIGN KEY (id_invoice) REFERENCES invoices(id_invoice)
 );
-
-

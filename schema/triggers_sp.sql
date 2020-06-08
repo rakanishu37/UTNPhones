@@ -1,51 +1,23 @@
-set GLOBAL time_zone = '-3:00'   
-
-delimiter //
-create procedure sp_add_call(IN pLineNumberFrom VARCHAR(15), IN pLineNumberTo VARCHAR(15), IN pDuration int,IN pDateCall datetime)
+delimiter $$
+create procedure sp_cancel_client_phone_lines(IN p_id_person int)
 begin
-	declare vPhoneLineFromId int;
-    declare vPhoneLineToId int;
-    declare vFare float;
-    declare vTotalPrice float;
-	declare vCityFromId int;
-    declare vCityToId int;
-    
-    select id_phone_line into vPhoneLineFromId from phone_lines where line_number = pLineNumberFrom;
-    select id_phone_line into vPhoneLineToId from phone_lines where line_number = pLineNumberTo; 
+	update phone_lines set line_status = 'canceled' where phone_lines.id_person = p_id_person;
+end; $$
 
-	select 
-		id_city 
-	into 
-		vCityFromId
-    from 
-		cities 
-    where 
-		pLineNumberFrom like CONCAT(prefix,'%') 
-	order by 
-		LENGTH(prefix) DESC 
-	LIMIT 1;
+delimiter $$
+create trigger tbi_persons before insert on persons for each row
+begin
+		set new.is_active = true;
+end; $$
 
-	select 
-		id_city 
-	into 
-		vCityToId 
-    from 
-		cities 
-    where 
-		pLineNumberTo like CONCAT(prefix,'%') 
-	order by 
-		LENGTH(prefix) DESC 
-	LIMIT 1;	
-    
-	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
-    set vTotalPrice = (pDuration * (vFare/60));
-    
-	insert into calls(id_phone_line_from, id_phone_line_to, fare, duration, total_price,date_call) 
-    values(vPhoneLineFromId, vPhoneLineToId, vFare, pDuration, vTotalPrice,pDateCall);
-    set idCall = last_insert_id();
-end; //
+delimiter $$
+create trigger tbu_persons before update on persons for each row
+begin
+		if(new.is_active = false) then
+			call sp_cancel_client_phone_lines(old.id_person);
+		end if;
+end; $$
 
-drop trigger tbi_calls 
 delimiter //
 create trigger tbi_calls before insert on calls for each row
 begin
@@ -87,24 +59,6 @@ begin
 	select price into vFare from fares where id_city_from = vCityFromId and id_city_to = vCityToId;
     set new.fare = vFare;
     set new.total_price = (new.duration * (vFare/60));
-end; //
-
-delimiter //
-create procedure sp_add_phone_line(IN pLineType VARCHAR(50), IN pUsername VARCHAR(50), IN pLineNumber VARCHAR(15), IN pLineStatus ENUM('active','canceled','suspended'), IN CityName varchar(50))
-begin 
-	declare vPersonId int default 0;
-    declare vLineTypeId int;
-	declare vPhoneNumber varchar(15);
-    select id_person into vPersonId from persons as p where p.username = pUsername;
-    
-    if(vPersonId = 0) then
-		signal sqlstate '10001' SET MESSAGE_TEXT = 'Client does not exists', MYSQL_ERRNO = 3000 ;
-	else
-		select id_line_type into vLineTypeId from line_types as lt where lt.type_name = pLineType;
-        set vPhoneNumber = (select concat(c.prefix,pLineNumber) from cities as c where c.city_name= CityName);
-        
-		insert into phone_lines(id_line_type,id_person,line_number,line_status) values(vLineTypeId,vPersonId, vPhoneNumber, pLineStatus);
-	end if;
 end; //
 
 delimiter //
@@ -166,20 +120,71 @@ begin
     commit;
 end; //
 
-call sp_add_client("Mar del Plata","federico","anastasi","37753328","fede37","123",@id)
-call sp_add_client("La Plata","test1","test1","11111111","test1","123",@id);
+delimiter $$
+create procedure sp_show_client_calls(IN p_id_person int)
+begin
+select			
+		plFrom.line_number,
+        plTo.line_number,
+		c.fare,
+        c.duration,
+        c.total_price,
+        c.date_call
+	from 
+		calls as c
+        inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line
+		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
+	where
+		plFrom.id_person = p_id_person;
+end; $$
 
-call sp_add_phone_line("home", "fede37", "4758196", "active", "Mar del Plata");
-call sp_add_phone_line("mobile", "test1", "5797650", "active", "Mar del Plata");
-call sp_add_phone_line("mobile", "test1", "4888999", "active", "Bahia Blanca");
+delimiter $$
+create procedure sp_show_client_invoices(IN p_id_person int)
+begin
+	select			
+		pl.line_number,
+		inv.number_of_calls, 
+		inv.price_cost, 
+		inv.total_price, 
+		inv.invoice_date, 
+		inv.due_date, 
+		inv.paid
+	from 
+		invoices as inv
+		inner join phone_lines as pl on inv.id_line = pl.id_phone_line		
+	where
+		pl.id_person = p_id_person;
+end; $$
 
-select * from phone_lines
+create view v_report as
+	select	
+		cto.city_name as "cityOrigin",
+		plFrom.line_number as "phoneNumberOrigin",
+		ctd.city_name as "cityDestiny",
+		plTo.line_number as "phoneNumberDestiny",	
+		c.duration as "duration",
+		c.total_price as "totalPrice",
+		c.date_call "date"
+	from   
+		calls as c
+		inner join phone_lines as plFrom on c.id_phone_line_from = plFrom.id_phone_line 
+		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
+		inner join cities as cto on cto.id_city = (select id_city from cities where plFrom.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1)
+		inner join cities as ctd on ctd.id_city = (select id_city from cities where plTo.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1) 
+		ORDER BY c.date_call;
 
-call sp_add_call('2234758196','2235797650',30);
-insert into calls
-call sp_add_call('2234758196','2914888999',60);
-call sp_add_call('2234758196','2214888999',300);
-call sp_add_call('2214888999','2234758196',150);
+
+delimiter //
+create procedure sp_show_report_by_idClient_dates(IN pIdClient int,IN pDateFrom date, IN pDateTo date)
+begin
+    select 
+        * 
+    from 
+        v_report
+    where 
+        phoneNumberDestiny in (select  line_number from phone_lines where id_person = pIdClient) and
+        date between pDateFrom and pDateTo;
+end //
 
 -- SHOW PROCESSLIST;
 -- SET GLOBAL event_scheduler = ON;

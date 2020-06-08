@@ -23,13 +23,6 @@ insert into Provinces(province_name) values
 ('Tierra del Fuego'),
 ('Tucumán');
 
-delimiter //
-create procedure sp_add_city(IN pProvince_name varchar(50),IN pCity_name varchar(50),IN pPrefix varchar(5))
-begin
-    declare vProvinceId int;
-    select id_province into vProvinceId from Provinces as p where p.province_name = pProvince_name;
-    insert into Cities(id_province,city_name,prefix) values(vProvinceId,pCity_name,pPrefix);
-end; //
 
 call sp_add_city('Buenos Aires','Buenos Aires','11');
 call sp_add_city('Buenos Aires','La Plata','221');
@@ -61,24 +54,6 @@ call sp_add_city('Tierra del Fuego','Ushuaia','2901');
 
 insert into line_types(type_name) values('mobile'),('home');
 
-delimiter //
-create procedure sp_add_Fare(IN pCity_name_From varchar(50),IN pCity_name_To varchar(50),IN pPrice float)
-begin
-    declare vCityFromId int;
-    declare vCityToId int;
-    
-    select id_city into vCityFromId from cities as c where c.city_name =  pCity_name_From;
-    select id_city into vCityToId from cities as c where c.city_name = pCity_name_To;
-    
-    if(vCityFromId = vCityToId) then
-		insert into Fares(id_city_from,id_city_to,price) values(vCityFromId,vCityToId,pPrice);
-    else
-		insert into Fares(id_city_from,id_city_to,price) values
-        (vCityFromId,vCityToId,pPrice),
-        (vCityToId,vCityFromId,pPrice);        
-	end if;
-end; //
-
 call sp_add_Fare("La Plata","La Plata",1);
 call sp_add_Fare("Mar del Plata","Mar del Plata",1);
 call sp_add_Fare("Mar del Plata","La Plata",5);
@@ -86,3 +61,28 @@ call sp_add_Fare("San Juan", "San Juan", 15);
 call sp_add_Fare("Corrientes", "San Juan", 3);
 
 insert into user_types(user_type) values ("client"),("employee");
+
+
+
+set GLOBAL time_zone = '-3:00'   
+
+
+
+drop trigger tbi_calls 
+
+
+call sp_add_client("Mar del Plata","federico","anastasi","37753328","fede37","123",@id)
+call sp_add_client("La Plata","test1","test1","11111111","test1","123",@id);
+
+call sp_add_phone_line("home", "fede37", "4758196", "active", "Mar del Plata");
+call sp_add_phone_line("mobile", "test1", "5797650", "active", "Mar del Plata");
+call sp_add_phone_line("mobile", "test1", "4888999", "active", "Bahia Blanca");
+
+select * from phone_lines
+
+call sp_add_call('2234758196','2235797650',30);
+insert into calls
+call sp_add_call('2234758196','2914888999',60);
+call sp_add_call('2234758196','2214888999',300);
+call sp_add_call('2214888999','2234758196',150);
+
