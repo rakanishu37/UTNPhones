@@ -30,5 +30,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
             "            inv.invoice_date between :from and :to\n" +
             "        order by\n" +
             "            inv.invoice_date asc;", nativeQuery = true)
-    List<InvoicesDates> getByIdClientDateBetween(@Param("clientId")Integer clientId, @Param("from") Date from, @Param("to") Date to);
+    List<InvoicesDates> getByIdClientDateBetween(@Param("clientId")Integer clientId,
+                                                 @Param("from") String from, @Param("to") String to);
 }
