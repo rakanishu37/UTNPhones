@@ -1,28 +1,11 @@
 package com.utnphones.utnPhones;
 
-import com.utnphones.utnPhones.controllers.*;
-import com.utnphones.utnPhones.dao.mysql.*;
-import com.utnphones.utnPhones.domain.*;
-import com.utnphones.utnPhones.services.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.hibernate.query.Query;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.sql.SQLException;
 
 @EnableScheduling
 @EnableAsync

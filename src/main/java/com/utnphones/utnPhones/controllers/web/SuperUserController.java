@@ -10,11 +10,8 @@ import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
-import com.utnphones.utnPhones.exceptions.CityNotFoundException;
-import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
-import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
-import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
-import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.dto.PhoneLineUpdatedDTO;
+import com.utnphones.utnPhones.exceptions.*;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -135,10 +132,20 @@ public class SuperUserController {
 /*
     @PutMapping("/{idPhoneline}/")
     public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLine phoneLine) throws PhoneLineNotFoundException{
-        phoneLine.setClient(phoneLineService.getById(idPhoneline).getClient());
-        return ResponseEntity.ok(phoneLineService.updatePhoneLine(phoneLine));
+        return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline,phoneLine));
+    }*/
+
+    @PostMapping("/test")
+    public void test(@RequestBody PhoneLineUpdatedDTO p){
+        System.out.println(p.toString());
     }
-*/
+
+
+    @DeleteMapping("/phonelines/{idPhoneLine}")
+    public ResponseEntity<?> deletePhoneLine(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
+        this.phoneLineController.delete(idPhoneLine);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/fares")
     public ResponseEntity<Fare> getFareByCities(@RequestParam(name = "cityFrom") Integer idCityFrom

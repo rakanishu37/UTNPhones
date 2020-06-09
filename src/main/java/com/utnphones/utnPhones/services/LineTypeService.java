@@ -1,6 +1,5 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.LineTypeMySQLDao;
 import com.utnphones.utnPhones.repository.LineTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

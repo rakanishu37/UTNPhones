@@ -10,5 +10,5 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/utn_phones?allowPublicKeyRetrieval=true&useSSL=false
-    username: root
-    password: root
+    username: ${user}
+    password: ${pass}

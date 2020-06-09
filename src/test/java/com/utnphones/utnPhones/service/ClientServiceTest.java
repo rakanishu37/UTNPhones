@@ -1,18 +1,11 @@
 package com.utnphones.utnPhones.service;
 
-import com.utnphones.utnPhones.dao.interfaces.ClientDao;
-import com.utnphones.utnPhones.domain.City;
-import com.utnphones.utnPhones.domain.Client;
-import com.utnphones.utnPhones.domain.UserType;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.repository.ClientRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.ArrayList;
-
-import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class ClientServiceTest {

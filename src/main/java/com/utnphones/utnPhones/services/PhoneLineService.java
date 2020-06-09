@@ -1,17 +1,13 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.PhoneLineMySQLDao;
-import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
+import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
 import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.sound.sampled.Line;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PhoneLineService {
@@ -42,5 +38,13 @@ public class PhoneLineService {
 
     public PhoneLine updatePhoneLine(PhoneLine phoneLine) {
         return phoneLineRepository.save(phoneLine);
+    }
+
+    public void delete(Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
+        PhoneLine phoneLineToBeDeleted = getById(idPhoneLine);
+        if (!phoneLineToBeDeleted.getIsActive()) {
+            throw new PhoneLineNotIsAlreadyDeletedException();
+        }
+        phoneLineRepository.deletePhoneLine(phoneLineToBeDeleted.getId());
     }
 }

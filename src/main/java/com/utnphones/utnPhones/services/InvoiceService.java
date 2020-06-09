@@ -1,6 +1,5 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.InvoiceMySQLDao;
 import com.utnphones.utnPhones.domain.Invoice;
 import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.repository.InvoiceRepository;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class InvoiceService {

@@ -1,13 +1,10 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.CityMySQLDao;
 import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.repository.CityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 

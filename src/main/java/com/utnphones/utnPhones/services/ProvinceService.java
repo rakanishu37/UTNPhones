@@ -1,13 +1,11 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.ProvinceMySQLDao;
 import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.repository.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProvinceService {

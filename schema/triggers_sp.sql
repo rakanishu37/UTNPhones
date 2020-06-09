@@ -1,11 +1,17 @@
 delimiter $$
 create procedure sp_cancel_client_phone_lines(IN p_id_person int)
 begin
-	update phone_lines set line_status = 'canceled' where phone_lines.id_person = p_id_person;
+	update phone_lines set is_active = false where phone_lines.id_person = p_id_person;
 end; $$
 
-delimiter $$
+delimiter //
 create trigger tbi_persons before insert on persons for each row
+begin
+		set new.is_active = true;
+end; //
+
+delimiter $$
+create trigger tbi_phone_lines before insert on phone_lines for each row
 begin
 		set new.is_active = true;
 end; $$
@@ -76,13 +82,13 @@ begin
     declare vDueDate date;
     declare vInvoiceId int;
 	declare cur_calls_data_finished int default 0;
-	
+
     Declare cur_calls_data cursor for
 		select
 			id_call,id_phone_line_from
-		from 
+		from
 			calls
-		where 
+		where
 			id_invoice is null
         order by
             id_phone_line_from;
@@ -90,23 +96,23 @@ begin
     Start transaction;
     set vInvoiceDate = (select current_date());
 	set vDueDate = (select date_add(vInvoiceDate, INTERVAL 15 DAY));
-        
+
     open cur_calls_data;
-    
+
     all_clients : LOOP
 		fetch cur_calls_data into vCallId, vPhoneLineId;
         if(cur_calls_data_finished = 1) then
 			leave all_clients;
 		end if;
-        
+
         if(vAuxId <> vPhoneLineId) then
-            select 
-                (sum(total_price)*vPriceCost), count(*) 
-            into 
-                vTotalPrice,vNumberOfCalls 
-            from 
-                calls             
-            where 
+            select
+                (sum(total_price)*vPriceCost), count(*)
+            into
+                vTotalPrice,vNumberOfCalls
+            from
+                calls
+            where
                 id_invoice is null and id_phone_line_from = vPhoneLineId;
 
             insert into invoices(id_line, number_of_calls, price_cost, total_price, invoice_date, due_date, paid)
@@ -116,7 +122,7 @@ begin
         end if;
         update calls set id_invoice = vInvoiceId where id_call = vCallId;
     END LOOP all_clients;
-    close cur_calls_data;    
+    close cur_calls_data;
     commit;
 end; //
 
@@ -199,8 +205,8 @@ begin
         date between pDateFrom and pDateTo;
 end //
 
--- SHOW PROCESSLIST;
--- SET GLOBAL event_scheduler = ON;
+ SHOW PROCESSLIST;
+ SET GLOBAL event_scheduler = ON;
 delimiter //
 CREATE EVENT event_generate_invoices
 ON SCHEDULE EVERY "1" MONTH	

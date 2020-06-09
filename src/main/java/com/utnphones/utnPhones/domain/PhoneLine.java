@@ -50,4 +50,6 @@ public class PhoneLine {
     @Enumerated(EnumType.STRING)
     private LineStatus lineStatus;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
 }
