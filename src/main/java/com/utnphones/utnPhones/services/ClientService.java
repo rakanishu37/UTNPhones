@@ -7,22 +7,12 @@ import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
-import com.utnphones.utnPhones.projections.CallsDates;
-import com.utnphones.utnPhones.projections.InvoicesDates;
-import com.utnphones.utnPhones.repository.CallRepository;
 import com.utnphones.utnPhones.repository.ClientRepository;
-import com.utnphones.utnPhones.repository.InvoiceRepository;
 import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class ClientService {
@@ -30,23 +20,17 @@ public class ClientService {
     private CityService cityService;
 
     private PhoneLineRepository phoneLineRepository;
-    private CallRepository callRepository;
-    private InvoiceRepository invoiceRepository;
 
 
     @Autowired
-    public ClientService(ClientRepository clientRepository, PhoneLineRepository phoneLineRepository, CallRepository callRepository
-                       , InvoiceRepository invoiceRepository, CityService cityService) {
+    public ClientService(ClientRepository clientRepository, PhoneLineRepository phoneLineRepository, CityService cityService) {
         this.clientRepository = clientRepository;
         this.phoneLineRepository = phoneLineRepository;
-        this.callRepository = callRepository;
-        this.invoiceRepository = invoiceRepository;
         this.cityService = cityService;
     }
 
-    public List<Client> getAll(Integer page) {
-        Pageable pageable = PageRequest.of(page, 16);
-        return this.clientRepository.findAll(pageable).toList();
+    public List<Client> getAll(Integer quantity, Integer from) {
+        return this.clientRepository.findAll(quantity,from);
     }
 
     public Client create(ClientCreatedDTO client) throws CityNotFoundException {

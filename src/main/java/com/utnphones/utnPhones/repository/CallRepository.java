@@ -1,17 +1,11 @@
 package com.utnphones.utnPhones.repository;
 
 import com.utnphones.utnPhones.domain.Call;
-import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.projections.CallsDates;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -44,12 +38,12 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
     @Query(value ="insert into calls(id_phone_line_from, id_phone_line_to, duration, date_call) values (?1,?2,?3,?4)" ,nativeQuery =   true)
     Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);*/
 
-    @Query(value = "select * from v_report LIMIT :to OFFSET :from ", nativeQuery = true)
-    List<CallsDates> findAll(@Param("to") Integer to, @Param("from") Integer from);
+    @Query(value = "select * from v_report LIMIT :quantity OFFSET :from ", nativeQuery = true)
+    List<CallsDates> findAll(@Param("quantity") Integer quantity, @Param("from") Integer from);
 
-    @Query(value = "select * from v_report WHERE v_report.date BETWEEN :datefrom and :dateTo LIMIT :to OFFSET :from ", nativeQuery = true)
-    List<CallsDates> findAllByDates(@Param("from") Integer from, @Param("to") Integer to
-                                , @Param("datefrom") String dateFrom, @Param("dateTo") String dateTo);
+    @Query(value = "select * from v_report WHERE v_report.date BETWEEN :datefrom and :dateTo LIMIT :quantity OFFSET :from ", nativeQuery = true)
+    List<CallsDates> findAllByDates(@Param("from") Integer from, @Param("quantity") Integer quantity,
+                                    @Param("datefrom") String dateFrom, @Param("dateTo") String dateTo);
 
     @Query(value = "call sp_show_report_by_idClient(:id_person);", nativeQuery = true)
     List<CallsDates> getAllCallByClient(@Param("id_person") Integer id);

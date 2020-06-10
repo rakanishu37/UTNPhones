@@ -6,6 +6,7 @@ import com.utnphones.utnPhones.controllers.ClientController;
 import com.utnphones.utnPhones.controllers.InvoiceController;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.MissingTokenException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.projections.CallsDates;
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @GetMapping("/me/calls")
-    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,@RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException {
+    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,@RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException, MissingTokenException {
         Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
         Integer idClient = sessionManager.getCurrentUser(token).getId();
@@ -57,7 +58,7 @@ public class UserController {
     @GetMapping("/me/invoices")
     public ResponseEntity<List<InvoicesDates>> getInvoicesBetweenDates(@RequestHeader("Authorization") String token,
                                                                         @RequestParam(name = "dateFrom") String dateFrom,
-                                                                        @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException {
+                                                                        @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException, MissingTokenException {
 
         Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);

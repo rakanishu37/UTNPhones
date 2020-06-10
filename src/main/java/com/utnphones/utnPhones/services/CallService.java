@@ -31,18 +31,17 @@ public class CallService {
     }
 
 
-    public List<CallsDates> getAll(Integer to, Integer from, String dateFrom, String dateTo) throws ParseException {
+    public List<CallsDates> getAll(Integer quantity, Integer from, String dateFrom, String dateTo) throws ParseException {
 
         if(dateFrom==null || dateTo==null){
-            return this.callRepository.findAll(to, from);
+            return this.callRepository.findAll(quantity, from);
         }else{
-
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date date1 = simpleDateFormat.parse(dateFrom);
             Date date2 = simpleDateFormat.parse(dateTo);
             String fromDate = simpleDateFormat.format(date1);
             String toDate = simpleDateFormat.format(date2);
-            return this.callRepository.findAllByDates(from, to, fromDate, toDate);
+            return this.callRepository.findAllByDates(from, quantity, fromDate, toDate);
         }
 
     }

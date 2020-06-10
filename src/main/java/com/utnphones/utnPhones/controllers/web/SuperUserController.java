@@ -10,8 +10,16 @@ import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
-import com.utnphones.utnPhones.dto.PhoneLineUpdatedDTO;
-import com.utnphones.utnPhones.exceptions.*;
+import com.utnphones.utnPhones.dto.PhoneLineDTO;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
+import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
+import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
+import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
+import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
+import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
+import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -65,14 +74,13 @@ public class SuperUserController {
     // todo cambiar a lo que dijo pablo, hacaer metodo dinamico para filtrado de fechas
     @GetMapping("/calls")
     public ResponseEntity<List<CallsDates>> getAllCalls(@RequestHeader("Authorization") String token,
-                                                        @RequestParam(required = true, value = "from") Integer from
-                                                , @RequestParam(required = true, value = "to") Integer to
-                                                , @RequestParam(required = false, value = "dateFrom") String dateFrom,
-                                                  @RequestParam(required = false, value = "dateTo") String dateTo)
-            throws UserNotLoggedException, ParseException {
+                                                        @RequestParam(required = true, value = "from") Integer from,
+                                                        @RequestParam(required = true, value = "quantity") Integer quantity,
+                                                        @RequestParam(required = false, value = "dateFrom") String dateFrom,
+                                                        @RequestParam(required = false, value = "dateTo") String dateTo) throws UserNotLoggedException, ParseException {
         System.out.println(dateFrom);
         System.out.println(dateTo);
-        List<CallsDates> calls = this.callController.getAllRange(to, from, dateFrom, dateTo);
+        List<CallsDates> calls = this.callController.getAllRange(quantity, from, dateFrom, dateTo);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -91,12 +99,14 @@ public class SuperUserController {
     }
 
 
-/*
-    @GetMapping("/clients/{page}")
-    public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token, @PathVariable Integer page) throws UserNotLoggedException, UnauthorizedAccessException {
-        List<Client> list = this.clientController.getAll(page);
+
+    @GetMapping("/clients")
+    public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token,
+                                                     @RequestParam(required = true, value = "from") Integer from,
+                                                     @RequestParam(required = true, value = "quantity") Integer quantity) throws UserNotLoggedException, UnauthorizedAccessException {
+        List<Client> list = this.clientController.getAll(quantity,from);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }*/
+    }
 
     @GetMapping("/clients/{idClient}")
     public ResponseEntity<Client> getClientById(@PathVariable Integer idClient) throws ClientNotFoundException {
@@ -109,10 +119,13 @@ public class SuperUserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.create(client));
     }
 
-    @PostMapping("/clients/{idClient}/phonelines")
-    public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient,phoneLine));
-    }
+    //TODO
+    /*@PostMapping("/clients/{idClient}/phonelines")
+    public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient,
+                                                     @Valid @RequestBody PhoneLineDTO phoneLineDTO) throws ClientNotFoundException, LineTypeNotFoundException {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient,phoneLineDTO));
+    }*/
 
     @PutMapping("/clients/{idClient}")
     public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody ClientUpdatedDTO updatedClient) throws ClientNotFoundException, CityNotFoundException {
@@ -134,12 +147,6 @@ public class SuperUserController {
     public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLine phoneLine) throws PhoneLineNotFoundException{
         return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline,phoneLine));
     }*/
-
-    @PostMapping("/test")
-    public void test(@RequestBody PhoneLineUpdatedDTO p){
-        System.out.println(p.toString());
-    }
-
 
     @DeleteMapping("/phonelines/{idPhoneLine}")
     public ResponseEntity<?> deletePhoneLine(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
