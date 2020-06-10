@@ -10,6 +10,7 @@ import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoicesDates;
+import com.utnphones.utnPhones.projections.TopTenDestinies;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,8 +64,14 @@ public class UserController {
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
         Integer idClient = sessionManager.getCurrentUser(token).getId();
         List<InvoicesDates> invoices = invoiceController.getInvoicesBetweenDates(idClient, from, to);
-        return (!invoices.isEmpty()) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        return (invoices.size() > 0) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @GetMapping("/me/calls/topten")
+    public ResponseEntity<List<TopTenDestinies>> getTopTenDestiniesByClient(@RequestHeader("Authorization") String token) throws UserNotLoggedException {
+        Integer idClient = sessionManager.getCurrentUser(token).getId();
+        List<TopTenDestinies> topTenDestinies = this.callController.getTopTenDestiniesByClient(idClient);
+        return (topTenDestinies.size() > 0) ? ResponseEntity.ok(topTenDestinies) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 
 }
