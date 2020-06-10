@@ -3,6 +3,7 @@ package com.utnphones.utnPhones.controllers;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.TopTenDestinies;
 import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,4 +45,7 @@ public class CallController {
         return this.callService.getAllByClient(id);
     }
 
+    public List<TopTenDestinies> getTopTenDestiniesByClient(Integer idClient){
+        return this.callService.getTopTenDestiniesByClient(idClient);
+    }
 }

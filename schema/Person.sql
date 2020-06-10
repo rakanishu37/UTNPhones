@@ -11,18 +11,20 @@ drop procedure sp_show_client_invoices_by_dates;
 
 -- top10 destinos mas llamados de todos los clientes
 select 
-	ct.city_name,
-	count(pl.line_number) as 'cant de veces llamado'
+	ct.city_name as 'CityName',
+	count(pl.line_number) as 'NumberOfCalls'
 from 
 	calls as c
     inner join phone_lines as pl on c.id_phone_line_to = pl.id_phone_line
     inner join cities as ct on ct.id_city = (select id_city from cities where pl.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1)
+	
+    where 
+		c.id_phone_line_from in (select  id_phone_line from phone_lines where id_person = 691)
 group by
-	pl.line_number
+	ct.city_name
+order by count(pl.line_number)
 limit 
-	10;
-
-    
+10;
 -- cant de veces que fue llamado y desde donde el cliente en cuestion
 select 	
 	ct.city_name,

@@ -6,6 +6,7 @@ import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.TopTenDestinies;
 import com.utnphones.utnPhones.repository.CallRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,6 +82,10 @@ public class CallService {
                 .collect(Collectors.groupingBy(CallsDates::getPhoneNumberOrigin));
     }
 
+    public List<TopTenDestinies> getTopTenDestiniesByClient(Integer idClient){
+        return this.callRepository.getTopTenDestiniesByClient(idClient);
+    }
+
     private URI getLocation(Call call) {
         return ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -88,4 +93,6 @@ public class CallService {
                 .buildAndExpand(call.getId())
                 .toUri();
     }
+
+
 }

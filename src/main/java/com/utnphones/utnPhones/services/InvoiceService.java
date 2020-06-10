@@ -1,6 +1,7 @@
 package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.domain.Invoice;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,9 @@ public class InvoiceService {
         String from = simpleDateFormat.format(dateFrom);
         String to = simpleDateFormat.format(dateTo);
         return invoiceRepository.getByIdClientDateBetween(idClient,from,to);
+    }
+
+    public List<InvoiceByClient> getInvoicesByClient(Integer idClient){
+        return this.invoiceRepository.getInvoicesByClient(idClient);
     }
 }

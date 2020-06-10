@@ -3,6 +3,7 @@ package com.utnphones.utnPhones.controllers;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Invoice;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.services.InvoiceService;
 import com.utnphones.utnPhones.session.SessionManager;
@@ -49,4 +50,8 @@ public class InvoiceController {
     public List<InvoicesDates> getInvoicesBetweenDates(Integer idClient, Date from, Date to) {
         return invoiceService.getInvoicesBetweenDates(idClient,from,to);
     }
+    public List<InvoiceByClient> getInvoicesByClient(Integer idClient){
+        return this.invoiceService.getInvoicesByClient(idClient);
+    }
+
 }
