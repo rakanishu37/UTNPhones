@@ -13,6 +13,7 @@ import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
 import com.utnphones.utnPhones.dto.PhoneLineUpdatedDTO;
 import com.utnphones.utnPhones.exceptions.*;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -85,7 +86,7 @@ public class SuperUserController {
 
     @GetMapping("/calls/client/{idClient}")
     public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient) throws ClientNotFoundException {
-        Client client = this.clientController.getById(idClient);
+        Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
         Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId());
         return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -153,4 +154,10 @@ public class SuperUserController {
         return ResponseEntity.ok(this.fareController.getFareByCities(idCityFrom, idCityTo));
     }
 
+    @GetMapping("/clients/{idClient}/invoices")
+    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient) throws ClientNotFoundException {
+        Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
+        List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient);
+        return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
