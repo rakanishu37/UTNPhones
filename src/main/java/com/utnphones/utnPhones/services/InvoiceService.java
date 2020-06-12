@@ -4,9 +4,11 @@ import com.utnphones.utnPhones.domain.Invoice;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.repository.InvoiceRepository;
+import com.utnphones.utnPhones.utils.DateFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +42,12 @@ public class InvoiceService {
         return invoiceRepository.getByIdClientDateBetween(idClient,from,to);
     }
 
-    public List<InvoiceByClient> getInvoicesByClient(Integer idClient){
-        return this.invoiceRepository.getInvoicesByClient(idClient);
+    public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
+        if(dateFrom==null || dateTo==null){
+            return this.invoiceRepository.getInvoicesByClient(idClient);
+        }else{
+            return this.invoiceRepository.getInvoicesByClientBetweenDates(idClient, DateFormatUtil.formatDate(dateFrom), DateFormatUtil.formatDate(dateTo));
+        }
+
     }
 }

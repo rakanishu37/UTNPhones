@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -50,8 +51,8 @@ public class InvoiceController {
     public List<InvoicesDates> getInvoicesBetweenDates(Integer idClient, Date from, Date to) {
         return invoiceService.getInvoicesBetweenDates(idClient,from,to);
     }
-    public List<InvoiceByClient> getInvoicesByClient(Integer idClient){
-        return this.invoiceService.getInvoicesByClient(idClient);
+    public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
+        return this.invoiceService.getInvoicesByClient(idClient, dateFrom, dateTo);
     }
 
 }
