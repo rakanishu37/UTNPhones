@@ -14,14 +14,15 @@ import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.InvalidLoginException;
 import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
-import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
+import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -85,21 +88,13 @@ public class SuperUserController {
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-    /*@GetMapping("/")  calls?idClient=654
-    public List<Call> getAllByClient(){
-        return callService.getAllByClient();
-    }*/
-
-
-
     @GetMapping("/calls/client/{idClient}")
-    public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient) throws ClientNotFoundException {
+    public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token,
+                                                                             @PathVariable Integer idClient) throws ClientNotFoundException {
         Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
         Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId());
         return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-
 
     @GetMapping("/clients")
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token,
@@ -114,19 +109,10 @@ public class SuperUserController {
         return ResponseEntity.ok(clientController.getById(idClient));
     }
 
-
     @PostMapping("/clients")
     public ResponseEntity<Client> createClient(@RequestBody ClientCreatedDTO client) throws CityNotFoundException {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.create(client));
     }
-
-    //TODO
-    /*@PostMapping("/clients/{idClient}/phonelines")
-    public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient,
-                                                     @Valid @RequestBody PhoneLineDTO phoneLineDTO) throws ClientNotFoundException, LineTypeNotFoundException {
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient,phoneLineDTO));
-    }*/
 
     @PutMapping("/clients/{idClient}")
     public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody ClientUpdatedDTO updatedClient) throws ClientNotFoundException, CityNotFoundException {
@@ -143,11 +129,21 @@ public class SuperUserController {
     public ResponseEntity<PhoneLine> getPhonelineById(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException {
         return ResponseEntity.ok(this.phoneLineController.getById(idPhoneLine));
     }
-/*
+
+
+    //TODO
+    @PostMapping("/clients/{idClient}/phonelines")
+    public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient,
+                                                     @Valid @RequestBody PhoneLineDTO phoneLineDTO) throws ClientNotFoundException, LineTypeNotFoundException {
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient,phoneLineDTO));
+    }
+
+    //Todo
     @PutMapping("/{idPhoneline}/")
     public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLine phoneLine) throws PhoneLineNotFoundException{
         return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline,phoneLine));
-    }*/
+    }
 
     @DeleteMapping("/phonelines/{idPhoneLine}")
     public ResponseEntity<?> deletePhoneLine(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
@@ -167,4 +163,27 @@ public class SuperUserController {
         List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
+    //TODO facturas de clientes entre fechas
+    @GetMapping("/clients/{idClient}/invoices")
+    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClientBetweenDates(@RequestHeader("Authorization") String token,
+                                                                                 @PathVariable Integer idClient,
+                                                                                 @RequestParam(name = "dateFrom") String dateFrom,
+                                                                                 @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
+
+        Client client = this.clientController.getById(idClient);
+        Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
+        Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
+        List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient);
+        return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
+    public ResponseEntity<List<InvoicesDates>> getInvoicesBetweenDates(@RequestHeader("Authorization") String token,
+                                                                       @RequestParam(name = "dateFrom") String dateFrom,
+                                                                       @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException, MissingTokenException, InvalidLoginException {
+
+
+        Integer idClient = sessionManager.getCurrentUser(token).getId();
+        List<InvoicesDates> invoices = invoiceController.getInvoicesBetweenDates(idClient, from, to);
+        return (invoices.size() > 0) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
