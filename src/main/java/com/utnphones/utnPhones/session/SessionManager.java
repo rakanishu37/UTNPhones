@@ -1,11 +1,13 @@
 package com.utnphones.utnPhones.session;
 
-import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Hashtable;
+import java.util.Map;
+import java.util.Optional;
 
 @Component
 public class SessionManager {
@@ -22,12 +24,17 @@ public class SessionManager {
         return token;
     }
 
-    public Session getSession(String token) throws UserNotLoggedException {
-        Session session = sessionMap.get(token);
-        if (session!=null) {
-            session.setLastAction(new Date(System.currentTimeMillis()));
+    public Session getSession(String token) {
+        if(token == null){
+            return null;
+        }else {
+            Session session = sessionMap.get(token);
+
+            if (session != null) {
+                session.setLastAction(new Date(System.currentTimeMillis()));
+            }
+            return session;
         }
-        return session;
     }
 
     public void removeSession(String token) {
@@ -44,7 +51,9 @@ public class SessionManager {
         }
     }
 
-    public Person getCurrentUser(String token) throws UserNotLoggedException {
-        return Optional.ofNullable(getSession(token).getLoggedUser()).orElseThrow(UserNotLoggedException::new);
+    public Person getCurrentUser(String token) throws UserNotLoggedException{
+        return Optional.ofNullable(getSession(token))
+                .map(Session::getLoggedUser)
+                .orElseThrow(UserNotLoggedException::new);
     }
 }
