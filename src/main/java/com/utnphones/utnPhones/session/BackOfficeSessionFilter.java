@@ -14,7 +14,7 @@ import java.io.IOException;
 import static com.utnphones.utnPhones.utils.Constants.USER_TYPE_EMPLOYEE;
 
 @Service
-public class SuperUserSessionFilter extends OncePerRequestFilter {
+public class BackOfficeSessionFilter extends OncePerRequestFilter {
 
     @Autowired
     private SessionManager sessionManager;

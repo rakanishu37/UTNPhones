@@ -43,7 +43,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/superuser")
+@RequestMapping("/backoffice")
 public class SuperUserController {
 
     /**
