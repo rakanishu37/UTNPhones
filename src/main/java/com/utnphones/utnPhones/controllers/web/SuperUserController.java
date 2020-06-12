@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/superuser")
+@RequestMapping("/backoffice")
 public class SuperUserController {
 
     /**
@@ -158,9 +158,12 @@ public class SuperUserController {
     }
 
     @GetMapping("/clients/{idClient}/invoices")
-    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient) throws ClientNotFoundException {
-        Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
-        List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient);
+    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient,
+                                                                     @RequestParam(required = false, value = "dateFrom") String dateFrom,
+                                                                     @RequestParam(required = false, value = "dateTo") String dateTo)
+            throws ClientNotFoundException, ParseException {
+        Client client = this.clientController.getById(idClient);
+        List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

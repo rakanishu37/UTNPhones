@@ -8,6 +8,7 @@ import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.TopTenDestinies;
 import com.utnphones.utnPhones.repository.CallRepository;
+import com.utnphones.utnPhones.utils.DateFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -37,12 +38,7 @@ public class CallService {
         if(dateFrom==null || dateTo==null){
             return this.callRepository.findAll(quantity, from);
         }else{
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date date1 = simpleDateFormat.parse(dateFrom);
-            Date date2 = simpleDateFormat.parse(dateTo);
-            String fromDate = simpleDateFormat.format(date1);
-            String toDate = simpleDateFormat.format(date2);
-            return this.callRepository.findAllByDates(from, quantity, fromDate, toDate);
+            return this.callRepository.findAllByDates(from, quantity, DateFormatUtil.formatDate(dateFrom), DateFormatUtil.formatDate(dateTo));
         }
 
     }

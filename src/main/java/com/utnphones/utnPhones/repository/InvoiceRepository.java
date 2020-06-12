@@ -44,4 +44,16 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
             " where per.id_person = :clientId " +
             "order by inv.invoice_date asc;", nativeQuery = true)
     List<InvoiceByClient> getInvoicesByClient(@Param("clientId") Integer clientId);
+
+    @Query(value = "select inv.id_invoice as 'idInvoice', pl.line_number as 'PhoneLineNumber',\n" +
+            "            inv.number_of_calls as 'NumberOfCalls', inv.price_cost as 'PriceCost', inv.invoice_date as 'InvoiceDate',\n" +
+            "            inv.due_date as 'DueDate', inv.total_price as 'TotalPrice', inv.paid as 'Paid' \n" +
+            "            , per.firstname as 'FirstName', per.surname as 'LastName' \n" +
+            "            from invoices as inv\n" +
+            "            inner join phone_lines as pl on inv.id_line = pl.id_phone_line\n" +
+            "            inner join persons as per on pl.id_person = per.id_person \n" +
+            "             where per.id_person = :clientId and inv.invoice_date between :dateFrom and :dateTo \n" +
+            "            order by inv.invoice_date asc;", nativeQuery = true)
+    List<InvoiceByClient> getInvoicesByClientBetweenDates(@Param("clientId") Integer clientId,
+                                                          @Param("dateFrom") String dateFrom, @Param("dateTo") String dateTo);
 }

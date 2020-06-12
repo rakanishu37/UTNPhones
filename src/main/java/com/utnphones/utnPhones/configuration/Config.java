@@ -2,7 +2,7 @@ package com.utnphones.utnPhones.configuration;
 
 import com.utnphones.utnPhones.session.AntennaSessionFilter;
 import com.utnphones.utnPhones.session.SessionFilter;
-import com.utnphones.utnPhones.session.SuperUserSessionFilter;
+import com.utnphones.utnPhones.session.BackOfficeSessionFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ public class Config {
     @Autowired
     SessionFilter sessionFilter;
     @Autowired
-    SuperUserSessionFilter superUserSessionFilter;
+    BackOfficeSessionFilter backOfficeSessionFilter;
     @Autowired
     AntennaSessionFilter antennaSessionFilter;
 
@@ -45,7 +45,7 @@ public class Config {
     @Bean
     public FilterRegistrationBean superUserSessionExistsFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(superUserSessionFilter);
+        registration.setFilter(backOfficeSessionFilter);
         registration.addUrlPatterns("/superuser/*");
         return registration;
     }
