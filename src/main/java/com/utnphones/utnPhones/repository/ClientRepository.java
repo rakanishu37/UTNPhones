@@ -18,7 +18,7 @@ public interface ClientRepository extends JpaRepository<Client,Integer> {
     @Query(value = "update persons set is_active = false where id_person = ?1", nativeQuery = true)
     Integer deleteClient(Integer id_person);
 
-    @Query(value = "select * from persons where id_user_type = 1 LIMIT :quantity OFFSET :from ", nativeQuery = true)
+    @Query(value = "select * from persons where id_user_type = 1 where is_active = true LIMIT :quantity OFFSET :from ", nativeQuery = true)
     List<Client> findAll(@Param("quantity") Integer quantity, @Param("from") Integer from);
 }
 
