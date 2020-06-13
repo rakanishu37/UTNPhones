@@ -33,24 +33,19 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-  //  @GetMapping("/")
+
     public List<Invoice> getAll(){
         return this.invoiceService.getAll();
     }
 
-  //  @PostMapping //todo illegalrequestexception
     public Invoice create(@RequestBody Invoice invoice){
         return this.invoiceService.create(invoice);
     }
 
-  //  @GetMapping("/{idInvoice}")
     public Invoice getById(@PathVariable Integer id) throws Exception {
         return this.invoiceService.getById(id);
     }
 
-    public List<InvoicesDates> getInvoicesBetweenDates(Integer idClient, Date from, Date to) {
-        return invoiceService.getInvoicesBetweenDates(idClient,from,to);
-    }
     public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         return this.invoiceService.getInvoicesByClient(idClient, dateFrom, dateTo);
     }

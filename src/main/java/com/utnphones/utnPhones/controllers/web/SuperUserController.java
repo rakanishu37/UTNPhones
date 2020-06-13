@@ -75,7 +75,7 @@ public class SuperUserController {
         this.invoiceController = invoiceController;
         this.callController = callController;
     }
-    // todo cambiar a lo que dijo pablo, hacaer metodo dinamico para filtrado de fechas
+
     @GetMapping("/calls")
     public ResponseEntity<List<CallsDates>> getAllCalls(@RequestHeader("Authorization") String token,
                                                         @RequestParam(required = true, value = "from") Integer from,
@@ -140,9 +140,9 @@ public class SuperUserController {
     }
 
     //Todo
-    @PutMapping("/{idPhoneline}/")
-    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLine phoneLine) throws PhoneLineNotFoundException{
-        return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline,phoneLine));
+    @PutMapping("/phonelines/{idPhoneLine}")
+    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLineDTO phoneLineDto) throws PhoneLineNotFoundException{
+        return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline,phoneLineDto));
     }
 
     @DeleteMapping("/phonelines/{idPhoneLine}")
@@ -166,27 +166,4 @@ public class SuperUserController {
         List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
-    //TODO facturas de clientes entre fechas
-    @GetMapping("/clients/{idClient}/invoices")
-    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClientBetweenDates(@RequestHeader("Authorization") String token,
-                                                                                 @PathVariable Integer idClient,
-                                                                                 @RequestParam(name = "dateFrom") String dateFrom,
-                                                                                 @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
-
-        Client client = this.clientController.getById(idClient);
-        Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
-        Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
-        List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient);
-        return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
 }
-    public ResponseEntity<List<InvoicesDates>> getInvoicesBetweenDates(@RequestHeader("Authorization") String token,
-                                                                       @RequestParam(name = "dateFrom") String dateFrom,
-                                                                       @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException, MissingTokenException, InvalidLoginException {
-
-
-        Integer idClient = sessionManager.getCurrentUser(token).getId();
-        List<InvoicesDates> invoices = invoiceController.getInvoicesBetweenDates(idClient, from, to);
-        return (invoices.size() > 0) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }

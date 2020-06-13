@@ -35,13 +35,6 @@ public class InvoiceService {
         return this.invoiceRepository.findById(id).orElseThrow(Exception::new);
     }
 
-    public List<InvoicesDates> getInvoicesBetweenDates(Integer idClient, Date dateFrom, Date dateTo) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String from = simpleDateFormat.format(dateFrom);
-        String to = simpleDateFormat.format(dateTo);
-        return invoiceRepository.getByIdClientDateBetween(idClient,from,to);
-    }
-
     public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         if(dateFrom==null || dateTo==null){
             return this.invoiceRepository.getInvoicesByClient(idClient);
