@@ -4,19 +4,15 @@ package com.utnphones.utnPhones.controllers.web;
 import com.utnphones.utnPhones.controllers.CallController;
 import com.utnphones.utnPhones.controllers.ClientController;
 import com.utnphones.utnPhones.controllers.InvoiceController;
-import com.utnphones.utnPhones.domain.Client;
-import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
-import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.projections.CallsDates;
-import com.utnphones.utnPhones.projections.InvoicesDates;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.projections.TopTenDestinies;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -56,14 +52,14 @@ public class UserController {
     }
 
     @GetMapping("/me/invoices")
-    public ResponseEntity<List<InvoicesDates>> getInvoicesBetweenDates(@RequestHeader("Authorization") String token,
-                                                                        @RequestParam(name = "dateFrom") String dateFrom,
-                                                                        @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException{
+    public ResponseEntity<List<InvoiceByClient>> getInvoicesBetweenDates(@RequestHeader("Authorization") String token,
+                                                                         @RequestParam(name = "dateFrom") String dateFrom,
+                                                                         @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException{
 
         Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
         Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
         Integer idClient = sessionManager.getCurrentUser(token).getId();
-        List<InvoicesDates> invoices = invoiceController.getInvoicesBetweenDates(idClient, from, to);
+        List<InvoiceByClient> invoices = invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoices.size() > 0) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

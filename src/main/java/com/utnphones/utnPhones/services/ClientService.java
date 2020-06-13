@@ -34,13 +34,13 @@ public class ClientService {
     }
 
     public Client create(ClientCreatedDTO client) throws CityNotFoundException {
-
         Client clientCreated = Client.builder()
                 .firstname(client.getFirstname())
                 .surname(client.getSurname())
                 .city(this.cityService.getByName(client.getCityName()))
                 .DNI(client.getDni())
                 .username(client.getUsername())
+                //TODO hashear password
                 .password(client.getPassword())
                 .build();
         return this.clientRepository.save(clientCreated);

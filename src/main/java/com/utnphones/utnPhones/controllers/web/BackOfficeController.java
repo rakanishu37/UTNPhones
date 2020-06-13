@@ -14,7 +14,6 @@ import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
-import com.utnphones.utnPhones.exceptions.InvalidLoginException;
 import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
@@ -22,7 +21,6 @@ import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
-import com.utnphones.utnPhones.projections.InvoicesDates;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,23 +38,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 @RequestMapping("/backoffice")
-public class SuperUserController {
-
-    /**
-     * 2) Manejo de clientes ok.
-     * 3) Alta , baja y suspensión de líneas .
-     * 4) Consulta de tarifas ok.
-     * 5) Consulta de llamadas por usuario casi ok.
-     * 6) Consulta de facturación .
-     */
-
+public class BackOfficeController {
     private SessionManager sessionManager;
     private PhoneLineController phoneLineController;
     private FareController fareController;
@@ -65,9 +52,9 @@ public class SuperUserController {
     private CallController callController;
 
     @Autowired
-    public SuperUserController(SessionManager sessionManager, PhoneLineController phoneLineController,
-                               FareController fareController, ClientController clientController,
-                               InvoiceController invoiceController, CallController callController) {
+    public BackOfficeController(SessionManager sessionManager, PhoneLineController phoneLineController,
+                                FareController fareController, ClientController clientController,
+                                InvoiceController invoiceController, CallController callController) {
         this.sessionManager = sessionManager;
         this.phoneLineController = phoneLineController;
         this.fareController = fareController;
@@ -100,7 +87,7 @@ public class SuperUserController {
     public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token,
                                                      @RequestParam(required = true, value = "from") Integer from,
                                                      @RequestParam(required = true, value = "quantity") Integer quantity) throws UserNotLoggedException, UnauthorizedAccessException {
-        List<Client> list = this.clientController.getAll(quantity,from);
+        List<Client> list = this.clientController.getAll(quantity, from);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -116,7 +103,7 @@ public class SuperUserController {
 
     @PutMapping("/clients/{idClient}")
     public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody ClientUpdatedDTO updatedClient) throws ClientNotFoundException, CityNotFoundException {
-        return ResponseEntity.ok(this.clientController.update(idClient,updatedClient));
+        return ResponseEntity.ok(this.clientController.update(idClient, updatedClient));
     }
 
     @DeleteMapping("/clients/{idClient}")
@@ -131,19 +118,24 @@ public class SuperUserController {
     }
 
 
-    //TODO
     @PostMapping("/clients/{idClient}/phonelines")
     public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient,
-                                                     @Valid @RequestBody PhoneLineDTO phoneLineDTO) throws ClientNotFoundException, LineTypeNotFoundException {
+                                                     @Valid @RequestBody PhoneLineDTO phoneLineDTO) throws ClientNotFoundException, LineTypeNotFoundException, CityNotFoundException {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient,phoneLineDTO));
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient, phoneLineDTO));
     }
 
-    //Todo
-    @PutMapping("/phonelines/{idPhoneLine}")
-    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline, @RequestBody PhoneLineDTO phoneLineDto) throws PhoneLineNotFoundException{
-        return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline,phoneLineDto));
+    @PutMapping("/phonelines/{idPhoneline}")
+    public ResponseEntity<PhoneLine> updatePhoneLine(@PathVariable Integer idPhoneline,
+                                                     @Valid @RequestBody PhoneLineDTO phoneLineDto)
+            throws PhoneLineNotFoundException, LineTypeNotFoundException, CityNotFoundException {
+
+        return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline, phoneLineDto));
     }
+
+
+
 
     @DeleteMapping("/phonelines/{idPhoneLine}")
     public ResponseEntity<?> deletePhoneLine(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
@@ -153,15 +145,14 @@ public class SuperUserController {
 
     @GetMapping("/fares")
     public ResponseEntity<Fare> getFareByCities(@RequestParam(name = "cityFrom") Integer idCityFrom
-                                                , @RequestParam(name = "cityTo") Integer idCityTo) throws CityNotFoundException {
+            , @RequestParam(name = "cityTo") Integer idCityTo) throws CityNotFoundException {
         return ResponseEntity.ok(this.fareController.getFareByCities(idCityFrom, idCityTo));
     }
 
     @GetMapping("/clients/{idClient}/invoices")
     public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient,
                                                                      @RequestParam(required = false, value = "dateFrom") String dateFrom,
-                                                                     @RequestParam(required = false, value = "dateTo") String dateTo)
-            throws ClientNotFoundException, ParseException {
+                                                                     @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient);
         List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();

@@ -19,9 +19,6 @@ import java.util.List;
 @Entity
 @DiscriminatorValue(value="1")
 public class Client extends Person {
-
     @OneToMany(mappedBy = "client")
     private List<PhoneLine> phoneLines;
-
-    //Todo verificar que no haga un stackoverflow debugeando
 }

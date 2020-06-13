@@ -51,5 +51,6 @@ public class PhoneLine {
     private LineStatus lineStatus;
 
     @Column(name = "is_active")
-    private Boolean isActive;
+    @Builder.Default
+    private Boolean isActive = Boolean.TRUE;
 }
