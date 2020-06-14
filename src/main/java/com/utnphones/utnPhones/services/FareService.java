@@ -23,6 +23,7 @@ public class FareService {
     }
 
     public Fare create(Fare fare){
+
         return this.fareRepository.save(fare);
     }
 

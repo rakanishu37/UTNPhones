@@ -16,4 +16,7 @@ public interface FareRepository extends JpaRepository<Fare,Integer> {
                    " from fares " +
                    " where fares.id_city_from = :id_city_from and fares.id_city_to = :id_city_to", nativeQuery = true)
     Optional<Fare> getFareByCities(@Param("id_city_from") Integer idCityFrom, @Param("id_city_to") Integer idCityTo);
+
+
+
 }

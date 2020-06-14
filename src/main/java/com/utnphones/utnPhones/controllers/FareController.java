@@ -30,8 +30,8 @@ public class FareController {
     }
 
 
-    public ResponseEntity<Fare> getById(@PathVariable Integer idFare) throws FareNotFoundException {
-        return ResponseEntity.ok(fareService.getById(idFare));
+    public Fare getById(@PathVariable Integer idFare) throws FareNotFoundException {
+        return this.fareService.getById(idFare);
     }
 
     public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws CityNotFoundException {
