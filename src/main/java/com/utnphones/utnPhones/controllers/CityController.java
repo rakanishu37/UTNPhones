@@ -20,12 +20,11 @@ public class CityController {
         this.cityService = cityService;
     }
 
-    //@GetMapping("/")
+
     public List<City> getAll(){
         return this.cityService.getAll();
     }
 
-    //@PostMapping("/")//Si le ponemos un id cualquiera en el post funciona bien
     public City create(@RequestBody City city){
         return this.cityService.create(city);
     }
