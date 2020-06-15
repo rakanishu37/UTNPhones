@@ -157,4 +157,5 @@ public class BackOfficeController {
         List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 }
