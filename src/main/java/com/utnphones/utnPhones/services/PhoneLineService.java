@@ -63,7 +63,7 @@ public class PhoneLineService {
         return phoneLine;
     }
 
-    public void delete(Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
+    public void delete(Integer idPhoneLine) throws PhoneLineNotFoundException{
         PhoneLine phoneLine = getById(idPhoneLine);
         phoneLine.setIsActive(Boolean.FALSE);
         phoneLineRepository.save(phoneLine);
