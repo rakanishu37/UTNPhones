@@ -4,10 +4,11 @@ package com.utnphones.utnPhones.controllers.web;
 import com.utnphones.utnPhones.controllers.CallController;
 import com.utnphones.utnPhones.controllers.ClientController;
 import com.utnphones.utnPhones.controllers.InvoiceController;
+import com.utnphones.utnPhones.dto.TopTenDestinies;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
-import com.utnphones.utnPhones.projections.TopTenDestinies;
+import com.utnphones.utnPhones.projections.DestinyQuantity;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +40,12 @@ public class UserController {
     }
 
     @GetMapping("/me/calls")
-    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,@RequestParam(name = "dateFrom") String dateFrom, @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException{
-        Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
-        Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
+    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,
+                                                                              @RequestParam(name = "dateFrom") String dateFrom,
+                                                                              @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException{
+
         Integer idClient = sessionManager.getCurrentUser(token).getId();
-        Map<String, List<CallsDates>> callsBetweenDates = callController.getCallsBetweenDates(idClient, from, to);
+        Map<String, List<CallsDates>> callsBetweenDates = callController.getAllByClient(idClient, dateFrom, dateTo);
 
         return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) :
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build();
@@ -56,18 +56,17 @@ public class UserController {
                                                                          @RequestParam(name = "dateFrom") String dateFrom,
                                                                          @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException{
 
-        Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
-        Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
+
         Integer idClient = sessionManager.getCurrentUser(token).getId();
         List<InvoiceByClient> invoices = invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoices.size() > 0) ? ResponseEntity.ok(invoices) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/me/calls/topten")
-    public ResponseEntity<List<TopTenDestinies>> getTopTenDestiniesByClient(@RequestHeader("Authorization") String token) throws UserNotLoggedException {
+    public ResponseEntity<TopTenDestinies> getTopTenDestiniesByClient(@RequestHeader("Authorization") String token) throws UserNotLoggedException {
         Integer idClient = sessionManager.getCurrentUser(token).getId();
-        List<TopTenDestinies> topTenDestinies = this.callController.getTopTenDestiniesByClient(idClient);
-        return (topTenDestinies.size() > 0) ? ResponseEntity.ok(topTenDestinies) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+        TopTenDestinies topTenDestinies = this.callController.getTopTenDestiniesByClient(idClient);
+        return (topTenDestinies.getList().size() > 0) ? ResponseEntity.ok(topTenDestinies) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

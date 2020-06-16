@@ -1,5 +1,6 @@
-package com.utnphones.utnPhones.controllers;
+package com.utnphones.utnPhones.controllers.web;
 
+import com.utnphones.utnPhones.controllers.PersonController;
 import com.utnphones.utnPhones.domain.Person;
 import com.utnphones.utnPhones.dto.LoginRequestDto;
 import com.utnphones.utnPhones.exceptions.InvalidLoginException;

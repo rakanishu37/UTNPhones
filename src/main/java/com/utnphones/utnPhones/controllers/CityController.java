@@ -13,13 +13,11 @@ import java.util.List;
 @Controller
 public class CityController {
     private CityService cityService;
-    private ProvinceService provinceService;
 
     @Autowired
     public CityController(final CityService cityService) {
         this.cityService = cityService;
     }
-
 
     public List<City> getAll(){
         return this.cityService.getAll();

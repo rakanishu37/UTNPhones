@@ -18,12 +18,10 @@ import java.util.List;
 @Controller
 public class ClientController {
     private ClientService clientService;
-    private SessionManager sessionManager;
 
     @Autowired
-    public ClientController(ClientService clientService, SessionManager sessionManager) {
+    public ClientController(ClientService clientService) {
         this.clientService = clientService;
-        this.sessionManager = sessionManager;
     }
 
     public List<Client> getAll(Integer quantity, Integer from){
@@ -39,18 +37,10 @@ public class ClientController {
     }
 
     public Client update(Integer id, ClientUpdatedDTO client) throws ClientNotFoundException, CityNotFoundException {
-
         return this.clientService.update(id, client);
     }
-
 
     public Integer delete(Integer id) throws ClientIsAlreadyDeletedException, ClientNotFoundException {
         return this.clientService.delete(id);
     }
-
-    public PhoneLine createPhoneLine(Integer idClient, PhoneLine phoneLine) throws ClientNotFoundException {
-        phoneLine.setClient(clientService.getById(idClient));
-        return clientService.setPhoneline(phoneLine);
-    }
-
 }
