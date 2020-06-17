@@ -114,6 +114,7 @@ public class PhoneLineServiceTest {
         City city = new City(1, new Province(), "cityName", "223");
         LineType lineType = LineType.builder().id(1).typeName("mobile").build();
         PhoneLineDTO phoneLineDTO = new PhoneLineDTO("city", "223547748", lineType.getTypeName(), LineStatus.active);
+
         PhoneLine phoneLine = PhoneLine.builder()
                 .client(new Client())
                 .lineNumber(city.getPrefix() + phoneLineDTO.getLineNumber())
@@ -128,11 +129,12 @@ public class PhoneLineServiceTest {
         Assert.assertEquals(phoneLine, phoneLineTest);
     }
 
-    @Test// todo preguntar
+    @Test
     public void deleteOk() throws PhoneLineNotFoundException {
         PhoneLine phoneLine = TestUtils.getPhoneLines().get(0);
-       doNothing().when(this.phoneLineRepository.findByIdAndIsActive(phoneLine.getId(), Boolean.TRUE));
-        when(this.phoneLineService.getById(phoneLine.getId())).thenReturn(phoneLine);
+
+        when(this.phoneLineRepository.findByIdAndIsActive(phoneLine.getId(), Boolean.TRUE)).thenReturn(Optional.ofNullable(phoneLine));
+
         when(this.phoneLineRepository.save(phoneLine)).thenReturn(phoneLine);
 
         this.phoneLineService.delete(phoneLine.getId());
@@ -141,9 +143,10 @@ public class PhoneLineServiceTest {
     @Test(expected = PhoneLineNotFoundException.class)
     public void deleteWrongNumber() throws PhoneLineNotFoundException {
         PhoneLine phoneLine = TestUtils.getPhoneLines().get(0);
-        when(this.phoneLineService.getById(phoneLine.getId())).thenReturn(phoneLine);
+
+        when(this.phoneLineRepository.findByIdAndIsActive(phoneLine.getId(), Boolean.TRUE)).thenReturn(Optional.ofNullable(null));
         when(this.phoneLineRepository.save(phoneLine)).thenReturn(phoneLine);
 
-        this.phoneLineService.delete(phoneLine.getId());
+        phoneLineService.delete(phoneLine.getId());
     }
 }
