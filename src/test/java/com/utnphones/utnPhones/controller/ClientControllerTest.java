@@ -30,7 +30,7 @@ public class ClientControllerTest {
     @Before
     public void setUp(){
         initMocks(this);
-        clientController = new ClientController(clientService,sessionManager);
+       // clientController = new ClientController(clientService,sessionManager);
     }
 /*
     @Test(expected = ClientNotFoundException.class)

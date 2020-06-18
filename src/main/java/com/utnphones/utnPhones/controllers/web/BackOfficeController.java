@@ -77,9 +77,11 @@ public class BackOfficeController {
 
     @GetMapping("/calls/client/{idClient}")
     public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token,
-                                                                             @PathVariable Integer idClient) throws ClientNotFoundException {
+                                                                             @PathVariable Integer idClient,
+                                                                             @RequestParam(required = false, value = "dateFrom") String dateFrom,
+                                                                             @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
-        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId());
+        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId(), dateFrom, dateTo);
         return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
