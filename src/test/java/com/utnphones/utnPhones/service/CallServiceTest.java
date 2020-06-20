@@ -1,10 +1,7 @@
 package com.utnphones.utnPhones.service;
 
 import com.utnphones.utnPhones.domain.Call;
-import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
-import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
-import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.repository.CallRepository;
 import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.services.PhoneLineService;
@@ -16,7 +13,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;

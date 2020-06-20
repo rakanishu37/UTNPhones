@@ -84,9 +84,9 @@ public class TestUtils {
         return stringListMap;
     }
 
-    public static List<CallsDates> getCallsDates(){
-        List<CallsDates> list = new ArrayList<>();
-        CallsDates callsDates;
+    public static List<InvoiceDatesDTO> getCallsDates(){
+        List<InvoiceDatesDTO> list = new ArrayList<>();
+        InvoiceDatesDTO callsDates;
         return list;
     }
 
