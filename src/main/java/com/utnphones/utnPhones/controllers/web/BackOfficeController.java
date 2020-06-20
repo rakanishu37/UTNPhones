@@ -8,8 +8,10 @@ import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.dto.CallsDatesDTO;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
+import com.utnphones.utnPhones.dto.InvoiceByClientDTO;
 import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
@@ -19,8 +21,6 @@ import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
-import com.utnphones.utnPhones.projections.CallsDates;
-import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,24 +64,24 @@ public class BackOfficeController {
     }
 
     @GetMapping("/calls")
-    public ResponseEntity<List<CallsDates>> getAllCalls(@RequestHeader("Authorization") String token,
+    public ResponseEntity<List<CallsDatesDTO>> getAllCalls(@RequestHeader("Authorization") String token,
                                                         @RequestParam(required = true, value = "from") Integer from,
                                                         @RequestParam(required = true, value = "quantity") Integer quantity,
                                                         @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                         @RequestParam(required = false, value = "dateTo") String dateTo) throws UserNotLoggedException, ParseException {
         System.out.println(dateFrom);
         System.out.println(dateTo);
-        List<CallsDates> calls = this.callController.getAllRange(quantity, from, dateFrom, dateTo);
+        List<CallsDatesDTO> calls = this.callController.getAllRange(quantity, from, dateFrom, dateTo);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/calls/client/{idClient}")
-    public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token,
+    public ResponseEntity<Map<String, List<CallsDatesDTO>>> getAllCallsByClient(@RequestHeader("Authorization") String token,
                                                                              @PathVariable Integer idClient,
                                                                              @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                                              @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
-        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId(), dateFrom, dateTo);
+        Map<String, List<CallsDatesDTO>> calls = this.callController.getAllByClient(client.getId(), dateFrom, dateTo);
         return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
@@ -152,11 +152,11 @@ public class BackOfficeController {
     }
 
     @GetMapping("/clients/{idClient}/invoices")
-    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient,
+    public ResponseEntity<List<InvoiceByClientDTO>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient,
                                                                      @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                                      @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient);
-        List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
+        List<InvoiceByClientDTO> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

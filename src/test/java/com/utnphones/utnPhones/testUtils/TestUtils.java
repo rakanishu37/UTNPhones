@@ -9,7 +9,7 @@ import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
-import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.dto.InvoiceDatesDTO;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -58,9 +58,9 @@ public class TestUtils {
         return list;
     }
 
-    public static List<CallsDates> getCallsDates(){
-        List<CallsDates> list = new ArrayList<>();
-        CallsDates callsDates;
+    public static List<InvoiceDatesDTO> getCallsDates(){
+        List<InvoiceDatesDTO> list = new ArrayList<>();
+        InvoiceDatesDTO callsDates;
         return list;
     }
 

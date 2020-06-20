@@ -1,7 +1,6 @@
 package com.utnphones.utnPhones.repository;
 
 import com.utnphones.utnPhones.domain.Fare;
-import com.utnphones.utnPhones.projections.FarePriceBetweenCities;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
