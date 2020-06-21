@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.service;
 
 import com.utnphones.utnPhones.domain.Invoice;
 import com.utnphones.utnPhones.exceptions.InvoiceNotFoundException;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.repository.InvoiceRepository;
 import com.utnphones.utnPhones.services.InvoiceService;
 import com.utnphones.utnPhones.testUtils.TestUtils;
@@ -10,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
+import java.text.ParseException;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
@@ -64,8 +66,31 @@ public class InvoiceServiceTest {
     }
 
     @Test
-    public void testGetAllByClient(){
-        List<Invoice> invoiceList = TestUtils.getInvoices();
+    public void testGetAllByClientNoDatesOk() throws ParseException {
+        List<InvoiceByClient> invoiceList = TestUtils.getInvoicesByClient();
         when(this.invoiceRepository.getInvoicesByClient(1)).thenReturn(invoiceList);
+
+        List<InvoiceByClient> invoiceListTest = this.invoiceService.getInvoicesByClient(1, null, null);
+
+        Assert.assertEquals(invoiceList.size(), invoiceListTest.size());
+    }
+
+    @Test
+    public void testGetAllByClientWithDatesOk() throws ParseException {
+        List<InvoiceByClient> invoiceList = TestUtils.getInvoicesByClient();
+        when(this.invoiceRepository.getInvoicesByClientBetweenDates(1, "2020-05-05", "2020-05-30")).thenReturn(invoiceList);
+
+        List<InvoiceByClient> invoiceListTest = this.invoiceService.getInvoicesByClient(1, "2020-05-05", "2020-05-30");
+
+        Assert.assertEquals(invoiceList.size(), invoiceListTest.size());
+    }
+
+    @Test(expected = ParseException.class)
+    public void testGetAllByClientWithDatesWrongFormat() throws ParseException {
+        
+        when(this.invoiceRepository.getInvoicesByClientBetweenDates(1, "2020-05-05", "2020-05-30")).thenReturn(null);
+
+        this.invoiceService.getInvoicesByClient(1, "2020-05-505", "2020-05-530");
+
     }
 }

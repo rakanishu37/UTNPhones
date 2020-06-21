@@ -11,6 +11,7 @@ import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.domain.UserType;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.projections.InvoicesDates;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
@@ -86,9 +87,37 @@ public class TestUtils {
         return stringListMap;
     }
 
-    public static List<InvoicesDates> getCallsDates(){
-        List<InvoicesDates> list = new ArrayList<>();
-        InvoicesDates callsDates;
+    public static List<InvoiceByClient> getInvoicesByClient(){
+        List<InvoiceByClient> list = new ArrayList<>();
+        ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
+        InvoiceByClient projection = factory.createProjection(InvoiceByClient.class);
+        InvoiceByClient projection2 = factory.createProjection(InvoiceByClient.class);
+
+        projection.setIdInvoice(1);
+        projection.setPhoneLineNumber("1234");
+        projection.setNumberOfCalls(2);
+        projection.setPriceCost((float) 127.4);
+        projection.setInvoiceDate(new Date());
+        projection.setDueDate(new Date());
+        projection.setTotalPrice((float) 178.4);
+        projection.setPaid(false);
+        projection.setFirstName("nombre");
+        projection.setLastName("apellido");
+
+        projection2.setIdInvoice(2);
+        projection2.setPhoneLineNumber("1234");
+        projection2.setNumberOfCalls(2);
+        projection2.setPriceCost((float) 127.4);
+        projection2.setInvoiceDate(new Date());
+        projection2.setDueDate(new Date());
+        projection2.setTotalPrice((float) 178.4);
+        projection2.setPaid(false);
+        projection2.setFirstName("nombre");
+        projection2.setLastName("apellido");
+
+        list.add(projection);
+        list.add(projection2);
+
         return list;
     }
 
