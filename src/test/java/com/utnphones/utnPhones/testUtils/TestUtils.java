@@ -9,6 +9,7 @@ import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.domain.UserType;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoicesDates;
 import org.springframework.data.projection.ProjectionFactory;
@@ -88,6 +89,23 @@ public class TestUtils {
     public static List<InvoicesDates> getCallsDates(){
         List<InvoicesDates> list = new ArrayList<>();
         InvoicesDates callsDates;
+        return list;
+    }
+
+    public static List<Client> getClients(){
+        List<Client> list = new ArrayList<>();
+        Client client1 = Client.builder().id(14).firstname("Nombre").surname("Apellido")
+                .city(new City()).userType(new UserType())
+                .DNI("1500000").username("username")
+                .password("password").isActive(true)
+                .phoneLines(new ArrayList<>()).build();
+        Client client2 = Client.builder().id(14).firstname("Nombre2").surname("Apellido2")
+                .city(new City()).userType(new UserType())
+                .DNI("4150000").username("username2")
+                .password("password2").isActive(true)
+                .phoneLines(new ArrayList<>()).build();
+        list.add(client1);
+        list.add(client2);
         return list;
     }
 

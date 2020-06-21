@@ -19,7 +19,7 @@ public class ClientService {
     private ClientRepository clientRepository;
     private CityService cityService;
 
-    private PhoneLineRepository phoneLineRepository;
+    private PhoneLineRepository phoneLineRepository; // todo revisar
 
 
     @Autowired
