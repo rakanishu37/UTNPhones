@@ -8,6 +8,7 @@ import com.utnphones.utnPhones.dto.CallsDatesDTO;
 import com.utnphones.utnPhones.dto.InvoiceByClientDTO;
 import com.utnphones.utnPhones.dto.TopTenDestinies;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,12 +41,12 @@ public class UserController {
     }
 
     @GetMapping("/me/calls")
-    public ResponseEntity<Map<String, List<CallsDatesDTO>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,
+    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,
                                                                               @RequestParam(name = "dateFrom") String dateFrom,
                                                                               @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException{
 
         Integer idClient = sessionManager.getCurrentUser(token).getId();
-        Map<String, List<CallsDatesDTO>> callsBetweenDates = callController.getAllByClient(idClient, dateFrom, dateTo);
+        Map<String, List<CallsDates>> callsBetweenDates = callController.getAllByClient(idClient, dateFrom, dateTo);
 
         return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) :
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build();

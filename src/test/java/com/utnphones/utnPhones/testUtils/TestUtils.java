@@ -10,6 +10,7 @@ import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.InvoicesDates;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -84,9 +85,9 @@ public class TestUtils {
         return stringListMap;
     }
 
-    public static List<InvoiceDatesDTO> getCallsDates(){
-        List<InvoiceDatesDTO> list = new ArrayList<>();
-        InvoiceDatesDTO callsDates;
+    public static List<InvoicesDates> getCallsDates(){
+        List<InvoicesDates> list = new ArrayList<>();
+        InvoicesDates callsDates;
         return list;
     }
 

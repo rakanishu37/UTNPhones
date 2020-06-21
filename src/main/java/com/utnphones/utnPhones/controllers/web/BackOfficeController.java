@@ -21,6 +21,7 @@ import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
+import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -64,24 +65,24 @@ public class BackOfficeController {
     }
 
     @GetMapping("/calls")
-    public ResponseEntity<List<CallsDatesDTO>> getAllCalls(@RequestHeader("Authorization") String token,
+    public ResponseEntity<List<CallsDates>> getAllCalls(@RequestHeader("Authorization") String token,
                                                         @RequestParam(required = true, value = "from") Integer from,
                                                         @RequestParam(required = true, value = "quantity") Integer quantity,
                                                         @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                         @RequestParam(required = false, value = "dateTo") String dateTo) throws UserNotLoggedException, ParseException {
         System.out.println(dateFrom);
         System.out.println(dateTo);
-        List<CallsDatesDTO> calls = this.callController.getAllRange(quantity, from, dateFrom, dateTo);
+        List<CallsDates> calls = this.callController.getAllRange(quantity, from, dateFrom, dateTo);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/calls/client/{idClient}")
-    public ResponseEntity<Map<String, List<CallsDatesDTO>>> getAllCallsByClient(@RequestHeader("Authorization") String token,
+    public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token,
                                                                              @PathVariable Integer idClient,
                                                                              @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                                              @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
-        Map<String, List<CallsDatesDTO>> calls = this.callController.getAllByClient(client.getId(), dateFrom, dateTo);
+        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId(), dateFrom, dateTo);
         return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

@@ -4,6 +4,7 @@ import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.dto.CallsDatesDTO;
 import com.utnphones.utnPhones.dto.TopTenDestinies;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
+import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.services.CallService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ public class CallController {
         return this.callService.getAll(quantity, from, dateFrom, dateTo);
     }
 
-    public Map<String, List<CallsDatesDTO>> getAllByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
+    public Map<String, List<CallsDates>> getAllByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         return this.callService.getCalls(idClient, dateFrom, dateTo);
     }
 
