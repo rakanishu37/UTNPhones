@@ -37,7 +37,7 @@ public class CallServiceTest {
     }
 
     @Test
-    public void testGetAllOk() throws ParseException {
+    public void testGetAllByClientOk() throws ParseException {
         Map<String, List<CallsDates>> result = TestUtils.getCalls();
         when(this.callRepository.getAllCallByClient(1)).thenReturn(result.get("78910"));
 
@@ -45,11 +45,25 @@ public class CallServiceTest {
 
         Assert.assertEquals(result.get("78910").size(), resultTest.get("78910").size());
     }
+    @Test
+    public void testGetAllByClientAndDatesOk() throws ParseException {
+        Map<String, List<CallsDates>> result = TestUtils.getCalls();
+        when(this.callRepository.getAllByIdClientBetweenDates(1, "2020-05-01", "2020-05-10"))
+                .thenReturn(result.get("78910"));
+        Map<String, List<CallsDates>> resultTest = this.callService.getCalls(1, "2020-05-01", "2020-05-10");
+        Assert.assertEquals(result.get("78910").size(), resultTest.get("78910").size());
+    }
 
-    //@Test
-    //public void testGetAllWrongDates
-    //public void testGetAllWrongQuantity
+    @Test(expected = ParseException.class)
+    public void testGetAllByClientAndDatesWrongDates() throws ParseException {
+        this.callService.getCalls(1, "2020-05-220", "2020-05-18");
 
+    }
+
+    @Test
+    public void testGetTopTenDestiniesByClient(){ // todo
+
+    }
   /*  @Test
     public void testCreateCallOk() throws PhoneLineNotFoundException {
         Call call = TestUtils.getCalls().get(0);

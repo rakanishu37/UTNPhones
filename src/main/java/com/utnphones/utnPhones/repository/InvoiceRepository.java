@@ -1,8 +1,7 @@
 package com.utnphones.utnPhones.repository;
 
 import com.utnphones.utnPhones.domain.Invoice;
-import com.utnphones.utnPhones.dto.InvoiceByClientDTO;
-import com.utnphones.utnPhones.dto.InvoiceDatesDTO;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,7 +27,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
             "            inv.invoice_date between :from and :to\n" +
             "        order by\n" +
             "            inv.invoice_date asc;", nativeQuery = true)
-    List<InvoiceDatesDTO> getByIdClientDateBetween(@Param("clientId")Integer clientId,
+    List<InvoiceByClient> getByIdClientDateBetween(@Param("clientId")Integer clientId,
                                                    @Param("from") String from, @Param("to") String to);
 
 
@@ -51,7 +50,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
             "           per.id_person = :clientId " +
             "       order by " +
             "           inv.invoice_date asc;", nativeQuery = true)
-    List<InvoiceByClientDTO> getInvoicesByClient(@Param("clientId") Integer clientId);
+    List<InvoiceByClient> getInvoicesByClient(@Param("clientId") Integer clientId);
 
     @Query(value = "select inv.id_invoice as 'idInvoice', pl.line_number as 'PhoneLineNumber',\n" +
             "            inv.number_of_calls as 'NumberOfCalls', inv.price_cost as 'PriceCost', inv.invoice_date as 'InvoiceDate',\n" +
@@ -62,6 +61,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
             "            inner join persons as per on pl.id_person = per.id_person \n" +
             "             where per.id_person = :clientId and inv.invoice_date between :dateFrom and :dateTo \n" +
             "            order by inv.invoice_date asc;", nativeQuery = true)
-    List<InvoiceByClientDTO> getInvoicesByClientBetweenDates(@Param("clientId") Integer clientId,
+    List<InvoiceByClient> getInvoicesByClientBetweenDates(@Param("clientId") Integer clientId,
                                                           @Param("dateFrom") String dateFrom, @Param("dateTo") String dateTo);
 }

@@ -8,10 +8,8 @@ import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.PhoneLine;
-import com.utnphones.utnPhones.dto.CallsDatesDTO;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
-import com.utnphones.utnPhones.dto.InvoiceByClientDTO;
 import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
@@ -22,6 +20,7 @@ import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -154,11 +153,11 @@ public class BackOfficeController {
     }
 
     @GetMapping("/clients/{idClient}/invoices")
-    public ResponseEntity<List<InvoiceByClientDTO>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient,
+    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient,
                                                                      @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                                      @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient);
-        List<InvoiceByClientDTO> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
+        List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

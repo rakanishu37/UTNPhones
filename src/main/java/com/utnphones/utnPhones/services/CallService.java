@@ -3,8 +3,6 @@ package com.utnphones.utnPhones.services;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.CallDto;
-import com.utnphones.utnPhones.dto.CallsDatesDTO;
-import com.utnphones.utnPhones.dto.DestinyCallsCountDTO;
 import com.utnphones.utnPhones.dto.TopTenDestinies;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
@@ -55,7 +53,7 @@ public class CallService {
                         .build());
          return getLocation(created);
     }
-
+// NO SE USA
     public Call getById(Integer idCall) throws CallNotFoundException {
         return callRepository.findById(idCall)
                 .orElseThrow(() -> new CallNotFoundException());

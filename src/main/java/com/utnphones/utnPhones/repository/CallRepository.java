@@ -1,8 +1,6 @@
 package com.utnphones.utnPhones.repository;
 
 import com.utnphones.utnPhones.domain.Call;
-import com.utnphones.utnPhones.dto.CallsDatesDTO;
-import com.utnphones.utnPhones.dto.DestinyCallsCountDTO;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.DestinyQuantity;
 import org.springframework.data.jpa.repository.JpaRepository;

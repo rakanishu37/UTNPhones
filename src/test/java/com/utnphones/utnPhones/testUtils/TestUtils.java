@@ -55,10 +55,10 @@ public class TestUtils {
     public static Map<String, List<CallsDates>> getCalls(){
         List<CallsDates> list = new ArrayList<>();
         Map<String, List<CallsDates>> stringListMap = new HashMap<>();
-        Call call1 = new Call(1, getPhoneLines().get(0), getPhoneLines().get(1), new Invoice(), (float) 10.8, 150, (float) 13.7,
+       /* Call call1 = new Call(1, getPhoneLines().get(0), getPhoneLines().get(1), new Invoice(), (float) 10.8, 150, (float) 13.7,
                 new Date());
         Call call2 = new Call(1, getPhoneLines().get(0), getPhoneLines().get(1), new Invoice(), (float) 10.8, 150, (float) 13.7,
-                new Date());
+                new Date());*/
         ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
         CallsDates projection = factory.createProjection(CallsDates.class);
         CallsDates projection2 = factory.createProjection(CallsDates.class);

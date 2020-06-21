@@ -1,7 +1,7 @@
 package com.utnphones.utnPhones.controllers;
 
 import com.utnphones.utnPhones.domain.Invoice;
-import com.utnphones.utnPhones.dto.InvoiceByClientDTO;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.services.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,7 +33,7 @@ public class InvoiceController {
         return this.invoiceService.getById(id);
     }
 
-    public List<InvoiceByClientDTO> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
+    public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         return this.invoiceService.getInvoicesByClient(idClient, dateFrom, dateTo);
     }
 
