@@ -1,8 +1,8 @@
 package com.utnphones.utnPhones.repository;
 
 import com.utnphones.utnPhones.domain.Call;
-import com.utnphones.utnPhones.projections.CallsDates;
-import com.utnphones.utnPhones.projections.DestinyQuantity;
+import com.utnphones.utnPhones.dto.CallsDatesDTO;
+import com.utnphones.utnPhones.dto.DestinyCallsCountDTO;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -14,18 +14,18 @@ import java.util.List;
 public interface CallRepository extends JpaRepository<Call,Integer> {
 
     @Query(value = "call sp_show_report_by_idClient_dates(:idClient,:from,:to);", nativeQuery = true)
-    List<CallsDates> getAllByIdClientBetweenDates(@Param("idClient") Integer idClient,String from, String to);
+    List<CallsDatesDTO> getAllByIdClientBetweenDates(@Param("idClient") Integer idClient, String from, String to);
 
     @Query(value = "select * from v_report LIMIT :quantity OFFSET :from ", nativeQuery = true)
-    List<CallsDates> findAll(@Param("quantity") Integer quantity, @Param("from") Integer from);
+    List<CallsDatesDTO> findAll(@Param("quantity") Integer quantity, @Param("from") Integer from);
 
     @Query(value = "select * from v_report WHERE v_report.date BETWEEN :datefrom and :dateTo LIMIT :quantity OFFSET :from ", nativeQuery = true)
-    List<CallsDates> findAllByDates(@Param("from") Integer from, @Param("quantity") Integer quantity,
+    List<CallsDatesDTO> findAllByDates(@Param("from") Integer from, @Param("quantity") Integer quantity,
                                     @Param("datefrom") String dateFrom, @Param("dateTo") String dateTo);
 
 
     @Query(value = "call sp_show_report_by_idClient(:id_person);", nativeQuery = true)
-    List<CallsDates> getAllCallByClient(@Param("id_person") Integer id);
+    List<CallsDatesDTO> getAllCallByClient(@Param("id_person") Integer id);
 
     @Query(value = "select \n" +
             "\tct.city_name as 'CityName',\n" +
@@ -42,5 +42,5 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
             "order by count(pl.line_number)\n" +
             "limit \n" +
             "10;", nativeQuery = true)
-    List<DestinyQuantity> getTopTenDestiniesByClient(@Param("idClient") Integer idClient);
+    List<DestinyCallsCountDTO> getTopTenDestiniesByClient(@Param("idClient") Integer idClient);
 }

@@ -10,12 +10,16 @@ import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.projections.CallsDates;
+import org.springframework.data.projection.ProjectionFactory;
+import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TestUtils {
 
@@ -47,20 +51,42 @@ public class TestUtils {
         return list;
     }
 
-    public static List<Call> getCalls(){
-        List<Call> list = new ArrayList<>();
+    public static Map<String, List<CallsDates>> getCalls(){
+        List<CallsDates> list = new ArrayList<>();
+        Map<String, List<CallsDates>> stringListMap = new HashMap<>();
         Call call1 = new Call(1, getPhoneLines().get(0), getPhoneLines().get(1), new Invoice(), (float) 10.8, 150, (float) 13.7,
                 new Date());
         Call call2 = new Call(1, getPhoneLines().get(0), getPhoneLines().get(1), new Invoice(), (float) 10.8, 150, (float) 13.7,
                 new Date());
-        list.add(call1);
-        list.add(call2);
-        return list;
+        ProjectionFactory factory = new SpelAwareProxyProjectionFactory();
+        CallsDates projection = factory.createProjection(CallsDates.class);
+        CallsDates projection2 = factory.createProjection(CallsDates.class);
+        projection.setCityOrigin("");
+        projection.setCityDestiny("");
+        projection.setPhoneNumberDestiny("123456");
+        projection.setPhoneNumberOrigin("78910");
+        projection.setDuration(150);
+        projection.setTotalPrice( (float) 13.7);
+        projection.setDate(new Date());
+
+        projection2.setCityOrigin("");
+        projection2.setCityDestiny("");
+        projection2.setPhoneNumberDestiny("4455");
+        projection2.setPhoneNumberOrigin("78910");
+        projection2.setDuration(150);
+        projection2.setTotalPrice( (float) 13.7);
+        projection2.setDate(new Date());
+
+        list.add(projection);
+        list.add(projection2);
+        stringListMap.put("78910", list);
+
+        return stringListMap;
     }
 
-    public static List<CallsDates> getCallsDates(){
-        List<CallsDates> list = new ArrayList<>();
-        CallsDates callsDates;
+    public static List<InvoiceDatesDTO> getCallsDates(){
+        List<InvoiceDatesDTO> list = new ArrayList<>();
+        InvoiceDatesDTO callsDates;
         return list;
     }
 

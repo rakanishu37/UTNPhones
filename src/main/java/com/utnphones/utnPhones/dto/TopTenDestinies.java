@@ -1,6 +1,5 @@
 package com.utnphones.utnPhones.dto;
 
-import com.utnphones.utnPhones.projections.DestinyQuantity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +10,9 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 public class TopTenDestinies {
-    private List<DestinyQuantity> list;
+    private List<DestinyCallsCountDTO> list;
 
-    public static TopTenDestinies fromList(List<DestinyQuantity> topTen){
+    public static TopTenDestinies fromList(List<DestinyCallsCountDTO> topTen){
         return TopTenDestinies.builder()
                 .list(topTen)
                 .build();

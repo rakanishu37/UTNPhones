@@ -1,10 +1,7 @@
 package com.utnphones.utnPhones.service;
 
 import com.utnphones.utnPhones.domain.Call;
-import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
-import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
-import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.repository.CallRepository;
 import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.services.PhoneLineService;
@@ -16,9 +13,9 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.net.URI;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.mockito.Mockito.when;
@@ -40,12 +37,12 @@ public class CallServiceTest {
 
     @Test
     public void testGetAllOk() throws ParseException {
-       /* List<Call> list = TestUtils.getCalls();
-        when(this.callRepository.findAll(2,0)).thenReturn(list);
+        Map<String, List<CallsDates>> result = TestUtils.getCalls();
+        when(this.callRepository.getAllCallByClient(1)).thenReturn(result.get("78910"));
 
-        List<CallsDates> listTest = this.callService.getAll(2, 1, null, null);
+        Map<String, List<CallsDates>> resultTest = this.callService.getCalls(1, null, null);
 
-        Assert.assertEquals(list.size(), listTest.size());*/
+        Assert.assertEquals(result.get("78910").size(), resultTest.get("78910").size());
     }
 
     //@Test
@@ -64,7 +61,7 @@ public class CallServiceTest {
 
         Assert.assertEquals(call.getId(), callTest);
     }*/
-
+/*
     @Test
     public void testGetByIdOk() throws CallNotFoundException {
         Call call = TestUtils.getCalls().get(0);
@@ -74,7 +71,7 @@ public class CallServiceTest {
 
         Assert.assertEquals(call, callTest);
     }
-
+*//*
     @Test(expected = CallNotFoundException.class)
     public void testGetByIdNotFound() throws CallNotFoundException {
         when(this.callRepository.findById(1)).thenReturn(Optional.empty());
@@ -85,5 +82,5 @@ public class CallServiceTest {
     @Test
     public void testGetCallsOk(){
 
-    }
+    }*/
 }
