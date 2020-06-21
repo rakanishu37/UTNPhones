@@ -23,6 +23,7 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
     List<CallsDates> findAllByDates(@Param("from") Integer from, @Param("quantity") Integer quantity,
                                     @Param("datefrom") String dateFrom, @Param("dateTo") String dateTo);
 
+
     @Query(value = "call sp_show_report_by_idClient(:id_person);", nativeQuery = true)
     List<CallsDates> getAllCallByClient(@Param("id_person") Integer id);
 

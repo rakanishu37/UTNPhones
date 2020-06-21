@@ -27,7 +27,6 @@ public class CallController {
         return this.callService.create(callDto);
     }
 
-
     public List<CallsDates> getAllRange(Integer quantity, Integer from, String dateFrom, String dateTo) throws ParseException {
         return this.callService.getAll(quantity, from, dateFrom, dateTo);
     }

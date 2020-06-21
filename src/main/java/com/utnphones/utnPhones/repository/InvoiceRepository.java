@@ -31,6 +31,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
     List<InvoicesDates> getByIdClientDateBetween(@Param("clientId")Integer clientId,
                                                  @Param("from") String from, @Param("to") String to);
 
+
     @Query(value = "select " +
             "         inv.id_invoice as 'idInvoice', " +
             "         pl.line_number as 'PhoneLineNumber'," +

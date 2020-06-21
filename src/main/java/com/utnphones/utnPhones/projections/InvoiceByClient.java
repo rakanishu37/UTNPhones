@@ -17,4 +17,6 @@ public interface InvoiceByClient {
     String getFirstName();
     String getLastName();
 
+
+
 }

@@ -19,4 +19,5 @@ public interface FareRepository extends JpaRepository<Fare,Integer> {
 
 
 
+
 }

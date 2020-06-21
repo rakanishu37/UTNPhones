@@ -4,4 +4,5 @@ public interface FarePriceBetweenCities {
     Float getPrice();
     String getCityFrom();
     String getCityTo();
+
 }

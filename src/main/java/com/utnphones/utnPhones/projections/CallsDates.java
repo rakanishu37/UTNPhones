@@ -10,4 +10,5 @@ public interface CallsDates {
     Integer getDuration();
     Float getTotalPrice();
     Date getDate();
+
 }
