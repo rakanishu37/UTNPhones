@@ -92,6 +92,15 @@ public class TestUtils {
         return list;
     }
 
+    public static List<Invoice> getInvoices(){
+        List<Invoice> list = new ArrayList<>();
+        Invoice invoice1 = new Invoice(1, new PhoneLine(), 2, (float) 17.5, (float) 21.1, new Date(), new Date(), false, new ArrayList<>());
+        Invoice invoice2 = new Invoice(2, new PhoneLine(), 2, (float) 17.5, (float) 21.1, new Date(), new Date(), false, new ArrayList<>());
+        list.add(invoice1);
+        list.add(invoice2);
+        return list;
+    }
+
     public static List<Client> getClients(){
         List<Client> list = new ArrayList<>();
         Client client1 = Client.builder().id(14).firstname("Nombre").surname("Apellido")
