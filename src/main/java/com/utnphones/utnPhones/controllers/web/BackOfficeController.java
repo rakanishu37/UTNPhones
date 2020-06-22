@@ -21,7 +21,6 @@ import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
-import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +42,6 @@ import java.util.Map;
 @RestController
 @RequestMapping("/backoffice")
 public class BackOfficeController {
-    private SessionManager sessionManager;
     private PhoneLineController phoneLineController;
     private FareController fareController;
     private ClientController clientController;
@@ -52,10 +49,9 @@ public class BackOfficeController {
     private CallController callController;
 
     @Autowired
-    public BackOfficeController(SessionManager sessionManager, PhoneLineController phoneLineController,
+    public BackOfficeController(PhoneLineController phoneLineController,
                                 FareController fareController, ClientController clientController,
                                 InvoiceController invoiceController, CallController callController) {
-        this.sessionManager = sessionManager;
         this.phoneLineController = phoneLineController;
         this.fareController = fareController;
         this.clientController = clientController;
@@ -63,30 +59,28 @@ public class BackOfficeController {
         this.callController = callController;
     }
 
-    @GetMapping("/calls")
-    public ResponseEntity<List<CallsDates>> getAllCalls(@RequestHeader("Authorization") String token,
-                                                        @RequestParam(required = true, value = "from") Integer from,
-                                                        @RequestParam(required = true, value = "quantity") Integer quantity,
+    /*@GetMapping("/calls")
+    public ResponseEntity<List<CallsDates>> getAllCalls(@RequestParam(value = "from") Integer from,
+                                                        @RequestParam(value = "quantity") Integer quantity,
                                                         @RequestParam(required = false, value = "dateFrom") String dateFrom,
-                                                        @RequestParam(required = false, value = "dateTo") String dateTo) throws UserNotLoggedException, ParseException {
-        System.out.println(dateFrom);
-        System.out.println(dateTo);
+                                                        @RequestParam(required = false, value = "dateTo") String dateTo) throws ParseException {
+
         List<CallsDates> calls = this.callController.getAllRange(quantity, from, dateFrom, dateTo);
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
+    }*/
 
     @GetMapping("/calls/client/{idClient}")
-    public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@RequestHeader("Authorization") String token,
-                                                                             @PathVariable Integer idClient) throws ClientNotFoundException {
+    public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@PathVariable Integer idClient,
+                                                                             @RequestParam(required = false, value = "dateFrom") String dateFrom,
+                                                                             @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
-        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId());
+        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId(),dateFrom,dateTo);
         return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/clients")
-    public ResponseEntity<List<Client>> getAllClient(@RequestHeader("Authorization") String token,
-                                                     @RequestParam(required = true, value = "from") Integer from,
-                                                     @RequestParam(required = true, value = "quantity") Integer quantity) throws UserNotLoggedException, UnauthorizedAccessException {
+    public ResponseEntity<List<Client>> getAllClient(@RequestParam(required = true, value = "from") Integer from,
+                                                     @RequestParam(required = true, value = "quantity") Integer quantity){
         List<Client> list = this.clientController.getAll(quantity, from);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -122,7 +116,6 @@ public class BackOfficeController {
     public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient,
                                                      @Valid @RequestBody PhoneLineDTO phoneLineDTO) throws ClientNotFoundException, LineTypeNotFoundException, CityNotFoundException {
 
-
         return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient, phoneLineDTO));
     }
 
@@ -133,9 +126,6 @@ public class BackOfficeController {
 
         return ResponseEntity.ok(phoneLineController.updatePhoneLine(idPhoneline, phoneLineDto));
     }
-
-
-
 
     @DeleteMapping("/phonelines/{idPhoneLine}")
     public ResponseEntity<?> deletePhoneLine(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
@@ -150,7 +140,7 @@ public class BackOfficeController {
     }
 
     @GetMapping("/clients/{idClient}/invoices")
-    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@RequestHeader("Authorization") String token, @PathVariable Integer idClient,
+    public ResponseEntity<List<InvoiceByClient>> getInvoicesByClient(@PathVariable Integer idClient,
                                                                      @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                                      @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient);
