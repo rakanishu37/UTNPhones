@@ -85,6 +85,7 @@ public class BackOfficeController {
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+
     @GetMapping("/clients/{idClient}")
     public ResponseEntity<Client> getClientById(@PathVariable Integer idClient) throws ClientNotFoundException {
         return ResponseEntity.ok(clientController.getById(idClient));

@@ -6,6 +6,7 @@ import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.InvalidLoginException;
+import com.utnphones.utnPhones.exceptions.InvoiceNotFoundException;
 import com.utnphones.utnPhones.exceptions.ParseDateException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
@@ -25,6 +26,7 @@ import static com.utnphones.utnPhones.utils.Constants.CLIENT_NOT_EXISTS_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_DATE_FORMAT_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_FORMAT_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_LOGIN_MESSAGE;
+import static com.utnphones.utnPhones.utils.Constants.INVOICE_NOT_EXISTS;
 import static com.utnphones.utnPhones.utils.Constants.PHONELINE_NOT_EXISTS_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.UNAUTHORIZED_ACCESS_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.USER_NOT_LOGGED_MESSAGE;
@@ -99,8 +101,14 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     public ErrorResponseDto handleUserNException(ConstraintViolationException ex)
     {
         return new ErrorResponseDto(6, ex.getCause().getMessage());
-    }
+    } // todo ver
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(InvoiceNotFoundException.class)
+    public ErrorResponseDto handleInvoiceNotFoundException(ConstraintViolationException ex)
+    {
+        return new ErrorResponseDto(4, INVOICE_NOT_EXISTS);
+    }
     /*@ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(LineTypeNotFoundException.class)
     public ErrorResponseDto handleLineTypeNotFoundException(LineTypeNotFoundException ex)

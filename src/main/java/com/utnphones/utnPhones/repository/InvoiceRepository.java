@@ -2,7 +2,6 @@ package com.utnphones.utnPhones.repository;
 
 import com.utnphones.utnPhones.domain.Invoice;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
-import com.utnphones.utnPhones.projections.InvoicesDates;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,8 +27,9 @@ public interface InvoiceRepository extends JpaRepository<Invoice,Integer> {
             "            inv.invoice_date between :from and :to\n" +
             "        order by\n" +
             "            inv.invoice_date asc;", nativeQuery = true)
-    List<InvoicesDates> getByIdClientDateBetween(@Param("clientId")Integer clientId,
-                                                 @Param("from") String from, @Param("to") String to);
+    List<InvoiceByClient> getByIdClientDateBetween(@Param("clientId")Integer clientId,
+                                                   @Param("from") String from, @Param("to") String to);
+
 
     @Query(value = "select " +
             "         inv.id_invoice as 'idInvoice', " +

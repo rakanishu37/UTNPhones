@@ -44,6 +44,7 @@ public class PhoneLineService {
                 .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
+
     public PhoneLine getByPhoneNumber(String phoneNumber) throws PhoneLineNotFoundException {
         return this.phoneLineRepository.findByLineNumberAndIsActive(phoneNumber,Boolean.TRUE)
                 .orElseThrow(()-> new PhoneLineNotFoundException());

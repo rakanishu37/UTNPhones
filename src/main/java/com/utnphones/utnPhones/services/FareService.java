@@ -31,6 +31,7 @@ public class FareService {
         return fareRepository.getFareByCities(idCityFrom, idCityTo).orElseThrow(CityNotFoundException::new);
     }
 
+
     public Fare getById(Integer idFare) throws FareNotFoundException {
         return fareRepository.findById(idFare)
                 .orElseThrow(FareNotFoundException::new);

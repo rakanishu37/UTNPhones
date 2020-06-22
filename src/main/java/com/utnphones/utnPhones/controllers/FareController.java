@@ -29,7 +29,6 @@ public class FareController {
         return this.fareService.create(fare);
     }
 
-
     public Fare getById(@PathVariable Integer idFare) throws FareNotFoundException {
         return this.fareService.getById(idFare);
     }

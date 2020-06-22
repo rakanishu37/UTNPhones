@@ -19,7 +19,7 @@ public class ClientService {
     private ClientRepository clientRepository;
     private CityService cityService;
 
-    private PhoneLineRepository phoneLineRepository;
+    private PhoneLineRepository phoneLineRepository; // todo revisar
 
 
     @Autowired
@@ -45,6 +45,7 @@ public class ClientService {
                 .build();
         return this.clientRepository.save(clientCreated);
     }
+
 
     public PhoneLine setPhoneline(PhoneLine phoneLine) {
         return phoneLineRepository.save(phoneLine);

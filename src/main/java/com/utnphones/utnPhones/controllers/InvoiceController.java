@@ -1,6 +1,7 @@
 package com.utnphones.utnPhones.controllers;
 
 import com.utnphones.utnPhones.domain.Invoice;
+import com.utnphones.utnPhones.exceptions.InvoiceNotFoundException;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.services.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class InvoiceController {
         return this.invoiceService.create(invoice);
     }
 
-    public Invoice getById(@PathVariable Integer id) throws Exception {
+    public Invoice getById(@PathVariable Integer id) throws InvoiceNotFoundException {
         return this.invoiceService.getById(id);
     }
 

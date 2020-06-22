@@ -8,7 +8,6 @@ import com.utnphones.utnPhones.dto.TopTenDestinies;
 import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
-import com.utnphones.utnPhones.projections.DestinyQuantity;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +30,7 @@ public class UserController {
     private InvoiceController invoiceController;
     private SessionManager sessionManager;
 
+    
     @Autowired
     public UserController(ClientController clientController,CallController callController,SessionManager sessionManager,InvoiceController invoiceController) {
         this.clientController = clientController;

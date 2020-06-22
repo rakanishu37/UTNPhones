@@ -40,6 +40,7 @@ public class CallService {
         }
     }
 
+
     public URI create(CallDto callDto) throws PhoneLineNotFoundException {
         PhoneLine numberFrom = phoneLineService.getByPhoneNumber(callDto.getNumberFrom());
         PhoneLine numberTo = phoneLineService.getByPhoneNumber(callDto.getNumberTo());
@@ -52,7 +53,7 @@ public class CallService {
                         .build());
          return getLocation(created);
     }
-
+// NO SE USA
     public Call getById(Integer idCall) throws CallNotFoundException {
         return callRepository.findById(idCall)
                 .orElseThrow(() -> new CallNotFoundException());
