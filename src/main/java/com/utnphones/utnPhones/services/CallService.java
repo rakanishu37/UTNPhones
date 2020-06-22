@@ -31,7 +31,7 @@ public class CallService {
         this.phoneLineService = phoneLineService;
     }
 
-
+    //todo borrar
     public List<CallsDates> getAll(Integer quantity, Integer from, String dateFrom, String dateTo) throws ParseException {
         if(dateFrom==null || dateTo==null){
             return this.callRepository.findAll(quantity, from);
@@ -41,19 +41,19 @@ public class CallService {
     }
 
 
-    public URI create(CallDto callDto) throws PhoneLineNotFoundException {
+    public Call create(CallDto callDto) throws PhoneLineNotFoundException {
         PhoneLine numberFrom = phoneLineService.getByPhoneNumber(callDto.getNumberFrom());
         PhoneLine numberTo = phoneLineService.getByPhoneNumber(callDto.getNumberTo());
 
-        Call created = callRepository.save(Call.builder()
+        return callRepository.save(Call.builder()
                         .phoneFrom(numberFrom)
                         .phoneTo(numberTo)
                         .duration(callDto.getDuration())
                         .date(callDto.getDate())
                         .build());
-         return getLocation(created);
     }
 // NO SE USA
+//todo borrar
     public Call getById(Integer idCall) throws CallNotFoundException {
         return callRepository.findById(idCall)
                 .orElseThrow(() -> new CallNotFoundException());
@@ -77,6 +77,7 @@ public class CallService {
         return TopTenDestinies.fromList(list);
     }
 
+    //todo mover a control backoffice
     private URI getLocation(Call call) {
         return ServletUriComponentsBuilder
                 .fromCurrentRequest()

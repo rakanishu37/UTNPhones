@@ -12,11 +12,8 @@ import org.springframework.stereotype.Service;
 public class LineTypeService {
     private final LineTypeRepository lineTypeRepository;
 
-
     public LineType findByName(String lineTypeName) throws LineTypeNotFoundException {
         return lineTypeRepository.findByTypeName(lineTypeName)
                 .orElseThrow(LineTypeNotFoundException::new);
     }
-
-
 }

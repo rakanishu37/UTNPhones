@@ -1,14 +1,12 @@
 package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.domain.Client;
-import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.repository.ClientRepository;
-import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +17,9 @@ public class ClientService {
     private ClientRepository clientRepository;
     private CityService cityService;
 
-    private PhoneLineRepository phoneLineRepository; // todo revisar
-
-
     @Autowired
-    public ClientService(ClientRepository clientRepository, PhoneLineRepository phoneLineRepository, CityService cityService) {
+    public ClientService(ClientRepository clientRepository, CityService cityService) {
         this.clientRepository = clientRepository;
-        this.phoneLineRepository = phoneLineRepository;
         this.cityService = cityService;
     }
 
@@ -47,13 +41,9 @@ public class ClientService {
     }
 
 
-    public PhoneLine setPhoneline(PhoneLine phoneLine) {
-        return phoneLineRepository.save(phoneLine);
-    }
-
     public Client getById(Integer id) throws ClientNotFoundException {
         return this.clientRepository.findById(id)
-                .orElseThrow(() -> new ClientNotFoundException());
+                .orElseThrow(ClientNotFoundException::new);
     }
 
     public Client update(Integer idclient, ClientUpdatedDTO modifiedClient) throws ClientNotFoundException, CityNotFoundException {

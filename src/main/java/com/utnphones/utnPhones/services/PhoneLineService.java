@@ -24,6 +24,7 @@ public class PhoneLineService {
         this.lineTypeService = lineTypeService;
     }
 
+    //todo borrar
     public List<PhoneLine> getAll(){
         return this.phoneLineRepository.findAllByIsActive(Boolean.TRUE);
     }

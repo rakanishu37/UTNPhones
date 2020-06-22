@@ -20,14 +20,18 @@ public class InvoiceService {
         this.invoiceRepository = invoiceRepository;
     }
 
+    //todo borrar
     public List<Invoice> getAll(){
         return this.invoiceRepository.findAll();
     }
+
+    //todo borrar
 
     public Invoice create(Invoice invoice){
         return this.invoiceRepository.save(invoice);
     }
 
+    //todo borrar
     public Invoice getById(Integer id) throws InvoiceNotFoundException {
         return this.invoiceRepository.findById(id).orElseThrow(InvoiceNotFoundException::new);
     }

@@ -1,5 +1,6 @@
 package com.utnphones.utnPhones.controllers;
 
+import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.dto.TopTenDestinies;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
@@ -22,10 +23,11 @@ public class CallController {
         this.callService = callService;
     }
 
-    public URI create(CallDto callDto) throws PhoneLineNotFoundException {
-        return this.callService.create(callDto);
+    public Call create(CallDto callDto) throws PhoneLineNotFoundException {
+        return callService.create(callDto);
     }
 
+    //todo borrar
     public List<CallsDates> getAllRange(Integer quantity, Integer from, String dateFrom, String dateTo) throws ParseException {
         return this.callService.getAll(quantity, from, dateFrom, dateTo);
     }
