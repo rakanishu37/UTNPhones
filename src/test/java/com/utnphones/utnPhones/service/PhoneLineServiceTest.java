@@ -8,7 +8,6 @@ import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
-import com.utnphones.utnPhones.repository.LineTypeRepository;
 import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import com.utnphones.utnPhones.services.LineTypeService;
 import com.utnphones.utnPhones.services.PhoneLineService;
@@ -18,11 +17,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 
-import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -41,15 +37,14 @@ public class PhoneLineServiceTest {
         this.phoneLineService = new PhoneLineService(phoneLineRepository, lineTypeService);
     }
 
-    @Test
+  /*  @Test
     public void testGetAllOk(){
         List<PhoneLine> list = TestUtils.getPhoneLines();
         when(this.phoneLineRepository.findAllByIsActive(Boolean.TRUE)).thenReturn(list);
 
         List<PhoneLine> listTest = this.phoneLineService.getAll();
-        System.out.println(listTest);
         Assert.assertEquals(list.size(), listTest.size());
-    }
+    }*/
 
     @Test
     public void testCreatePhoneLineOk(){
@@ -63,9 +58,7 @@ public class PhoneLineServiceTest {
                 .build();
 
         when(this.phoneLineRepository.save(phoneLine)).thenReturn(phoneLine);
-
         PhoneLine phoneLineTest = this.phoneLineService.create(phoneLineDTO, phoneLine.getClient(), phoneLine.getLineType(), city);
-
         Assert.assertEquals(phoneLine, phoneLineTest);
     }
 
@@ -81,16 +74,12 @@ public class PhoneLineServiceTest {
 
     @Test(expected = PhoneLineNotFoundException.class)
     public void getByPhoneNumberWrongNumber() throws PhoneLineNotFoundException {
-        PhoneLine phoneLine = null;
         when(this.phoneLineRepository.findByLineNumberAndIsActive("231231", Boolean.TRUE)).thenReturn(Optional.ofNullable(null));
-
         PhoneLine phoneLineTest = this.phoneLineService.getByPhoneNumber("231231");
-
     }
 
     @Test
     public void updatePhoneLineOk() throws PhoneLineNotFoundException {
-
         City city = new City(1, new Province(), "cityName", "223");
         LineType lineType = LineType.builder().id(1).typeName("mobile").build();
         PhoneLineDTO phoneLineDTO = new PhoneLineDTO("city", "223547748", lineType.getTypeName(), LineStatus.active);
@@ -109,44 +98,37 @@ public class PhoneLineServiceTest {
     }
 
     @Test(expected = PhoneLineNotFoundException.class)
-    public void updatePhoneLineWrongNumber() throws PhoneLineNotFoundException {
+    public void updatePhoneLineWithWrongId() throws PhoneLineNotFoundException {
 
         City city = new City(1, new Province(), "cityName", "223");
         LineType lineType = LineType.builder().id(1).typeName("mobile").build();
         PhoneLineDTO phoneLineDTO = new PhoneLineDTO("city", "223547748", lineType.getTypeName(), LineStatus.active);
 
-        PhoneLine phoneLine = PhoneLine.builder()
-                .client(new Client())
-                .lineNumber(city.getPrefix() + phoneLineDTO.getLineNumber())
-                .lineStatus(phoneLineDTO.getStatus())
-                .lineType(lineType)
-                .build();
         when(this.phoneLineRepository.findById(4)).thenReturn(Optional.ofNullable(null));
-        when(this.phoneLineRepository.save(phoneLine)).thenReturn(phoneLine);
-
         PhoneLine phoneLineTest = this.phoneLineService.updatePhoneLine(4, phoneLineDTO, city, lineType);
-
-        Assert.assertEquals(phoneLine, phoneLineTest);
     }
 
     @Test
     public void deleteOk() throws PhoneLineNotFoundException {
         PhoneLine phoneLine = TestUtils.getPhoneLines().get(0);
-
+        PhoneLine deletedPhoneline = PhoneLine.builder()
+                .id(phoneLine.getId())
+                .client(phoneLine.getClient())
+                .lineNumber(phoneLine.getLineNumber())
+                .lineStatus(phoneLine.getLineStatus())
+                .lineType(phoneLine.getLineType())
+                .isActive(Boolean.FALSE)
+                .build();
+        
         when(this.phoneLineRepository.findByIdAndIsActive(phoneLine.getId(), Boolean.TRUE)).thenReturn(Optional.ofNullable(phoneLine));
-
-        when(this.phoneLineRepository.save(phoneLine)).thenReturn(phoneLine);
+        when(this.phoneLineRepository.save(deletedPhoneline)).thenReturn(deletedPhoneline);
 
         this.phoneLineService.delete(phoneLine.getId());
     }
 
     @Test(expected = PhoneLineNotFoundException.class)
-    public void deleteWrongNumber() throws PhoneLineNotFoundException {
-        PhoneLine phoneLine = TestUtils.getPhoneLines().get(0);
-
-        when(this.phoneLineRepository.findByIdAndIsActive(phoneLine.getId(), Boolean.TRUE)).thenReturn(Optional.ofNullable(null));
-        when(this.phoneLineRepository.save(phoneLine)).thenReturn(phoneLine);
-
-        phoneLineService.delete(phoneLine.getId());
+    public void deleteWrongId() throws PhoneLineNotFoundException {
+        when(this.phoneLineRepository.findByIdAndIsActive(5, Boolean.TRUE)).thenReturn(Optional.ofNullable(null));
+        phoneLineService.delete(5);
     }
 }
