@@ -52,15 +52,15 @@ public class ClientServiceTest {
         Assert.assertEquals(list.size(), listTest.size());
     }
 
-  /*  @Test
+    @Test
     public void testGetId() throws ClientNotFoundException {
         Client client = TestUtils.getClients().get(0);
-        when(this.clientRepository.findById(client.getId())).thenReturn(java.util.Optional.of(client));
+        when(this.clientRepository.findByIdAndIsActive(client.getId(), Boolean.TRUE)).thenReturn(java.util.Optional.of(client));
 
         Client clientTest = this.clientService.getById(client.getId());
 
         Assert.assertEquals(client, clientTest);
-    }*/
+    }
 
     @Test(expected = ClientNotFoundException.class)
     public void testGetIdNotFound() throws ClientNotFoundException {
