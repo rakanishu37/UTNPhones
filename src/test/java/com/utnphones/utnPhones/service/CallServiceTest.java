@@ -56,8 +56,10 @@ public class CallServiceTest {
 
     @Test(expected = ParseException.class)
     public void testGetAllByClientAndDatesWrongDates() throws ParseException {
-        this.callService.getCalls(1, "2020-05-220", "2020-05-18");
 
+        when(this.callRepository.getAllByIdClientBetweenDates(1, "2020-05-870", "2020-05-410"))
+                .thenReturn(null);
+        this.callService.getCalls(1, "2020-05-870", "2020-05-410");
     }
 
     @Test
