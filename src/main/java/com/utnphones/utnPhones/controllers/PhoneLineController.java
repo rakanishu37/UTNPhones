@@ -56,5 +56,7 @@ public class PhoneLineController {
         return phoneLineService.updatePhoneLine(idPhoneline,phoneLineDTO,city,lineType);
     }
 
-
+    public PhoneLine getByPhoneNumber(String phoneNumber) throws PhoneLineNotFoundException {
+        return this.phoneLineService.getByPhoneNumber(phoneNumber);
+    }
 }

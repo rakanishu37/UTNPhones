@@ -151,6 +151,10 @@ public class TestUtils {
         return list;
     }
 
+    public static LineType getLineType(){
+        return new LineType(1, "home");
+    }
+
     public static URI getCallLocation(Call call) {
         return ServletUriComponentsBuilder
                 .fromCurrentRequest()
