@@ -27,7 +27,7 @@ public class CityServiceTest {
         initMocks(this);
         cityService = new CityService(cityRepository);
     }
-//create getall
+
     @Test
     public void getByNameOk() throws CityNotFoundException {
         City city = City.builder().name("test").build();
@@ -45,7 +45,7 @@ public class CityServiceTest {
 
         cityService.getByName(randomName);
     }
-
+/*
     @Test
     public void getAllOk() {
         City city1 = City.builder().build();
@@ -68,5 +68,5 @@ public class CityServiceTest {
 
         City created = cityService.create(stub);
         Assert.assertEquals(Integer.valueOf(1),created.getId());
-    }
+    }*/
 }
