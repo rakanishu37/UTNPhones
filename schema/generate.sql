@@ -10,10 +10,10 @@ begin
     declare number2 varchar(15);
     declare counter int default 0;
     
-    while counter < 1000 do
-		-- set number1:=(select phone_lines.line_number from phone_lines order by rand() limit 1);
-        set number1:="3815428153";
-		 set number2:=(select phone_lines.line_number from phone_lines order by rand() limit 1);
+    while counter < 10000 do
+		 set number1:=(select phone_lines.line_number from phone_lines where line_number between "2914898085" and "3514898084"  order by rand() limit 1);
+       -- set number1:="3815428153";
+		 set number2:=(select phone_lines.line_number from phone_lines where line_number between "2215022306" and "2914898084"  order by rand() limit 1);
 		
 		while number1 = number2 do
 			set number2:=(select phone_lines.line_number from phone_lines order by rand() limit 1);
@@ -24,8 +24,6 @@ begin
 end; $$
 
 call sp_generate_random_calls();
-
-
 
 
 select inv.*, per.firstname, per.surname from invoices as inv
