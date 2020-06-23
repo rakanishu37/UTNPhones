@@ -17,8 +17,6 @@ import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
-import com.utnphones.utnPhones.exceptions.UnauthorizedAccessException;
-import com.utnphones.utnPhones.exceptions.UserNotLoggedException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
@@ -92,17 +91,17 @@ public class BackOfficeController {
     }
 
     @PostMapping("/clients")
-    public ResponseEntity<Client> createClient(@RequestBody ClientCreatedDTO client) throws CityNotFoundException {
+    public ResponseEntity<Client> createClient(@RequestBody ClientCreatedDTO client) throws CityNotFoundException, NoSuchAlgorithmException {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.create(client));
     }
 
     @PutMapping("/clients/{idClient}")
-    public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody ClientUpdatedDTO updatedClient) throws ClientNotFoundException, CityNotFoundException {
+    public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody ClientUpdatedDTO updatedClient) throws ClientNotFoundException, CityNotFoundException, NoSuchAlgorithmException {
         return ResponseEntity.ok(this.clientController.update(idClient, updatedClient));
     }
 
     @DeleteMapping("/clients/{idClient}")
-    public ResponseEntity<Integer> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
+    public ResponseEntity deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
         this.clientController.delete(idClient);
         return ResponseEntity.ok().build();
     }

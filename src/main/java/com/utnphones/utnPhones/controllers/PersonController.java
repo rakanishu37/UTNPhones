@@ -6,9 +6,8 @@ import com.utnphones.utnPhones.exceptions.ValidationException;
 import com.utnphones.utnPhones.services.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.security.NoSuchAlgorithmException;
 
 @Controller
 public class PersonController {
@@ -19,7 +18,7 @@ public class PersonController {
         this.personService = personService;
     }
 
-    public Person login(String username, String password) throws UserNotfoundException, ValidationException {
+    public Person login(String username, String password) throws UserNotfoundException, ValidationException, NoSuchAlgorithmException {
         if ((username != null) && (password != null)) {
             return personService.login(username, password);
         } else {

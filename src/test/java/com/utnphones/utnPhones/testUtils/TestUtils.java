@@ -5,14 +5,13 @@ import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.Invoice;
-import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.domain.UserType;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
-import com.utnphones.utnPhones.projections.InvoicesDates;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -24,7 +23,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 public class TestUtils {
+
+    public TestUtils() {
+    }
 
     public static List<Fare> getFaresList() {
         List<Fare> list = new ArrayList<>();

@@ -1,6 +1,7 @@
 package com.utnphones.utnPhones.controllers.web;
 
 import com.utnphones.utnPhones.controllers.CallController;
+import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,15 +25,16 @@ public class AntennaController {
     }
 
     @PostMapping("/calls")
-    public ResponseEntity<?> create(@RequestBody CallDto call){
+    public ResponseEntity<?> create(@RequestBody CallDto callDto){
         ResponseEntity responseEntity;
 
         try {
-            URI uri = this.callController.create(call);
-            responseEntity = ResponseEntity.created(uri).build();
+            Call call = this.callController.create(callDto);
+            responseEntity = ResponseEntity.status(HttpStatus.CREATED).body(call);
         } catch (PhoneLineNotFoundException e) {
             responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         return responseEntity;
     }
+    //todo invocar getlocation
 }

@@ -13,6 +13,7 @@ import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Controller
@@ -32,15 +33,15 @@ public class ClientController {
         return this.clientService.getById(id);
     }
 
-    public Client create(ClientCreatedDTO client) throws CityNotFoundException {
+    public Client create(ClientCreatedDTO client) throws CityNotFoundException, NoSuchAlgorithmException {
         return this.clientService.create(client);
     }
 
-    public Client update(Integer id, ClientUpdatedDTO client) throws ClientNotFoundException, CityNotFoundException {
+    public Client update(Integer id, ClientUpdatedDTO client) throws ClientNotFoundException, CityNotFoundException, NoSuchAlgorithmException {
         return this.clientService.update(id, client);
     }
 
-    public Integer delete(Integer id) throws ClientIsAlreadyDeletedException, ClientNotFoundException {
-        return this.clientService.delete(id);
+    public void delete(Integer id) throws ClientIsAlreadyDeletedException, ClientNotFoundException {
+        clientService.delete(id);
     }
 }
