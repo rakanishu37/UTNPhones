@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.controllers;
 
 import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Province;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.services.CityService;
 import com.utnphones.utnPhones.services.ProvinceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,16 @@ public class CityController {
     public CityController(final CityService cityService) {
         this.cityService = cityService;
     }
-
+    //todo borrar
     public List<City> getAll(){
         return this.cityService.getAll();
     }
-
+    //todo borrar
     public City create(@RequestBody City city){
         return this.cityService.create(city);
+    }
+
+    public City getByName(String cityName) throws CityNotFoundException {
+        return this.cityService.getByName(cityName);
     }
 }
