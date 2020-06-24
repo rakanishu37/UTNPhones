@@ -7,16 +7,25 @@ import com.utnphones.utnPhones.controllers.InvoiceController;
 import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.controllers.web.BackOfficeController;
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.dto.ClientCreatedDTO;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.testUtils.TestUtils;
+import com.utnphones.utnPhones.utils.UriGenerator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.net.URI;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,6 +36,8 @@ import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+@PrepareForTest(UriGenerator.class)
+@RunWith(PowerMockRunner.class)
 public class BackOfficeControllerTest {
     @Mock
     private PhoneLineController phoneLineController;
@@ -44,6 +55,7 @@ public class BackOfficeControllerTest {
     @Before
     public void setUp(){
         initMocks(this);
+        PowerMockito.mockStatic(UriGenerator.class);
         this.backOfficeController = new BackOfficeController(phoneLineController, fareController, clientController,
                 invoiceController, callController);
     }
@@ -121,5 +133,47 @@ public class BackOfficeControllerTest {
         ResponseEntity<List<Client>> clientsTest = this.backOfficeController.getAllClient(0, 10);
 
         Assert.assertEquals(HttpStatus.NO_CONTENT, clientsTest.getStatusCode());
+    }
+
+    @Test
+    public void testGetClientByIdOk() throws ClientNotFoundException {
+        Client client = TestUtils.getClients().get(0);
+        when(this.clientController.getById(client.getId())).thenReturn(client);
+
+        ResponseEntity<Client> responseTest = this.backOfficeController.getClientById(client.getId());
+
+        Assert.assertEquals(HttpStatus.OK, responseTest.getStatusCode());
+        Assert.assertEquals(client, responseTest.getBody());
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void testGetClientByIdClientNotFound() throws ClientNotFoundException {
+
+        when(this.clientController.getById(1)).thenThrow(new ClientNotFoundException());
+
+        ResponseEntity<Client> responseTest = this.backOfficeController.getClientById(1);
+
+    }
+
+    @Test
+    public void testCreateClientOk() throws NoSuchAlgorithmException, CityNotFoundException {
+        Client client = TestUtils.getClients().get(0);
+        ClientCreatedDTO dto = ClientCreatedDTO.builder()
+                .firstname("juan")
+                .surname("perez")
+                .dni("37753328")
+                .cityName("test")
+                .username("qwerty")
+                .password("123")
+                .build();
+        when(UriGenerator.getLocation(client.getId())).thenReturn(URI.create("miUri.com"));
+
+        when(this.clientController.create(dto)).thenReturn(client);
+
+
+        ResponseEntity<?> responseTest = this.backOfficeController.createClient(dto);
+        Assert.assertEquals(URI.create("miUri.com"), responseTest.getHeaders().getLocation());
+        Assert.assertEquals(HttpStatus.CREATED, responseTest.getStatusCode());
+
     }
 }
