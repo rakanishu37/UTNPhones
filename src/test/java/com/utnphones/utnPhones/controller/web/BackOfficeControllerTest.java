@@ -6,11 +6,20 @@ import com.utnphones.utnPhones.controllers.FareController;
 import com.utnphones.utnPhones.controllers.InvoiceController;
 import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.controllers.web.BackOfficeController;
+import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.LineStatus;
+import com.utnphones.utnPhones.domain.LineType;
+import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.domain.Province;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
+import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
+import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
+import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.testUtils.TestUtils;
 import com.utnphones.utnPhones.utils.UriGenerator;
@@ -35,6 +44,10 @@ import java.util.List;
 import java.util.Map;
 
 import static org.mockito.ArgumentMatchers.nullable;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -246,5 +259,191 @@ public class BackOfficeControllerTest {
         when(this.clientController.update(1, dto)).thenThrow(new ClientNotFoundException());
 
         this.backOfficeController.updateClient(1, dto);
+    }
+
+    @Test
+    public void testDeleteClientOk() throws ClientNotFoundException, ClientIsAlreadyDeletedException {
+        doNothing().when(this.clientController).delete(1);
+        ResponseEntity<?> responseTest = this.backOfficeController.deleteClient(1);
+
+        Assert.assertEquals(HttpStatus.OK, responseTest.getStatusCode());
+        verify(clientController, times(1)).delete(1);
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void testDeleteClientNotFound() throws ClientNotFoundException, ClientIsAlreadyDeletedException {
+
+        doThrow(new ClientNotFoundException()).when(this.clientController).delete(1);
+        this.backOfficeController.deleteClient(1);
+
+    }
+
+    @Test
+    public void testCreatePhonelineOk() throws ClientNotFoundException, LineTypeNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+
+        when(UriGenerator.getLocation(phoneLine.getId())).thenReturn(URI.create("miUri.com"));
+
+        when(this.phoneLineController.create(TestUtils.getClients().get(0).getId(), phoneLineDTO)).thenReturn(phoneLine);
+
+        ResponseEntity<?> responseTest = this.backOfficeController.createPhoneLine(TestUtils.getClients().get(0).getId(), phoneLineDTO);
+        Assert.assertEquals(URI.create("miUri.com"), responseTest.getHeaders().getLocation());
+        Assert.assertEquals(HttpStatus.CREATED, responseTest.getStatusCode());
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void testCreatePhonelineClientNotFound() throws ClientNotFoundException, LineTypeNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+        doThrow(new ClientNotFoundException()).when(this.phoneLineController)
+                .create(TestUtils.getClients().get(0).getId(), phoneLineDTO);
+
+        this.backOfficeController.createPhoneLine(TestUtils.getClients().get(0).getId(), phoneLineDTO);
+
+    }
+
+    @Test(expected = LineTypeNotFoundException.class)
+    public void testCreatePhonelineLineTypeNotFound() throws ClientNotFoundException, LineTypeNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+        doThrow(new LineTypeNotFoundException()).when(this.phoneLineController)
+                .create(TestUtils.getClients().get(0).getId(), phoneLineDTO);
+
+        this.backOfficeController.createPhoneLine(TestUtils.getClients().get(0).getId(), phoneLineDTO);
+
+    }
+
+    @Test(expected = CityNotFoundException.class)
+    public void testCreatePhonelineCityNotFound() throws ClientNotFoundException, LineTypeNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+        doThrow(new CityNotFoundException()).when(this.phoneLineController)
+                .create(TestUtils.getClients().get(0).getId(), phoneLineDTO);
+
+        this.backOfficeController.createPhoneLine(TestUtils.getClients().get(0).getId(), phoneLineDTO);
+
+    }
+
+    @Test
+    public void testUpdatePhoneLineOk() throws LineTypeNotFoundException, PhoneLineNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+
+        when(this.phoneLineController.updatePhoneLine(phoneLine.getId(), phoneLineDTO)).thenReturn(phoneLine);
+
+        ResponseEntity<PhoneLine> responseTest = this.backOfficeController.updatePhoneLine(phoneLine.getId(), phoneLineDTO);
+
+        Assert.assertEquals(HttpStatus.OK, responseTest.getStatusCode());
+        Assert.assertEquals(phoneLine, responseTest.getBody());
+    }
+
+    @Test(expected = LineTypeNotFoundException.class)
+    public void testUpdatePhoneLineLineTypeNotFound() throws LineTypeNotFoundException, PhoneLineNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+        doThrow(new LineTypeNotFoundException()).when(this.phoneLineController)
+                .updatePhoneLine(phoneLine.getId(), phoneLineDTO);
+
+        this.backOfficeController.updatePhoneLine(phoneLine.getId(), phoneLineDTO);
+    }
+
+    @Test(expected = PhoneLineNotFoundException.class)
+    public void testUpdatePhoneLinePhoneLineNotFound() throws LineTypeNotFoundException, PhoneLineNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+        doThrow(new PhoneLineNotFoundException()).when(this.phoneLineController)
+                .updatePhoneLine(phoneLine.getId(), phoneLineDTO);
+
+        this.backOfficeController.updatePhoneLine(phoneLine.getId(), phoneLineDTO);
+    }
+
+    @Test(expected = CityNotFoundException.class)
+    public void testUpdatePhoneLineCityNotFound() throws LineTypeNotFoundException, PhoneLineNotFoundException, CityNotFoundException {
+        City city = new City(1, new Province(), "cityName", "223");
+        LineType lineType = TestUtils.getLineType();
+        PhoneLine phoneLine = new PhoneLine(1, lineType, TestUtils.getClients().get(0), "2235447441",
+                LineStatus.active, Boolean.TRUE);
+        PhoneLineDTO phoneLineDTO = PhoneLineDTO.builder()
+                .lineType(phoneLine.getLineType().getTypeName())
+                .lineNumber(phoneLine.getLineNumber())
+                .cityName(city.getName())
+                .status(LineStatus.active)
+                .build();
+        doThrow(new CityNotFoundException()).when(this.phoneLineController)
+                .updatePhoneLine(phoneLine.getId(), phoneLineDTO);
+
+        this.backOfficeController.updatePhoneLine(phoneLine.getId(), phoneLineDTO);
+    }
+
+    @Test
+    public void testPhoneLineDeleteOk() throws PhoneLineNotFoundException {
+        doNothing().when(this.phoneLineController).delete(1);
+        ResponseEntity<?> responseTest = this.backOfficeController.deletePhoneLine(1);
+
+        Assert.assertEquals(HttpStatus.OK, responseTest.getStatusCode());
+        verify(phoneLineController, times(1)).delete(1);
+    }
+
+    @Test(expected =PhoneLineNotFoundException.class )
+    public void testPhoneLineDeletePhoneLineNotFound() throws PhoneLineNotFoundException {
+        doThrow(new PhoneLineNotFoundException()).when(this.phoneLineController).delete(1);
+        this.backOfficeController.deletePhoneLine(1);
     }
 }

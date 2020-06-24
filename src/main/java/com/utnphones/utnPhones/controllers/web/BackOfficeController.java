@@ -106,7 +106,7 @@ public class BackOfficeController {
     }
 
     @DeleteMapping("/clients/{idClient}")
-    public ResponseEntity<?> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
+    public ResponseEntity<?> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException {
         this.clientController.delete(idClient);
         return ResponseEntity.ok().build();
     }
@@ -135,7 +135,7 @@ public class BackOfficeController {
     }
 
     @DeleteMapping("/phonelines/{idPhoneLine}")
-    public ResponseEntity<?> deletePhoneLine(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
+    public ResponseEntity<?> deletePhoneLine(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException {
         this.phoneLineController.delete(idPhoneLine);
         return ResponseEntity.ok().build();
     }
