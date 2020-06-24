@@ -23,10 +23,10 @@ public class FareService {
         return this.fareRepository.findAll();
     }*/
 
+    /*
     public Fare create(Fare fare){
-
         return this.fareRepository.save(fare);
-    }
+    }*/
 
     public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws CityNotFoundException {
         return fareRepository.getFareByCities(idCityFrom, idCityTo).orElseThrow(CityNotFoundException::new);

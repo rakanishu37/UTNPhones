@@ -39,12 +39,12 @@ public class PhoneLineController {
         return this.phoneLineService.create(phoneLineDTO,client,lineType,city);
     }
 
-
+    /*//TODO borrar
     public PhoneLine getById(Integer idPhoneLine) throws PhoneLineNotFoundException {
         return this.phoneLineService.getById(idPhoneLine);
-    }
+    }*/
 
-    public void delete(Integer idPhoneLine) throws PhoneLineNotFoundException, PhoneLineNotIsAlreadyDeletedException {
+    public void delete(Integer idPhoneLine) throws PhoneLineNotFoundException {
         phoneLineService.delete(idPhoneLine);
     }
 

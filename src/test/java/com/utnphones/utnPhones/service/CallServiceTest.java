@@ -62,11 +62,12 @@ public class CallServiceTest {
         this.callService.getCalls(1, "2020-05-870", "2020-05-410");
     }
 
-    @Test
+    /*@Test
     public void testGetTopTenDestiniesByClient(){ // todo
 
-    }
-  /*  @Test
+    }*/
+
+    /*@Test
     public void testCreateCallOk() throws PhoneLineNotFoundException {
         Call call = TestUtils.getCalls().get(0);
 
