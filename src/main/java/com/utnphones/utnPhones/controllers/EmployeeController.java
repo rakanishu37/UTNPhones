@@ -11,7 +11,7 @@ import java.util.List;
 @Controller
 //todo borrar
 public class EmployeeController {
-    private EmployeeService employeeService;
+    /*private EmployeeService employeeService;
 
     @Autowired
     public EmployeeController(final EmployeeService employeeService) {
@@ -26,5 +26,5 @@ public class EmployeeController {
    // @PostMapping("/")
     public Employee create(@RequestBody Employee employee){
         return this.employeeService.create(employee);
-    }
+    }*/
 }

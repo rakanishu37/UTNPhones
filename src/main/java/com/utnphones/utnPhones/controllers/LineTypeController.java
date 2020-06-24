@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 //todo borrar
 @Controller
 public class LineTypeController {
-    private LineTypeRepository lineTypeRepository;
+    /*private LineTypeRepository lineTypeRepository;
 
     @Autowired
     public LineTypeController(final LineTypeRepository lineTypeRepository) {
         this.lineTypeRepository = lineTypeRepository;
-    }
+    }*/
 }

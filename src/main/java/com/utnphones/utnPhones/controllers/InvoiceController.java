@@ -21,7 +21,7 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-    //todo borrar
+   /* //todo borrar
     public List<Invoice> getAll(){
         return this.invoiceService.getAll();
     }
@@ -34,7 +34,7 @@ public class InvoiceController {
     //todo borrar
     public Invoice getById(@PathVariable Integer id) throws InvoiceNotFoundException {
         return this.invoiceService.getById(id);
-    }
+    }*/
 
     public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         return this.invoiceService.getInvoicesByClient(idClient, dateFrom, dateTo);

@@ -36,8 +36,6 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "id_city")
     private City city;
-    //TODO buscar y modificar para que no se ejecute 2 veces la query de city
-
 
     @ManyToOne
     @JoinColumn(name = "id_user_type", referencedColumnName = "id_user_type",insertable=false, updatable =false)
@@ -47,13 +45,14 @@ public class Person {
     @NotNull
     @Column(name = "DNI")
     private String DNI;
+
     @NotNull
     @Column(name = "username")
     private String username;
+
     @NotNull
     @Column(name = "password")
     private String password;
-
 
     @Column(name = "is_active")
     private Boolean isActive;

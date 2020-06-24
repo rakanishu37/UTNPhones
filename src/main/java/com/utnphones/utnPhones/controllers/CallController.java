@@ -27,10 +27,10 @@ public class CallController {
         return callService.create(callDto);
     }
 
-    //todo borrar
+    /*//todo borrar
     public List<CallsDates> getAllRange(Integer quantity, Integer from, String dateFrom, String dateTo) throws ParseException {
         return this.callService.getAll(quantity, from, dateFrom, dateTo);
-    }
+    }*/
 
     public Map<String, List<CallsDates>> getAllByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         return this.callService.getCalls(idClient, dateFrom, dateTo);

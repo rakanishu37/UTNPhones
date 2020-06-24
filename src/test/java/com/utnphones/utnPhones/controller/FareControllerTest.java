@@ -29,13 +29,13 @@ public class FareControllerTest {
     private FareController fareController;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         initMocks(this);
         this.fareController = new FareController(fareService);
     }
 
     @Test
-    public void testGetAll(){
+    public void testGetAll() {
         List<Fare> list = TestUtils.getFaresList();
         when(this.fareService.getAll()).thenReturn(list);
 
@@ -45,7 +45,7 @@ public class FareControllerTest {
         Assert.assertEquals(list.get(0).getId(), listTest.get(0).getId());
     }
 
-    @Test
+    /*@Test
     public void createTestOk(){
         Fare fare = new Fare(4, new City(), new City(), (float)10.8);
         when(this.fareService.create(fare)).thenReturn(fare);
@@ -67,17 +67,28 @@ public class FareControllerTest {
     public void getByIdTestNotFound() throws FareNotFoundException {
         when(this.fareService.getById(1)).thenThrow(new FareNotFoundException());
         this.fareController.getById(1);
-    }
+    }*/
 
     @Test
     public void testGetFareByCitiesOk() throws CityNotFoundException {
         Fare fare = new Fare(4, new City(1, null, "City1", "112")
-                , new City(2, null, "City2", "872"), (float)10.8);
+                , new City(2, null, "City2", "872"), (float) 10.8);
         when(this.fareService.getFareByCities(fare.getCityFrom().getId(), fare.getCityTo().getId())).thenReturn(fare);
 
         Fare fareTest = this.fareController.getFareByCities(fare.getCityFrom().getId(), fare.getCityTo().getId());
         Assert.assertEquals(fare.getCityFrom(), fareTest.getCityFrom());
         Assert.assertEquals(fare.getCityTo(), fareTest.getCityTo());
     }
+
+    @Test(expected = CityNotFoundException.class)
+    public void testGetFareByCitiesThenThrowCityNotFound() throws CityNotFoundException {
+        Fare fare = new Fare(4, new City(1, null, "City1", "112")
+                , new City(2, null, "City2", "872"), (float) 10.8);
+        when(this.fareService.getFareByCities(fare.getCityFrom().getId(), fare.getCityTo().getId()))
+                .thenThrow(new CityNotFoundException());
+
+        fareController.getFareByCities(fare.getCityFrom().getId(), fare.getCityTo().getId());
+    }
+
 
 }

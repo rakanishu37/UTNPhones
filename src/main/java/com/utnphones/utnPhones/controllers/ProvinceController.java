@@ -20,7 +20,7 @@ import java.util.List;
 //todo borrar
 @Controller
 public class ProvinceController {
-    private final ProvinceService provinceService;
+    /*private final ProvinceService provinceService;
 
     @Autowired
     public ProvinceController(ProvinceService provinceService) {
@@ -35,5 +35,5 @@ public class ProvinceController {
    // @PostMapping("/")
     public Province create(@RequestBody Province province){
         return this.provinceService.create(province);
-    }
+    }*/
 }

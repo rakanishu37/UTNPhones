@@ -92,8 +92,6 @@ public class ClientControllerTest {
                 .password("123")
                 .build();
 
-        when(cityService.getByName(city.getName())).thenReturn(city);
-
         Client clientCreated = Client.builder()
                 .firstname(dto.getFirstname())
                 .surname(dto.getSurname())
@@ -102,13 +100,13 @@ public class ClientControllerTest {
                 .username(dto.getUsername())
                 .password("algo")
                 .build();
+
+        when(cityService.getByName(city.getName())).thenReturn(city);
         when(this.clientService.create(dto)).thenReturn(clientCreated);
 
         Client testClient = clientController.create(dto);
 
         Assert.assertEquals(clientCreated, testClient);
-
-//        verify(clientRepository, times(1)).save(clientCreated);
     }
 
     @Test(expected = CityNotFoundException.class) // todo ver
@@ -202,7 +200,6 @@ public class ClientControllerTest {
 
         when(cityService.getByName(dto.getCityName())).thenReturn(city);
 
-        //when(clientService.getById(3)).thenReturn(client);
         when(this.clientService.update(client.getId(), dto)).thenReturn(updatedClient);
 
         Client testClient = clientController.update(3, dto);
