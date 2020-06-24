@@ -25,46 +25,46 @@ import java.util.stream.Collectors;
 public class CallService {
     private CallRepository callRepository;
     private PhoneLineService phoneLineService;
+
     @Autowired
-    public CallService(CallRepository callRepository,PhoneLineService phoneLineService) {
+    public CallService(CallRepository callRepository, PhoneLineService phoneLineService) {
         this.callRepository = callRepository;
         this.phoneLineService = phoneLineService;
     }
 
-    //todo borrar
+    /*//todo borrar
     public List<CallsDates> getAll(Integer quantity, Integer from, String dateFrom, String dateTo) throws ParseException {
         if(dateFrom==null || dateTo==null){
             return this.callRepository.findAll(quantity, from);
         }else{
             return this.callRepository.findAllByDates(from, quantity, DateFormatUtil.formatDate(dateFrom), DateFormatUtil.formatDate(dateTo));
         }
-    }
-
+    }*/
 
     public Call create(CallDto callDto) throws PhoneLineNotFoundException {
         PhoneLine numberFrom = phoneLineService.getByPhoneNumber(callDto.getNumberFrom());
         PhoneLine numberTo = phoneLineService.getByPhoneNumber(callDto.getNumberTo());
 
         return callRepository.save(Call.builder()
-                        .phoneFrom(numberFrom)
-                        .phoneTo(numberTo)
-                        .duration(callDto.getDuration())
-                        .date(callDto.getDate())
-                        .build());
+                .phoneFrom(numberFrom)
+                .phoneTo(numberTo)
+                .duration(callDto.getDuration())
+                .date(callDto.getDate())
+                .build());
     }
-// NO SE USA
-//todo borrar
+
+    /*//todo borrar
     public Call getById(Integer idCall) throws CallNotFoundException {
         return callRepository.findById(idCall)
                 .orElseThrow(() -> new CallNotFoundException());
-    }
+    }*/
 
     public Map<String, List<CallsDates>> getCalls(Integer idClient, String from, String to) throws ParseException {
         List<CallsDates> calls = null;
-        if(from == null || to == null){
+        if (from == null || to == null) {
             calls = callRepository.getAllCallByClient(idClient);
-        } else{
-            calls = callRepository.getAllByIdClientBetweenDates(idClient,DateFormatUtil.formatDate(from),DateFormatUtil.formatDate(to));
+        } else {
+            calls = callRepository.getAllByIdClientBetweenDates(idClient, DateFormatUtil.formatDate(from), DateFormatUtil.formatDate(to));
         }
 
         return calls.stream()
@@ -72,7 +72,7 @@ public class CallService {
                 .collect(Collectors.groupingBy(CallsDates::getPhoneNumberOrigin));
     }
 
-    public TopTenDestinies getTopTenDestiniesByClient(Integer idClient){
+    public TopTenDestinies getTopTenDestiniesByClient(Integer idClient) {
         List<DestinyQuantity> list = callRepository.getTopTenDestiniesByClient(idClient);
         return TopTenDestinies.fromList(list);
     }

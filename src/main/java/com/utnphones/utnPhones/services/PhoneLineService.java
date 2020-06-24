@@ -24,10 +24,10 @@ public class PhoneLineService {
         this.lineTypeService = lineTypeService;
     }
 
-    //todo borrar
+   /* //todo borrar
     public List<PhoneLine> getAll(){
         return this.phoneLineRepository.findAllByIsActive(Boolean.TRUE);
-    }
+    }*/
 
     public PhoneLine create(PhoneLineDTO phoneLineDTO, Client client, LineType lineType, City city) {
         PhoneLine phoneLine = PhoneLine.builder()

@@ -1,12 +1,11 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.domain.Invoice;
-import com.utnphones.utnPhones.exceptions.InvoiceNotFoundException;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.repository.InvoiceRepository;
 import com.utnphones.utnPhones.utils.DateFormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.text.ParseException;
 import java.util.List;
 
@@ -14,19 +13,17 @@ import java.util.List;
 public class InvoiceService {
     private InvoiceRepository invoiceRepository;
 
-
     @Autowired
     public InvoiceService(final InvoiceRepository invoiceRepository) {
         this.invoiceRepository = invoiceRepository;
     }
 
-    //todo borrar
+    /*//todo borrar
     public List<Invoice> getAll(){
         return this.invoiceRepository.findAll();
     }
 
     //todo borrar
-
     public Invoice create(Invoice invoice){
         return this.invoiceRepository.save(invoice);
     }
@@ -34,7 +31,7 @@ public class InvoiceService {
     //todo borrar
     public Invoice getById(Integer id) throws InvoiceNotFoundException {
         return this.invoiceRepository.findById(id).orElseThrow(InvoiceNotFoundException::new);
-    }
+    }*/
 
     public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         if(dateFrom==null || dateTo==null){

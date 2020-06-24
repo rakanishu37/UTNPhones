@@ -10,7 +10,7 @@ import java.util.List;
 //todo borrar
 @Service
 public class ProvinceService {
-    private final ProvinceRepository provinceRepository;
+    /*private final ProvinceRepository provinceRepository;
 
     @Autowired
     public ProvinceService(final ProvinceRepository provinceRepository){
@@ -26,5 +26,5 @@ public class ProvinceService {
 
     public Province getById(Integer id) throws Exception {
         return this.provinceRepository.findById(id).orElseThrow(Exception::new);
-    }
+    }*/
 }

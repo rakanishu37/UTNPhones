@@ -34,7 +34,7 @@ public class FareControllerTest {
         this.fareController = new FareController(fareService);
     }
 
-    @Test
+    /*@Test
     public void testGetAll() {
         List<Fare> list = TestUtils.getFaresList();
         when(this.fareService.getAll()).thenReturn(list);
@@ -43,7 +43,7 @@ public class FareControllerTest {
 
         Assert.assertEquals(list.size(), listTest.size());
         Assert.assertEquals(list.get(0).getId(), listTest.get(0).getId());
-    }
+    }*/
 
     /*@Test
     public void createTestOk(){

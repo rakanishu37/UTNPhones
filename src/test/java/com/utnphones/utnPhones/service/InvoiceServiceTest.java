@@ -28,7 +28,7 @@ public class InvoiceServiceTest {
         this.invoiceService = new InvoiceService(invoiceRepository);
     }
 
-    @Test
+    /*@Test
     public void testGetAllOk(){
         List<Invoice> invoiceList = TestUtils.getInvoices();
         when(this.invoiceRepository.findAll()).thenReturn(invoiceList);
@@ -36,9 +36,9 @@ public class InvoiceServiceTest {
         List<Invoice> invoiceListTest = this.invoiceService.getAll();
 
         Assert.assertEquals(invoiceList.size(), invoiceListTest.size());
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void testCreateOk(){
         Invoice invoice = TestUtils.getInvoices().get(0);
         when(this.invoiceRepository.save(invoice)).thenReturn(invoice);
@@ -46,9 +46,9 @@ public class InvoiceServiceTest {
         Invoice invoiceTest = this.invoiceService.create(invoice);
 
         Assert.assertEquals(invoice, invoiceTest);
-    }
+    }*/
 
-    @Test
+    /*@Test
     public void testGetByIdOk() throws InvoiceNotFoundException {
         Invoice invoice = TestUtils.getInvoices().get(0);
         when(this.invoiceRepository.findById(invoice.getIdInvoice())).thenReturn(java.util.Optional.of(invoice));
@@ -56,14 +56,13 @@ public class InvoiceServiceTest {
         Invoice invoiceTest = this.invoiceService.getById(invoice.getIdInvoice());
 
         Assert.assertEquals(invoice, invoiceTest);
-    }
+    }*/
 
-    @Test(expected = InvoiceNotFoundException.class)
+    /*@Test(expected = InvoiceNotFoundException.class)
     public void testGetByIdNotFound() throws InvoiceNotFoundException {
         when(this.invoiceRepository.findById(1)).thenReturn(java.util.Optional.ofNullable(null));
         this.invoiceService.getById(1);
-
-    }
+    }*/
 
     @Test
     public void testGetAllByClientNoDatesOk() throws ParseException {

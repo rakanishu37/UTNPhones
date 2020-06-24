@@ -21,10 +21,10 @@ public class FareController {
         this.fareService = fareService;
     }
 
-    //todo borrar?
+    /*//todo borrar?
     public List<Fare> getAll(){
         return this.fareService.getAll();
-    }
+    }*/
 
     //todo borrar
     /*public Fare create(@RequestBody Fare fare){

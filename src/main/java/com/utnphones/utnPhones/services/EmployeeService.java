@@ -10,7 +10,7 @@ import java.util.List;
 //todo borrar
 @Service
 public class EmployeeService {
-    private EmployeeRepository employeeRepository;
+    /*private EmployeeRepository employeeRepository;
 
     @Autowired
     public EmployeeService(final EmployeeRepository employeeRepository) {
@@ -23,5 +23,5 @@ public class EmployeeService {
 
     public Employee create(Employee employee){
         return this.employeeRepository.save(employee);
-    }
+    }*/
 }
