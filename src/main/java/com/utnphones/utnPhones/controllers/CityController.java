@@ -21,13 +21,13 @@ public class CityController {
         this.cityService = cityService;
     }
     //todo borrar
-    public List<City> getAll(){
+   /* public List<City> getAll(){
         return this.cityService.getAll();
     }
     //todo borrar
     public City create(@RequestBody City city){
         return this.cityService.create(city);
-    }
+    }*/
 
     public City getByName(String cityName) throws CityNotFoundException {
         return this.cityService.getByName(cityName);
