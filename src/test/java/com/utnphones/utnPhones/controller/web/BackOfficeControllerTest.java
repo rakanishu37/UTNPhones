@@ -8,6 +8,7 @@ import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.controllers.web.BackOfficeController;
 import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
@@ -21,6 +22,7 @@ import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.projections.InvoiceByClient;
 import com.utnphones.utnPhones.testUtils.TestUtils;
 import com.utnphones.utnPhones.utils.UriGenerator;
 import org.hibernate.exception.ConstraintViolationException;
@@ -445,5 +447,52 @@ public class BackOfficeControllerTest {
     public void testPhoneLineDeletePhoneLineNotFound() throws PhoneLineNotFoundException {
         doThrow(new PhoneLineNotFoundException()).when(this.phoneLineController).delete(1);
         this.backOfficeController.deletePhoneLine(1);
+    }
+
+    @Test
+    public void testGetFareByCitiesOk() throws CityNotFoundException {
+        Fare fare = new Fare(1, TestUtils.getCityList().get(0), TestUtils.getCityList().get(1), (float)17.4);
+        when(this.fareController.getFareByCities(fare.getCityFrom().getId(),fare.getCityTo().getId())).thenReturn(fare);
+
+        ResponseEntity<Fare> responseTest = this.backOfficeController.getFareByCities(fare.getCityFrom().getId(),fare.getCityTo().getId());
+
+        Assert.assertEquals(HttpStatus.OK, responseTest.getStatusCode());
+        Assert.assertEquals(fare, responseTest.getBody());
+    }
+
+    @Test(expected = CityNotFoundException.class)
+    public void testGetFareByCitiesCityNotFound() throws CityNotFoundException {
+        doThrow(new CityNotFoundException()).when(this.fareController).getFareByCities(1,2);
+        this.backOfficeController.getFareByCities(1,2);
+    }
+
+    @Test
+    public void testGetInvoicesByClientOk() throws ParseException, ClientNotFoundException {
+        Client client = TestUtils.getClients().get(0);
+        List<InvoiceByClient> invoiceByClientList = TestUtils.getInvoicesByClient();
+        when(this.invoiceController.getInvoicesByClient(client.getId(), "2020-05-05", "2020-05-07"))
+                .thenReturn(invoiceByClientList);
+
+        ResponseEntity<List<InvoiceByClient>> responseTest = this.backOfficeController
+                .getInvoicesByClient(client.getId(), "2020-05-05", "2020-05-07");
+
+        Assert.assertEquals(HttpStatus.OK, responseTest.getStatusCode());
+        Assert.assertEquals(invoiceByClientList, responseTest.getBody());
+    }
+
+    @Test(expected = ParseException.class)
+    public void testGetInvoicesByClientWrongDates() throws ParseException, ClientNotFoundException {
+        when(this.invoiceController.getInvoicesByClient(1, "2020-05-105", "2020-05-07"))
+                .thenThrow(new ParseException("", 0));
+
+        this.backOfficeController.getInvoicesByClient(1, "2020-05-105", "2020-05-07");
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void testGetInvoicesByClientClientNotFound() throws ParseException, ClientNotFoundException {
+        doThrow(new ClientNotFoundException()).when(this.clientController).getById(1);
+
+        this.backOfficeController.getInvoicesByClient(1, "2020-05-05", "2020-05-07");
+
     }
 }
