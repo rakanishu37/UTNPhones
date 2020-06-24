@@ -8,11 +8,13 @@ import com.utnphones.utnPhones.controllers.PhoneLineController;
 import com.utnphones.utnPhones.controllers.web.BackOfficeController;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
+import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.testUtils.TestUtils;
 import com.utnphones.utnPhones.utils.UriGenerator;
+import org.hibernate.exception.ConstraintViolationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -175,5 +177,74 @@ public class BackOfficeControllerTest {
         Assert.assertEquals(URI.create("miUri.com"), responseTest.getHeaders().getLocation());
         Assert.assertEquals(HttpStatus.CREATED, responseTest.getStatusCode());
 
+    }
+
+    @Test(expected = CityNotFoundException.class)
+    public void testCreateClientCityNotFound() throws NoSuchAlgorithmException, CityNotFoundException {
+        Client client = TestUtils.getClients().get(0);
+        ClientCreatedDTO dto = ClientCreatedDTO.builder()
+                .firstname("juan")
+                .surname("perez")
+                .dni("37753328")
+                .cityName("test")
+                .username("qwerty")
+                .password("123")
+                .build();
+
+        when(this.clientController.create(dto)).thenThrow(new CityNotFoundException());
+
+        ResponseEntity<?> responseTest = this.backOfficeController.createClient(dto);
+
+    }
+
+    @Test(expected = ConstraintViolationException.class)
+    public void testCreateClientAlreadyExists() throws NoSuchAlgorithmException, CityNotFoundException {
+        Client client = TestUtils.getClients().get(0);
+        ClientCreatedDTO dto = ClientCreatedDTO.builder()
+                .firstname("juan")
+                .surname("perez")
+                .dni("37753328")
+                .cityName("test")
+                .username("qwerty")
+                .password("123")
+                .build();
+
+        when(this.clientController.create(dto)).thenThrow(new ConstraintViolationException("", null, ""));
+
+        ResponseEntity<?> responseTest = this.backOfficeController.createClient(dto);
+
+    }
+
+    @Test
+    public void testUpdateClientOk() throws ClientNotFoundException, NoSuchAlgorithmException, CityNotFoundException {
+        Client client = TestUtils.getClients().get(0);
+        ClientUpdatedDTO dto = ClientUpdatedDTO.builder()
+                .firstname("juan")
+                .surname("perez")
+                .cityName("test")
+                .username("qwerty")
+                .password("123")
+                .build();
+        when(this.clientController.update(client.getId(), dto)).thenReturn(client);
+
+        ResponseEntity<Client> responseEntity = this.backOfficeController.updateClient(client.getId(), dto);
+
+        Assert.assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        Assert.assertEquals(client, responseEntity.getBody());
+    }
+
+    @Test(expected = ClientNotFoundException.class)
+    public void testUpdateClientNotFound() throws ClientNotFoundException, NoSuchAlgorithmException, CityNotFoundException {
+
+        ClientUpdatedDTO dto = ClientUpdatedDTO.builder()
+                .firstname("juan")
+                .surname("perez")
+                .cityName("test")
+                .username("qwerty")
+                .password("123")
+                .build();
+        when(this.clientController.update(1, dto)).thenThrow(new ClientNotFoundException());
+
+        this.backOfficeController.updateClient(1, dto);
     }
 }
