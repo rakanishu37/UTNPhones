@@ -62,13 +62,12 @@ public class FareControllerTest {
         Fare fareTest = this.fareController.getById(fare.getId());
         Assert.assertEquals(fare, fareTest);
     }
- // todo preguntar
-   /* @Test(expected = FareNotFoundException.class)
+
+   @Test(expected = FareNotFoundException.class)
     public void getByIdTestNotFound() throws FareNotFoundException {
-        Fare fare = null;
-        when(this.fareService.getById(1)).thenReturn(fare);
+        when(this.fareService.getById(1)).thenThrow(new FareNotFoundException());
         this.fareController.getById(1);
-    }*/
+    }
 
     @Test
     public void testGetFareByCitiesOk() throws CityNotFoundException {
