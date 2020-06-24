@@ -49,7 +49,8 @@ public class CallService {
     }
 
     public List<PersonDuration> getDurationInMonth(String yearMonth) throws ParseException {
-        Date date = new SimpleDateFormat("yyyy-MM").parse(yearMonth);
-        return callRepository.getDurationInMonth(date);
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM");
+        Date date = sd.parse(yearMonth);
+        return callRepository.getDurationInMonth(sd.format(date));
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -42,17 +43,17 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
     Integer saveCall(Integer numberFrom,Integer numberTo,Integer duration,Date dateCall);
 
 
-    @Query(value = "select \n" +
-            "   p.firstname as 'name',\n" +
-            "   p.surname as 'lastname',\n" +
-            "   sum(c.duration) as 'totalDuration' \n" +
-            "from\n" +
-            "    calls as c\n" +
-            "    inner join phone_lines as pl on c.id_phone_line_from = pl.id_phone_line\n" +
-            "    inner join persons as p on pl.id_person = pl.id_person\n" +
-            "where \n" +
-            "   c.date_call like CONCAT(:month,'%')\n" +
-            "group by\n" +
+    @Query(value = "select  " +
+            "   p.firstname as 'name', " +
+            "   p.surname as 'lastname', " +
+            "   sum(c.duration) as 'totalDuration' " +
+            "from " +
+            "    calls as c " +
+            "    inner join phone_lines as pl on c.id_phone_line_from = pl.id_phone_line " +
+            "    inner join persons as p on p.id_person = pl.id_person " +
+            "where  " +
+            "   c.date_call like CONCAT(:month,'%') " +
+            "group by " +
             "   p.id_person", nativeQuery = true)
-    List<PersonDuration> getDurationInMonth(@Param("month") Date month);
+    List<PersonDuration> getDurationInMonth(@Param("month") String month);
 }
