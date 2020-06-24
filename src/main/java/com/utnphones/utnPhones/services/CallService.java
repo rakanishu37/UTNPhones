@@ -76,15 +76,4 @@ public class CallService {
         List<DestinyQuantity> list = callRepository.getTopTenDestiniesByClient(idClient);
         return TopTenDestinies.fromList(list);
     }
-
-    //todo mover a control backoffice
-    private URI getLocation(Call call) {
-        return ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{id}")
-                .buildAndExpand(call.getId())
-                .toUri();
-    }
-
-
 }

@@ -5,6 +5,7 @@ import com.utnphones.utnPhones.controllers.ClientController;
 import com.utnphones.utnPhones.controllers.FareController;
 import com.utnphones.utnPhones.controllers.InvoiceController;
 import com.utnphones.utnPhones.controllers.PhoneLineController;
+import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Fare;
 import com.utnphones.utnPhones.domain.PhoneLine;
@@ -19,6 +20,7 @@ import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.projections.InvoiceByClient;
+import com.utnphones.utnPhones.utils.UriGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,8 +33,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.List;
@@ -91,8 +95,9 @@ public class BackOfficeController {
     }
 
     @PostMapping("/clients")
-    public ResponseEntity<Client> createClient(@RequestBody ClientCreatedDTO client) throws CityNotFoundException, NoSuchAlgorithmException {
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.clientController.create(client));
+    public ResponseEntity<?> createClient(@RequestBody ClientCreatedDTO client) throws CityNotFoundException, NoSuchAlgorithmException {
+        URI uri = UriGenerator.getLocation(clientController.create(client).getId());
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/clients/{idClient}")
@@ -101,7 +106,7 @@ public class BackOfficeController {
     }
 
     @DeleteMapping("/clients/{idClient}")
-    public ResponseEntity deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
+    public ResponseEntity<?> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
         this.clientController.delete(idClient);
         return ResponseEntity.ok().build();
     }
@@ -114,10 +119,11 @@ public class BackOfficeController {
 
 
     @PostMapping("/clients/{idClient}/phonelines")
-    public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient,
+    public ResponseEntity<?> createPhoneLine(@PathVariable Integer idClient,
                                                      @Valid @RequestBody PhoneLineDTO phoneLineDTO) throws ClientNotFoundException, LineTypeNotFoundException, CityNotFoundException {
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(this.phoneLineController.create(idClient, phoneLineDTO));
+        URI uri = UriGenerator.getLocation(phoneLineController.create(idClient, phoneLineDTO).getId());
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/phonelines/{idPhoneline}")
@@ -148,5 +154,4 @@ public class BackOfficeController {
         List<InvoiceByClient> invoiceByClient = this.invoiceController.getInvoicesByClient(idClient, dateFrom, dateTo);
         return (invoiceByClient.size() > 0) ? ResponseEntity.ok(invoiceByClient) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-
 }
