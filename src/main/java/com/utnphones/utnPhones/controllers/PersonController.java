@@ -22,6 +22,7 @@ public class PersonController {
 
     public Person login(String username, String password) throws UserNotfoundException, ValidationException, NoSuchAlgorithmException {
         if ((username != null) && (password != null)) {
+
             return personService.login(username, password);
         } else {
             throw new ValidationException(INVALID_USER_PASS_MESSAGE);

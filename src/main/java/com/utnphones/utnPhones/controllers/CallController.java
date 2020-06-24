@@ -3,6 +3,7 @@ package com.utnphones.utnPhones.controllers;
 import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.dto.TopTenDestinies;
+import com.utnphones.utnPhones.dto.TotalPriceDTO;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
 import com.utnphones.utnPhones.services.CallService;
@@ -39,4 +40,6 @@ public class CallController {
     public TopTenDestinies getTopTenDestiniesByClient(Integer idClient){
         return this.callService.getTopTenDestiniesByClient(idClient);
     }
+
+
 }

@@ -3,8 +3,10 @@ package com.utnphones.utnPhones.services;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
+import com.utnphones.utnPhones.dto.TotalPriceDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.projections.TotalPrice;
 import com.utnphones.utnPhones.repository.ClientRepository;
 import com.utnphones.utnPhones.utils.PasswordConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +71,9 @@ public class ClientService {
         Client clientToBeDeleted = getById(idClient);
         clientToBeDeleted.setIsActive(Boolean.FALSE);
         clientRepository.save(clientToBeDeleted);
+    }
+
+    public TotalPrice getTotalPrice(Integer idClient){
+        return this.clientRepository.getTotalPrice(idClient);
     }
 }

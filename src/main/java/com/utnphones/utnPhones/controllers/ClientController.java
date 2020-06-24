@@ -5,9 +5,11 @@ import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
+import com.utnphones.utnPhones.dto.TotalPriceDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.projections.TotalPrice;
 import com.utnphones.utnPhones.services.ClientService;
 import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,5 +45,9 @@ public class ClientController {
 
     public void delete(Integer id) throws ClientNotFoundException {
         clientService.delete(id);
+    }
+
+    public TotalPrice getTotalPrice(Integer idClient){
+        return this.clientService.getTotalPrice(idClient);
     }
 }

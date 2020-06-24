@@ -35,6 +35,7 @@ public class LoginController {
         ResponseEntity<?> response;
         try {
             Person person = personController.login(loginRequestDto.getUsername(), loginRequestDto.getPassword());
+
             String token = sessionManager.createSession(person);
             response = ResponseEntity.ok().headers(createHeaders(token)).build();
         } catch (UserNotfoundException e) {

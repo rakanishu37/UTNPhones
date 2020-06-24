@@ -4,6 +4,7 @@ import com.utnphones.utnPhones.domain.Call;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.CallDto;
 import com.utnphones.utnPhones.dto.TopTenDestinies;
+import com.utnphones.utnPhones.dto.TotalPriceDTO;
 import com.utnphones.utnPhones.exceptions.CallNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
@@ -76,4 +77,6 @@ public class CallService {
         List<DestinyQuantity> list = callRepository.getTopTenDestiniesByClient(idClient);
         return TopTenDestinies.fromList(list);
     }
+
+
 }
