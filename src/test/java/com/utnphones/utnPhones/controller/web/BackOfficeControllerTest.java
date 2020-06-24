@@ -495,4 +495,18 @@ public class BackOfficeControllerTest {
         this.backOfficeController.getInvoicesByClient(1, "2020-05-05", "2020-05-07");
 
     }
+
+    @Test()
+    public void testGetInvoicesByClientNoContent() throws ParseException, ClientNotFoundException {
+
+        List<InvoiceByClient> invoiceByClientList = new ArrayList<>();
+        when(this.invoiceController.getInvoicesByClient(1, "2020-05-05", "2020-05-07"))
+                .thenReturn(invoiceByClientList);
+
+        ResponseEntity<List<InvoiceByClient>> responseTest = this.backOfficeController
+                .getInvoicesByClient(1, "2020-05-05", "2020-05-07");
+
+        Assert.assertEquals(HttpStatus.NO_CONTENT, responseTest.getStatusCode());
+
+    }
 }
