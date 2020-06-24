@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 
 import java.security.NoSuchAlgorithmException;
 
+import static com.utnphones.utnPhones.utils.Constants.INVALID_USER_PASS_MESSAGE;
+
 @Controller
 public class PersonController {
     private PersonService personService;
@@ -22,7 +24,7 @@ public class PersonController {
         if ((username != null) && (password != null)) {
             return personService.login(username, password);
         } else {
-            throw new ValidationException("username and password must have a value");
+            throw new ValidationException(INVALID_USER_PASS_MESSAGE);
         }
     }
 }

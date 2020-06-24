@@ -111,11 +111,11 @@ public class BackOfficeController {
         return ResponseEntity.ok().build();
     }
 
-    //todo borrar?
+    /*//todo borrar?
     @GetMapping("/phonelines/{idPhoneLine}")
     public ResponseEntity<PhoneLine> getPhonelineById(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException {
         return ResponseEntity.ok(this.phoneLineController.getById(idPhoneLine));
-    }
+    }*/
 
 
     @PostMapping("/clients/{idClient}/phonelines")

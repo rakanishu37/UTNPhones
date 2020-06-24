@@ -14,5 +14,5 @@ public class Constants {
     public static String USER_TYPE_EMPLOYEE = "employee";
     public static String ANTENNA_CODE = "antenna";
     public static String USER_NAME_ALREADY_USED = "Username already used";
-    public static String MISSING_TOKEN_MESSAGE = "Token is missing in the request";
+    public static String INVALID_USER_PASS_MESSAGE = "Username and Password must have a value";
 }
