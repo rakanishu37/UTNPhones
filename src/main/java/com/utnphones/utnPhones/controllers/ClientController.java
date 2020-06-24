@@ -41,7 +41,7 @@ public class ClientController {
         return this.clientService.update(id, client);
     }
 
-    public void delete(Integer id) throws ClientIsAlreadyDeletedException, ClientNotFoundException {
+    public void delete(Integer id) throws ClientNotFoundException {
         clientService.delete(id);
     }
 }

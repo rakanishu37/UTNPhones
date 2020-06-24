@@ -205,8 +205,8 @@ begin
         date between pDateFrom and pDateTo;
 end //
 
- SHOW PROCESSLIST;
- SET GLOBAL event_scheduler = ON;
+--SHOW PROCESSLIST;
+-- SET GLOBAL event_scheduler = ON;
 delimiter //
 CREATE EVENT event_generate_invoices
 ON SCHEDULE EVERY "1" MONTH	
