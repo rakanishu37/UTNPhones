@@ -15,6 +15,7 @@ import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.FareNotFoundException;
 import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
@@ -136,9 +137,9 @@ public class BackOfficeController {
     }
 
     @GetMapping("/fares")
-    public ResponseEntity<Fare> getFareByCities(@RequestParam(name = "cityFrom") Integer idCityFrom
-            , @RequestParam(name = "cityTo") Integer idCityTo) throws CityNotFoundException {
-        return ResponseEntity.ok(this.fareController.getFareByCities(idCityFrom, idCityTo));
+    public ResponseEntity<Fare> getFareByCities(@RequestParam(name = "cityFrom") String cityFrom
+            , @RequestParam(name = "cityTo") String cityTo) throws FareNotFoundException, CityNotFoundException {
+        return ResponseEntity.ok(this.fareController.getFareByCities(cityFrom, cityTo));
     }
 
     @GetMapping("/clients/{idClient}/invoices")

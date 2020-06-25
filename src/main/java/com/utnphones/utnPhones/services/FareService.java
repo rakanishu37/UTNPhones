@@ -18,8 +18,8 @@ public class FareService {
         this.fareRepository = fareRepository;
     }
 
-    public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws CityNotFoundException {
-        return fareRepository.getFareByCities(idCityFrom, idCityTo).orElseThrow(CityNotFoundException::new);
+    public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws FareNotFoundException {
+        return fareRepository.getFareByCities(idCityFrom, idCityTo).orElseThrow(FareNotFoundException::new);
     }
 
 

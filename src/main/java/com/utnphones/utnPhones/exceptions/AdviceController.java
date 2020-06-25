@@ -23,6 +23,7 @@ import java.text.ParseException;
 
 import static com.utnphones.utnPhones.utils.Constants.CITY_NOT_FOUND;
 import static com.utnphones.utnPhones.utils.Constants.CLIENT_NOT_EXISTS_MESSAGE;
+import static com.utnphones.utnPhones.utils.Constants.FARE_NOT_EXISTS;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_DATE_FORMAT_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_FORMAT_MESSAGE;
 import static com.utnphones.utnPhones.utils.Constants.INVALID_LOGIN_MESSAGE;
@@ -102,6 +103,13 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     public ErrorResponseDto handleInvoiceNotFoundException(ConstraintViolationException ex)
     {
         return new ErrorResponseDto(4, INVOICE_NOT_EXISTS);
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(FareNotFoundException.class)
+    public ErrorResponseDto handleFareNotFoundException(FareNotFoundException ex)
+    {
+        return new ErrorResponseDto(4, FARE_NOT_EXISTS);
     }
 
 }

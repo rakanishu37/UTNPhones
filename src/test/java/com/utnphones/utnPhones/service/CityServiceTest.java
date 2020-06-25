@@ -45,28 +45,4 @@ public class CityServiceTest {
 
         cityService.getByName(randomName);
     }
-/*
-    @Test
-    public void getAllOk() {
-        City city1 = City.builder().build();
-        City city2 = City.builder().build();
-        List<City> cities = new ArrayList<>();
-        cities.add(city1);
-        cities.add(city2);
-        when(cityRepository.findAll()).thenReturn(cities);
-
-        List<City> searched = cityService.getAll();
-
-        Assert.assertEquals(searched.size(),cities.size());
-    }
-
-    @Test
-    public void createOk(){
-        City stub = City.builder().name("test").prefix("0").province(null).build();
-        City stubWithId = City.builder().id(1).build();
-        when(cityRepository.save(stub)).thenReturn(stubWithId);
-
-        City created = cityService.create(stub);
-        Assert.assertEquals(Integer.valueOf(1),created.getId());
-    }*/
 }

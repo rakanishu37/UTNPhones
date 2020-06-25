@@ -19,6 +19,7 @@ import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
+import com.utnphones.utnPhones.exceptions.FareNotFoundException;
 import com.utnphones.utnPhones.exceptions.LineTypeNotFoundException;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
 import com.utnphones.utnPhones.projections.CallsDates;
@@ -448,22 +449,22 @@ public class BackOfficeControllerTest {
         doThrow(new PhoneLineNotFoundException()).when(this.phoneLineController).delete(1);
         this.backOfficeController.deletePhoneLine(1);
     }
-
+ // todo agregar test exp farte ot found
     @Test
-    public void testGetFareByCitiesOk() throws CityNotFoundException {
+    public void testGetFareByCitiesOk() throws CityNotFoundException, FareNotFoundException {
         Fare fare = new Fare(1, TestUtils.getCityList().get(0), TestUtils.getCityList().get(1), (float)17.4);
-        when(this.fareController.getFareByCities(fare.getCityFrom().getId(),fare.getCityTo().getId())).thenReturn(fare);
+        when(this.fareController.getFareByCities(fare.getCityFrom().getName(),fare.getCityTo().getName())).thenReturn(fare);
 
-        ResponseEntity<Fare> responseTest = this.backOfficeController.getFareByCities(fare.getCityFrom().getId(),fare.getCityTo().getId());
+        ResponseEntity<Fare> responseTest = this.backOfficeController.getFareByCities(fare.getCityFrom().getName(),fare.getCityTo().getName());
 
         Assert.assertEquals(HttpStatus.OK, responseTest.getStatusCode());
         Assert.assertEquals(fare, responseTest.getBody());
     }
 
     @Test(expected = CityNotFoundException.class)
-    public void testGetFareByCitiesCityNotFound() throws CityNotFoundException {
-        doThrow(new CityNotFoundException()).when(this.fareController).getFareByCities(1,2);
-        this.backOfficeController.getFareByCities(1,2);
+    public void testGetFareByCitiesCityNotFound() throws CityNotFoundException, FareNotFoundException {
+        doThrow(new CityNotFoundException()).when(this.fareController).getFareByCities("Mar del Plata","La Plata");
+        this.backOfficeController.getFareByCities("Mar del Plata","La Plata");
     }
 
     @Test
