@@ -1,4 +1,4 @@
-package com.utnphones.utnPhones.controllers;
+package com.utnphones.utnPhones.exceptions;
 
 
 import com.utnphones.utnPhones.dto.ErrorResponseDto;

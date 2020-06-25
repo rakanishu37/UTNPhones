@@ -15,19 +15,5 @@ public class UtnPhonesApplication {
 
     public static void main(String[] args) throws SQLException {
         SpringApplication.run(UtnPhonesApplication.class, args);
-
-
-
-        // TODO Consulta de llamadas por usuario.
-        // todo Consulta de facturas del usuario logueado por rango de fechas.
-
-        // TODO unit test 70%
-
-        // TODO usuarios
-		// TODO 	a) BACKOFFICE, que permitirá el manejo de clientes, líneas y tarifas.
-		// TODO 	b) CLIENTES, que permitirá consultas de llamadas y facturación.
-		// TODO 	d) FACTURACIÓN , proceso automático de facturación.
-
-
     }
 }
