@@ -10,7 +10,8 @@ GRANT SELECT on utn_phones.calls to 'backoffice'@'localhost';
 GRANT execute on procedure utn_phones.sp_show_report_by_idClient_dates to 'backoffice'@'localhost';
 GRANT execute on procedure utn_phones.sp_show_report_by_idClient to 'backoffice'@'localhost';
 GRANT SELECT on utn_phones.invoices to 'clientes'@'localhost';
-
+GRANT SELECT on utn_phones.v_report to 'backoffice'@'localhost';
+GRANT SELECT on utn_phones.v_report to 'clientes'@'localhost';
 
 create user 'clientes'@'localhost' identified by 'clientpass';
 GRANT SELECT on utn_phones.calls to 'clientes'@'localhost';

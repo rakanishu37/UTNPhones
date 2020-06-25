@@ -177,32 +177,31 @@ create view v_report as
 		inner join phone_lines as plTo on c.id_phone_line_to = plTo.id_phone_line
 		inner join cities as cto on cto.id_city = (select id_city from cities where plFrom.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1)
 		inner join cities as ctd on ctd.id_city = (select id_city from cities where plTo.line_number like CONCAT(prefix,'%') order by LENGTH(prefix) DESC LIMIT 1) 
-		ORDER BY c.date_call;
-
-
+        ORDER BY c.date_call;
 
 delimiter //
-create procedure sp_show_report_by_idClient(IN pIdClient int)
+create procedure sp_show_report_by_idClient(IN pIdClient int, IN pFrom int, IN pQuantity int)
 begin
 	select 
 	* 
 from 
 	v_report
 where 
-	phoneNumberOrigin in (select  line_number from phone_lines where id_person = pIdClient);
+	phoneNumberOrigin  in  (select  line_number from phone_lines where id_person = pIdClient)
+ LIMIT 50 OFFSET 0;
 end //
 
-
 delimiter //
-create procedure sp_show_report_by_idClient_dates(IN pIdClient int,IN pDateFrom date, IN pDateTo date)
+create procedure sp_show_report_by_idClient_dates(IN pIdClient int,IN pDateFrom date, IN pDateTo date, IN pFrom int, IN pQuantity int)
 begin
     select 
         * 
     from 
         v_report
     where 
-        phoneNumberDestiny in (select  line_number from phone_lines where id_person = pIdClient) and
-        date between pDateFrom and pDateTo;
+        phoneNumberOrigin in (select  line_number from phone_lines where id_person = pIdClient) and
+        date between pDateFrom and pDateTo
+		LIMIT pQuantity OFFSET pFrom;
 end //
 
 --SHOW PROCESSLIST;
