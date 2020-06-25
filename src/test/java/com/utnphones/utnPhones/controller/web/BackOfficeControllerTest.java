@@ -82,10 +82,10 @@ public class BackOfficeControllerTest {
         Client client = TestUtils.getClients().get(0);
         Map<String, List<CallsDates>> calls = TestUtils.getCalls();
         when(this.clientController.getById(client.getId())).thenReturn(client);
-        when(this.callController.getAllByClient(client.getId(), "", "")).thenReturn(calls);
+        when(this.callController.getAllByClient(client.getId(), "", "", 0, 50)).thenReturn(calls);
 
         ResponseEntity<Map<String, List<CallsDates>>> responseTest = this.backOfficeController.getAllCallsByClient(
-                client.getId(), "", ""
+                client.getId(), 0, 50,"", ""
         );
 
         Assert.assertEquals(HttpStatus.OK,responseTest.getStatusCode());
@@ -97,10 +97,10 @@ public class BackOfficeControllerTest {
         Client client = TestUtils.getClients().get(0);
         Map<String, List<CallsDates>> calls = new HashMap<>();
         when(this.clientController.getById(client.getId())).thenReturn(client);
-        when(this.callController.getAllByClient(client.getId(), "", "")).thenReturn(calls);
+        when(this.callController.getAllByClient(client.getId(), "", "", 0, 50)).thenReturn(calls);
 
         ResponseEntity<Map<String, List<CallsDates>>> responseTest = this.backOfficeController.getAllCallsByClient(
-                client.getId(), "", ""
+                client.getId(), 0, 50, "", ""
         );
 
         Assert.assertEquals(HttpStatus.NO_CONTENT,responseTest.getStatusCode());
@@ -112,7 +112,7 @@ public class BackOfficeControllerTest {
         when(this.clientController.getById(1)).thenThrow(new ClientNotFoundException());
 
         ResponseEntity<Map<String, List<CallsDates>>> responseTest = this.backOfficeController.getAllCallsByClient(
-                1, "", ""
+                1, 0, 50, "", ""
         );
     }
 
@@ -122,11 +122,11 @@ public class BackOfficeControllerTest {
         Client client = TestUtils.getClients().get(0);
         Map<String, List<CallsDates>> calls = TestUtils.getCalls();
         when(this.clientController.getById(client.getId())).thenReturn(client);
-        when(this.callController.getAllByClient(client.getId(), "2020-05-117", "2020-05-118"))
+        when(this.callController.getAllByClient(client.getId(), "2020-05-117", "2020-05-118", 0, 50))
                 .thenThrow(new ParseException("", 1));
 
         ResponseEntity<Map<String, List<CallsDates>>> responseTest = this.backOfficeController.getAllCallsByClient(
-                client.getId(), "2020-05-117", "2020-05-118"
+                client.getId(),  0, 50,"2020-05-117", "2020-05-118"
         );
     }
 

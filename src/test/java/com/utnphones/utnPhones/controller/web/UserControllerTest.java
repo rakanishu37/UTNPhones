@@ -115,10 +115,11 @@ public class UserControllerTest {
         Map<String, List<CallsDates>> callsBetweenDates = TestUtils.getCalls();
 
         when(this.sessionManager.getCurrentUser("token")).thenReturn(client);
-        when(this.callController.getAllByClient(client.getId(), "2020-05-06", "2020-06-01"))
+        when(this.callController.getAllByClient(client.getId(), "2020-05-06", "2020-06-01", 0, 50))
         .thenReturn(callsBetweenDates);
 
-        ResponseEntity<Map<String, List<CallsDates>>> responseEntity = userController.getCallsBetweenDates(token,"2020-05-06","2020-06-01");
+        ResponseEntity<Map<String, List<CallsDates>>> responseEntity = userController.getCallsBetweenDates
+                (token,"2020-05-06","2020-06-01", 0, 50);
 
         assertEquals(HttpStatus.OK,responseEntity.getStatusCode());
     }
@@ -129,10 +130,10 @@ public class UserControllerTest {
         String token = "token";
 
         when(this.sessionManager.getCurrentUser("token")).thenReturn(client);
-        when(this.callController.getAllByClient(client.getId(), "2020-05-06", "2020-06-01"))
+        when(this.callController.getAllByClient(client.getId(), "2020-05-06", "2020-06-01", 0, 50))
                 .thenReturn(Collections.emptyMap());
 
-        ResponseEntity<Map<String, List<CallsDates>>> responseEntity = userController.getCallsBetweenDates(token,"2020-05-06","2020-06-01");
+        ResponseEntity<Map<String, List<CallsDates>>> responseEntity = userController.getCallsBetweenDates(token,"2020-05-06","2020-06-01", 0, 50);
 
         assertEquals(HttpStatus.NO_CONTENT,responseEntity.getStatusCode());
     }
@@ -143,9 +144,9 @@ public class UserControllerTest {
         String token = "token";
 
         when(this.sessionManager.getCurrentUser("token")).thenReturn(client);
-        when(this.callController.getAllByClient(client.getId(), "2020-105-06", "2020-06-01")).thenThrow(new ParseException("",1));
+        when(this.callController.getAllByClient(client.getId(), "2020-105-06", "2020-06-01", 0, 50)).thenThrow(new ParseException("",1));
 
-        userController.getCallsBetweenDates(token,"2020-105-06","2020-06-01");
+        userController.getCallsBetweenDates(token,"2020-105-06","2020-06-01",0, 50);
 
     }
 
@@ -156,7 +157,7 @@ public class UserControllerTest {
 
         when(this.sessionManager.getCurrentUser("token")).thenThrow(new UserNotLoggedException());
 
-        userController.getCallsBetweenDates(token,"2020-05-06","2020-06-01");
+        userController.getCallsBetweenDates(token,"2020-05-06","2020-06-01", 0, 50);
 
     }
 

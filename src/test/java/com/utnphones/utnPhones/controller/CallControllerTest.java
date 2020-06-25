@@ -85,9 +85,9 @@ public class CallControllerTest {
     @Test
     public void testGetAllByClientOk() throws ParseException {
         Map<String, List<CallsDates>> result = TestUtils.getCalls();
-        when(this.callService.getCalls(1, null, null)).thenReturn(result);
+        when(this.callService.getCalls(1, null, null, 0, 50)).thenReturn(result);
 
-        Map<String, List<CallsDates>> resultTest = this.callController.getAllByClient(1, null, null);
+        Map<String, List<CallsDates>> resultTest = this.callController.getAllByClient(1, null, null, 0, 50);
 
         assertEquals(result, resultTest);
         assertEquals(result.size(), resultTest.size());
@@ -96,9 +96,9 @@ public class CallControllerTest {
     @Test
     public void testGetAllByClientAndDatesOk() throws ParseException {
         Map<String, List<CallsDates>> result = TestUtils.getCalls();
-        when(this.callService.getCalls(1, "2020-05-01", "2020-05-10"))
+        when(this.callService.getCalls(1, "2020-05-01", "2020-05-10", 0, 50))
                 .thenReturn(result);
-        Map<String, List<CallsDates>> resultTest = this.callController.getAllByClient(1, "2020-05-01", "2020-05-10");
+        Map<String, List<CallsDates>> resultTest = this.callController.getAllByClient(1, "2020-05-01", "2020-05-10", 0, 50);
         assertEquals(result, resultTest);
     }
 

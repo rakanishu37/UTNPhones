@@ -28,8 +28,8 @@ public class CallController {
     }
 
 
-    public Map<String, List<CallsDates>> getAllByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
-        return this.callService.getCalls(idClient, dateFrom, dateTo);
+    public Map<String, List<CallsDates>> getAllByClient(Integer idClient, String dateFrom, String dateTo, Integer from, Integer quantity) throws ParseException {
+        return this.callService.getCalls(idClient, dateFrom, dateTo, from, quantity);
     }
 
     public TopTenDestinies getTopTenDestiniesByClient(Integer idClient){

@@ -42,10 +42,12 @@ public class UserController {
     @GetMapping("/me/calls")
     public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@RequestHeader("Authorization") String token,
                                                                               @RequestParam(name = "dateFrom") String dateFrom,
-                                                                              @RequestParam(name = "dateTo") String dateTo) throws ParseException, UserNotLoggedException{
+                                                                              @RequestParam(name = "dateTo") String dateTo,
+                                                                              @RequestParam(value = "from") Integer from,
+                                                                              @RequestParam(value = "quantity") Integer quantity) throws ParseException, UserNotLoggedException{
 
         Integer idClient = sessionManager.getCurrentUser(token).getId();
-        Map<String, List<CallsDates>> callsBetweenDates = callController.getAllByClient(idClient, dateFrom, dateTo);
+        Map<String, List<CallsDates>> callsBetweenDates = callController.getAllByClient(idClient, dateFrom, dateTo, from, quantity);
 
         return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) :
                 ResponseEntity.status(HttpStatus.NO_CONTENT).build();

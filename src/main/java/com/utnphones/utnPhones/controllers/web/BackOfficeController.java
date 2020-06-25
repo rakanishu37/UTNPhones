@@ -74,16 +74,18 @@ public class BackOfficeController {
 
     @GetMapping("/calls/client/{idClient}") // todo agregar pag
     public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@PathVariable Integer idClient,
+                                                                             @RequestParam(value = "from") Integer from,
+                                                                             @RequestParam(value = "quantity") Integer quantity,
                                                                              @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                                              @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
         Client client = this.clientController.getById(idClient); //para evitar la referencia circular lo dejamos aca
-        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId(),dateFrom,dateTo);
+        Map<String, List<CallsDates>> calls = this.callController.getAllByClient(client.getId(),dateFrom,dateTo, from, quantity);
         return (!calls.isEmpty()) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/clients")
-    public ResponseEntity<List<Client>> getAllClient(@RequestParam(required = true, value = "from") Integer from,
-                                                     @RequestParam(required = true, value = "quantity") Integer quantity){
+    public ResponseEntity<List<Client>> getAllClient(@RequestParam(value = "from") Integer from,
+                                                     @RequestParam(value = "quantity") Integer quantity){
         List<Client> list = this.clientController.getAll(quantity, from);
         return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

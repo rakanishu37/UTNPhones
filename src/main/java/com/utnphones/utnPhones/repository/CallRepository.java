@@ -13,8 +13,8 @@ import java.util.List;
 @Repository
 public interface CallRepository extends JpaRepository<Call,Integer> {
 
-    @Query(value = "call sp_show_report_by_idClient_dates(:idClient,:from,:to);", nativeQuery = true)
-    List<CallsDates> getAllByIdClientBetweenDates(@Param("idClient") Integer idClient, String from, String to);
+    @Query(value = "call sp_show_report_by_idClient_dates(:idClient,:dateFrom,:dateTo) LIMIT :quantity OFFSET :from ;", nativeQuery = true)
+    List<CallsDates> getAllByIdClientBetweenDates(@Param("idClient") Integer idClient, String dateFrom, String dateTo, @Param("from") Integer from, @Param("quantity") Integer quantity);
 
     @Query(value = "select * from v_report LIMIT :quantity OFFSET :from ", nativeQuery = true)
     List<CallsDates> findAll(@Param("quantity") Integer quantity, @Param("from") Integer from);
@@ -24,8 +24,8 @@ public interface CallRepository extends JpaRepository<Call,Integer> {
                                     @Param("datefrom") String dateFrom, @Param("dateTo") String dateTo);
 
 
-    @Query(value = "call sp_show_report_by_idClient(:id_person);", nativeQuery = true)
-    List<CallsDates> getAllCallByClient(@Param("id_person") Integer id);
+    @Query(value = "call sp_show_report_by_idClient(:id_person) LIMIT :quantity OFFSET :from ;", nativeQuery = true)
+    List<CallsDates> getAllCallByClient(@Param("id_person") Integer id, @Param("from") Integer from, @Param("quantity") Integer quantity);
 
     @Query(value = "select \n" +
             "\tct.city_name as 'CityName',\n" +

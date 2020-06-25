@@ -39,27 +39,27 @@ public class CallServiceTest {
     @Test
     public void testGetAllByClientOk() throws ParseException {
         Map<String, List<CallsDates>> result = TestUtils.getCalls();
-        when(this.callRepository.getAllCallByClient(1)).thenReturn(result.get("78910"));
+        when(this.callRepository.getAllCallByClient(1, 0, 50)).thenReturn(result.get("78910"));
 
-        Map<String, List<CallsDates>> resultTest = this.callService.getCalls(1, null, null);
+        Map<String, List<CallsDates>> resultTest = this.callService.getCalls(1, null, null, 0, 50);
 
         Assert.assertEquals(result.get("78910").size(), resultTest.get("78910").size());
     }
     @Test
     public void testGetAllByClientAndDatesOk() throws ParseException {
         Map<String, List<CallsDates>> result = TestUtils.getCalls();
-        when(this.callRepository.getAllByIdClientBetweenDates(1, "2020-05-01", "2020-05-10"))
+        when(this.callRepository.getAllByIdClientBetweenDates(1, "2020-05-01", "2020-05-10", 0, 50))
                 .thenReturn(result.get("78910"));
-        Map<String, List<CallsDates>> resultTest = this.callService.getCalls(1, "2020-05-01", "2020-05-10");
+        Map<String, List<CallsDates>> resultTest = this.callService.getCalls(1, "2020-05-01", "2020-05-10", 0, 50);
         Assert.assertEquals(result.get("78910").size(), resultTest.get("78910").size());
     }
 
     @Test(expected = ParseException.class)
     public void testGetAllByClientAndDatesWrongDates() throws ParseException {
 
-        when(this.callRepository.getAllByIdClientBetweenDates(1, "2020-05-870", "2020-05-410"))
+        when(this.callRepository.getAllByIdClientBetweenDates(1, "2020-05-870", "2020-05-410", 0, 50))
                 .thenReturn(null);
-        this.callService.getCalls(1, "2020-05-870", "2020-05-410");
+        this.callService.getCalls(1, "2020-05-870", "2020-05-410", 0, 50);
     }
 
 }

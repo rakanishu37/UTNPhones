@@ -44,12 +44,12 @@ public class CallService {
                 .build());
     }
 
-    public Map<String, List<CallsDates>> getCalls(Integer idClient, String from, String to) throws ParseException {
+    public Map<String, List<CallsDates>> getCalls(Integer idClient, String dateFrom, String dateTo, Integer from, Integer quantity) throws ParseException {
         List<CallsDates> calls = null;
-        if (from == null || to == null) {
-            calls = callRepository.getAllCallByClient(idClient);
+        if (dateFrom == null || dateTo == null) {
+            calls = callRepository.getAllCallByClient(idClient, from, quantity);
         } else {
-            calls = callRepository.getAllByIdClientBetweenDates(idClient, DateFormatUtil.formatDate(from), DateFormatUtil.formatDate(to));
+            calls = callRepository.getAllByIdClientBetweenDates(idClient, DateFormatUtil.formatDate(dateFrom), DateFormatUtil.formatDate(dateTo), from, quantity);
         }
 
         return calls.stream()
