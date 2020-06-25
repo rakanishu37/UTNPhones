@@ -72,7 +72,7 @@ public class BackOfficeController {
         return (calls.size() > 0) ? ResponseEntity.ok(calls) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }*/
 
-    @GetMapping("/calls/client/{idClient}")
+    @GetMapping("/calls/client/{idClient}") // todo agregar pag
     public ResponseEntity<Map<String, List<CallsDates>>> getAllCallsByClient(@PathVariable Integer idClient,
                                                                              @RequestParam(required = false, value = "dateFrom") String dateFrom,
                                                                              @RequestParam(required = false, value = "dateTo") String dateTo) throws ClientNotFoundException, ParseException {
@@ -110,13 +110,6 @@ public class BackOfficeController {
         this.clientController.delete(idClient);
         return ResponseEntity.ok().build();
     }
-
-    /*//todo borrar?
-    @GetMapping("/phonelines/{idPhoneLine}")
-    public ResponseEntity<PhoneLine> getPhonelineById(@PathVariable Integer idPhoneLine) throws PhoneLineNotFoundException {
-        return ResponseEntity.ok(this.phoneLineController.getById(idPhoneLine));
-    }*/
-
 
     @PostMapping("/clients/{idClient}/phonelines")
     public ResponseEntity<?> createPhoneLine(@PathVariable Integer idClient,

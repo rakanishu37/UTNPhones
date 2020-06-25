@@ -18,23 +18,9 @@ public class FareService {
         this.fareRepository = fareRepository;
     }
 
-    /*//todo borrar
-    public List<Fare> getAll(){
-        return this.fareRepository.findAll();
-    }*/
-
-    /*
-    public Fare create(Fare fare){
-        return this.fareRepository.save(fare);
-    }*/
-
     public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws CityNotFoundException {
         return fareRepository.getFareByCities(idCityFrom, idCityTo).orElseThrow(CityNotFoundException::new);
     }
 
-    /*//todo borrar
-    public Fare getById(Integer idFare) throws FareNotFoundException {
-        return fareRepository.findById(idFare)
-                .orElseThrow(FareNotFoundException::new);
-    }*/
+
 }

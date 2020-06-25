@@ -26,6 +26,8 @@ public interface PhoneLineRepository extends JpaRepository<PhoneLine,Integer> {
 
     Optional<PhoneLine> findByLineNumberAndIsActive(String phoneNumber,Boolean b);
 
+    Optional<PhoneLine> findByLineNumberAndIsActiveAndLineStatus(String phoneNumber,Boolean b, LineStatus active);
+
     List<PhoneLine> findAllByIsActive(Boolean b);
 
     Optional<PhoneLine> findByIdAndIsActive(Integer id, Boolean aTrue);

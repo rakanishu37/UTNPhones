@@ -2,6 +2,7 @@ package com.utnphones.utnPhones.services;
 
 import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.LineStatus;
 import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
 import com.utnphones.utnPhones.dto.PhoneLineDTO;
@@ -23,11 +24,6 @@ public class PhoneLineService {
         this.phoneLineRepository = phoneLineRepository;
         this.lineTypeService = lineTypeService;
     }
-
-   /* //todo borrar
-    public List<PhoneLine> getAll(){
-        return this.phoneLineRepository.findAllByIsActive(Boolean.TRUE);
-    }*/
 
     public PhoneLine create(PhoneLineDTO phoneLineDTO, Client client, LineType lineType, City city) {
         PhoneLine phoneLine = PhoneLine.builder()
@@ -51,8 +47,13 @@ public class PhoneLineService {
                 .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
+    public PhoneLine getActivePhoneNumber(String phoneNumber) throws PhoneLineNotFoundException {
+        return this.phoneLineRepository.findByLineNumberAndIsActiveAndLineStatus(phoneNumber,Boolean.TRUE, LineStatus.active)
+                .orElseThrow(()-> new PhoneLineNotFoundException());
+    }
+
     public PhoneLine updatePhoneLine(Integer idPhoneline, PhoneLineDTO phoneLineDTO, City city, LineType lineType) throws PhoneLineNotFoundException {
-        return phoneLineRepository.findById(idPhoneline)
+        return phoneLineRepository.findByIdAndIsActive(idPhoneline, Boolean.TRUE)
                 .map(phoneLine -> update(phoneLine,phoneLineDTO,city,lineType))
                 .map(phoneLineRepository::save)
                 .orElseThrow(PhoneLineNotFoundException::new);

@@ -82,14 +82,14 @@ public class PhoneLineServiceTest {
     public void updatePhoneLineOk() throws PhoneLineNotFoundException {
         City city = new City(1, new Province(), "cityName", "223");
         LineType lineType = LineType.builder().id(1).typeName("mobile").build();
-        PhoneLineDTO phoneLineDTO = new PhoneLineDTO("city", "223547748", lineType.getTypeName(), LineStatus.active);
+        PhoneLineDTO phoneLineDTO = new PhoneLineDTO("city", "29205356948", lineType.getTypeName(), LineStatus.active);
         PhoneLine phoneLine = PhoneLine.builder()
                 .client(new Client())
                 .lineNumber(city.getPrefix() + phoneLineDTO.getLineNumber())
                 .lineStatus(phoneLineDTO.getStatus())
                 .lineType(lineType)
                 .build();
-        when(this.phoneLineRepository.findById(phoneLine.getId())).thenReturn(Optional.ofNullable(phoneLine));
+        when(this.phoneLineRepository.findByIdAndIsActive(phoneLine.getId(), Boolean.TRUE)).thenReturn(Optional.ofNullable(phoneLine));
         when(this.phoneLineRepository.save(phoneLine)).thenReturn(phoneLine);
 
         PhoneLine phoneLineTest = this.phoneLineService.updatePhoneLine(phoneLine.getId(), phoneLineDTO, city, lineType);

@@ -32,18 +32,9 @@ public class CallService {
         this.phoneLineService = phoneLineService;
     }
 
-    /*//todo borrar
-    public List<CallsDates> getAll(Integer quantity, Integer from, String dateFrom, String dateTo) throws ParseException {
-        if(dateFrom==null || dateTo==null){
-            return this.callRepository.findAll(quantity, from);
-        }else{
-            return this.callRepository.findAllByDates(from, quantity, DateFormatUtil.formatDate(dateFrom), DateFormatUtil.formatDate(dateTo));
-        }
-    }*/
-
     public Call create(CallDto callDto) throws PhoneLineNotFoundException {
-        PhoneLine numberFrom = phoneLineService.getByPhoneNumber(callDto.getNumberFrom());
-        PhoneLine numberTo = phoneLineService.getByPhoneNumber(callDto.getNumberTo());
+        PhoneLine numberFrom = phoneLineService.getActivePhoneNumber(callDto.getNumberFrom());
+        PhoneLine numberTo = phoneLineService.getActivePhoneNumber(callDto.getNumberTo());
 
         return callRepository.save(Call.builder()
                 .phoneFrom(numberFrom)
@@ -52,12 +43,6 @@ public class CallService {
                 .date(callDto.getDate())
                 .build());
     }
-
-    /*//todo borrar
-    public Call getById(Integer idCall) throws CallNotFoundException {
-        return callRepository.findById(idCall)
-                .orElseThrow(() -> new CallNotFoundException());
-    }*/
 
     public Map<String, List<CallsDates>> getCalls(Integer idClient, String from, String to) throws ParseException {
         List<CallsDates> calls = null;

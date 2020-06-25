@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -27,15 +28,11 @@ public class AntennaController {
     }
 
     @PostMapping("/calls")
-    public ResponseEntity<?> create(@RequestBody CallDto callDto){
+    public ResponseEntity<?> create(@RequestBody @Valid CallDto callDto) throws PhoneLineNotFoundException {
         ResponseEntity responseEntity;
+        URI uri = UriGenerator.getLocation(this.callController.create(callDto).getId());
+        responseEntity = ResponseEntity.created(uri).build();
 
-        try {
-            URI uri = UriGenerator.getLocation(this.callController.create(callDto).getId());
-            responseEntity = ResponseEntity.created(uri).build();
-        } catch (PhoneLineNotFoundException e) {
-            responseEntity = ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
         return responseEntity;
     }
 

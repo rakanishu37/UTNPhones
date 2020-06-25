@@ -4,31 +4,22 @@ import com.utnphones.utnPhones.controllers.ClientController;
 import com.utnphones.utnPhones.domain.City;
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.Province;
-import com.utnphones.utnPhones.domain.UserType;
 import com.utnphones.utnPhones.dto.ClientCreatedDTO;
 import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
 import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
 import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
-import com.utnphones.utnPhones.services.CallService;
 import com.utnphones.utnPhones.services.CityService;
 import com.utnphones.utnPhones.services.ClientService;
-import com.utnphones.utnPhones.services.PhoneLineService;
-import com.utnphones.utnPhones.session.SessionManager;
 import com.utnphones.utnPhones.testUtils.TestUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.springframework.http.ResponseEntity;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -109,7 +100,7 @@ public class ClientControllerTest {
         Assert.assertEquals(clientCreated, testClient);
     }
 
-    @Test(expected = CityNotFoundException.class) // todo ver
+    @Test(expected = CityNotFoundException.class)
     public void callCreateClientWithInvalidCityName() throws CityNotFoundException, NoSuchAlgorithmException {
         ClientCreatedDTO dto = ClientCreatedDTO.builder()
                 .firstname("juan")
@@ -124,7 +115,7 @@ public class ClientControllerTest {
         clientController.create(dto);
     }
 
-    @Test(expected = CityNotFoundException.class)// todo ver
+    @Test(expected = CityNotFoundException.class)
     public void callUpdateClientWithInvalidCityName() throws CityNotFoundException, ClientNotFoundException, NoSuchAlgorithmException {
         ClientUpdatedDTO dto = ClientUpdatedDTO.builder()
                 .firstname("juan")

@@ -71,7 +71,7 @@ public class AntennaControllerTest {
 
     }
 
-    @Test
+    @Test(expected = PhoneLineNotFoundException.class)
     public void testCreateWithInvalidPhoneline() throws PhoneLineNotFoundException {
         PhoneLine from = TestUtils.getPhoneLines().get(0);
         PhoneLine to = TestUtils.getPhoneLines().get(1);

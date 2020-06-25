@@ -62,43 +62,4 @@ public class CallServiceTest {
         this.callService.getCalls(1, "2020-05-870", "2020-05-410");
     }
 
-    /*@Test
-    public void testGetTopTenDestiniesByClient(){ // todo
-
-    }*/
-
-    /*@Test
-    public void testCreateCallOk() throws PhoneLineNotFoundException {
-        Call call = TestUtils.getCalls().get(0);
-
-        CallDto callDto = new CallDto(call.getPhoneFrom().getLineNumber(), call.getPhoneTo().getLineNumber(), call.getDuration(), call.getDate());
-        when(this.callRepository.save(call)).thenReturn(call);
-        when(this.callService.getLocation(call)).thenReturn(URI.create("uri.com"));
-
-        URI callTest = this.callService.create(callDto);
-
-        Assert.assertEquals(call.getId(), callTest);
-    }*/
-/*
-    @Test
-    public void testGetByIdOk() throws CallNotFoundException {
-        Call call = TestUtils.getCalls().get(0);
-        when(this.callRepository.findById(call.getId())).thenReturn(Optional.of(call));
-
-        Call callTest = this.callService.getById(call.getId());
-
-        Assert.assertEquals(call, callTest);
-    }
-*//*
-    @Test(expected = CallNotFoundException.class)
-    public void testGetByIdNotFound() throws CallNotFoundException {
-        when(this.callRepository.findById(1)).thenReturn(Optional.empty());
-        this.callService.getById(1);
-
-    }
-
-    @Test
-    public void testGetCallsOk(){
-
-    }*/
 }

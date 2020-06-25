@@ -21,20 +21,6 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-   /* //todo borrar
-    public List<Invoice> getAll(){
-        return this.invoiceService.getAll();
-    }
-
-    //todo borrar
-    public Invoice create(@RequestBody Invoice invoice){
-        return this.invoiceService.create(invoice);
-    }
-
-    //todo borrar
-    public Invoice getById(@PathVariable Integer id) throws InvoiceNotFoundException {
-        return this.invoiceService.getById(id);
-    }*/
 
     public List<InvoiceByClient> getInvoicesByClient(Integer idClient, String dateFrom, String dateTo) throws ParseException {
         return this.invoiceService.getInvoicesByClient(idClient, dateFrom, dateTo);

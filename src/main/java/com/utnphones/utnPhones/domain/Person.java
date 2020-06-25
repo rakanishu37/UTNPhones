@@ -39,7 +39,6 @@ public class Person {
 
     @ManyToOne
     @JoinColumn(name = "id_user_type", referencedColumnName = "id_user_type",insertable=false, updatable =false)
-    //TODO deberia dejarnos incluirla en la query de insert sino no podriamos agregar personas
     private UserType userType;
 
     @NotNull

@@ -21,6 +21,7 @@ public class PersonService {
 
     public Person login(String username, String password) throws UserNotfoundException, NoSuchAlgorithmException {
         Person user = personRepository.getByUsername(username, PasswordConverter.generatePassword(password));
+
         return Optional.ofNullable(user).orElseThrow(UserNotfoundException::new);
     }
 }

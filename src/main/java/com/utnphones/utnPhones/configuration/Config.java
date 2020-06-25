@@ -38,7 +38,7 @@ public class Config {
     public FilterRegistrationBean sessionExistsFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(sessionFilter);
-        registration.addUrlPatterns("/api/*");
+        registration.addUrlPatterns("/api/**");
         return registration;
     }
 
@@ -46,7 +46,7 @@ public class Config {
     public FilterRegistrationBean superUserSessionExistsFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
         registration.setFilter(backOfficeSessionFilter);
-        registration.addUrlPatterns("/superuser/*");
+        registration.addUrlPatterns("/backoffice/**");
         return registration;
     }
 

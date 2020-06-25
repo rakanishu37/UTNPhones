@@ -34,7 +34,7 @@ import static com.utnphones.utnPhones.utils.Constants.USER_NOT_LOGGED_MESSAGE;
 
 @RestControllerAdvice
 public class AdviceController extends ResponseEntityExceptionHandler {
-//TODO agregar todas
+
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(InvalidLoginException.class)
@@ -54,7 +54,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ErrorResponseDto(3, CLIENT_NOT_EXISTS_MESSAGE);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(PhoneLineNotFoundException.class)
     public ErrorResponseDto handlePhoneLineNotExists() {
         return new ErrorResponseDto(4, PHONELINE_NOT_EXISTS_MESSAGE);
@@ -72,12 +72,6 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ErrorResponseDto(5, INVALID_FORMAT_MESSAGE);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(ClientIsAlreadyDeletedException.class)
-    public ErrorResponseDto handleClientIsAlreadyDeletedException() {
-        return new ErrorResponseDto(6, CLIENT_NOT_EXISTS_MESSAGE);
-    }
-
     @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(UserNotLoggedException.class)
     public ErrorResponseDto handleUserNotLoggedExceptionException() {
@@ -90,7 +84,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
         return new ErrorResponseDto(8, UNAUTHORIZED_ACCESS_MESSAGE);
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(CityNotFoundException.class)
     public ErrorResponseDto handleCityNotFoundException(){
         return new ErrorResponseDto(6, CITY_NOT_FOUND);
@@ -101,7 +95,7 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     public ErrorResponseDto handleUserNException(ConstraintViolationException ex)
     {
         return new ErrorResponseDto(6, ex.getCause().getMessage());
-    } // todo ver
+    }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(InvoiceNotFoundException.class)
@@ -109,10 +103,5 @@ public class AdviceController extends ResponseEntityExceptionHandler {
     {
         return new ErrorResponseDto(4, INVOICE_NOT_EXISTS);
     }
-    /*@ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(LineTypeNotFoundException.class)
-    public ErrorResponseDto handleLineTypeNotFoundException(LineTypeNotFoundException ex)
-    {
-        return new ErrorResponseDto(9, "Ese tipo de linea no existe");
-    }*/
+
 }

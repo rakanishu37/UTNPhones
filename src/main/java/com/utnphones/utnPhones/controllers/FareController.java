@@ -21,21 +21,6 @@ public class FareController {
         this.fareService = fareService;
     }
 
-    /*//todo borrar?
-    public List<Fare> getAll(){
-        return this.fareService.getAll();
-    }*/
-
-    //todo borrar
-    /*public Fare create(@RequestBody Fare fare){
-        return this.fareService.create(fare);
-    }*/
-
-    //todo borrar
-    /*public Fare getById(@PathVariable Integer idFare) throws FareNotFoundException {
-        return this.fareService.getById(idFare);
-    }*/
-
     public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws CityNotFoundException {
         return this.fareService.getFareByCities(idCityFrom, idCityTo);
     }
