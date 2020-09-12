@@ -1,51 +1,75 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.PhoneLineMySQLDao;
+import com.utnphones.utnPhones.domain.City;
+import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.LineStatus;
+import com.utnphones.utnPhones.domain.LineType;
 import com.utnphones.utnPhones.domain.PhoneLine;
+import com.utnphones.utnPhones.dto.PhoneLineDTO;
 import com.utnphones.utnPhones.exceptions.PhoneLineNotFoundException;
+import com.utnphones.utnPhones.exceptions.PhoneLineNotIsAlreadyDeletedException;
 import com.utnphones.utnPhones.repository.PhoneLineRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.sound.sampled.Line;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PhoneLineService {
     private PhoneLineRepository phoneLineRepository;
+    private LineTypeService lineTypeService;
 
     @Autowired
-    public PhoneLineService(final PhoneLineRepository phoneLineRepository) {
+    public PhoneLineService(final PhoneLineRepository phoneLineRepository, final LineTypeService lineTypeService) {
         this.phoneLineRepository = phoneLineRepository;
+        this.lineTypeService = lineTypeService;
     }
 
-    public List<PhoneLine> getAll(){
-        return this.phoneLineRepository.findAll();
-    }
+    public PhoneLine create(PhoneLineDTO phoneLineDTO, Client client, LineType lineType, City city) {
+        PhoneLine phoneLine = PhoneLine.builder()
+                .client(client)
+                .lineNumber(city.getPrefix() + phoneLineDTO.getLineNumber())
+                .lineStatus(phoneLineDTO.getStatus())
+                .lineType(lineType)
+                .build();
 
-    public PhoneLine create(PhoneLine phoneLine){
         return this.phoneLineRepository.save(phoneLine);
     }
 
-
-
     public PhoneLine getById(Integer id) throws PhoneLineNotFoundException {
-        return this.phoneLineRepository.findById(id)
+        return this.phoneLineRepository.findByIdAndIsActive(id,Boolean.TRUE)
                 .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
-    public Integer activatePhoneLine(Integer idPhoneLine) {
-        return phoneLineRepository.changePhoneLineStatus(LineStatus.active,idPhoneLine);
+
+    public PhoneLine getByPhoneNumber(String phoneNumber) throws PhoneLineNotFoundException {
+        return this.phoneLineRepository.findByLineNumberAndIsActive(phoneNumber,Boolean.TRUE)
+                .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
-    public Integer cancelPhoneLine(Integer idPhoneLine) {
-        return phoneLineRepository.changePhoneLineStatus(LineStatus.canceled,idPhoneLine);
+    public PhoneLine getActivePhoneNumber(String phoneNumber) throws PhoneLineNotFoundException {
+        return this.phoneLineRepository.findByLineNumberAndIsActiveAndLineStatus(phoneNumber,Boolean.TRUE, LineStatus.active)
+                .orElseThrow(()-> new PhoneLineNotFoundException());
     }
 
-    public Integer suspendPhoneLine(Integer idPhoneline){
-        return phoneLineRepository.changePhoneLineStatus(LineStatus.suspended,idPhoneline);
+    public PhoneLine updatePhoneLine(Integer idPhoneline, PhoneLineDTO phoneLineDTO, City city, LineType lineType) throws PhoneLineNotFoundException {
+        return phoneLineRepository.findByIdAndIsActive(idPhoneline, Boolean.TRUE)
+                .map(phoneLine -> update(phoneLine,phoneLineDTO,city,lineType))
+                .map(phoneLineRepository::save)
+                .orElseThrow(PhoneLineNotFoundException::new);
     }
+
+    private PhoneLine update(PhoneLine phoneLine, PhoneLineDTO phoneLineDTO,City city,LineType lineType){
+        phoneLine.setLineNumber(city.getPrefix() + phoneLineDTO.getLineNumber());
+        phoneLine.setLineType(lineType);
+        phoneLine.setLineStatus(phoneLineDTO.getStatus());
+        return phoneLine;
+    }
+
+    public void delete(Integer idPhoneLine) throws PhoneLineNotFoundException{
+        PhoneLine phoneLine = getById(idPhoneLine);
+        phoneLine.setIsActive(Boolean.FALSE);
+        phoneLineRepository.save(phoneLine);
+    }
+
 }

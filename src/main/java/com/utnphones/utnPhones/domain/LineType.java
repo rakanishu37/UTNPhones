@@ -24,5 +24,5 @@ public class LineType {
 
     @NotNull
     @Column(name = "type_name")
-    private String type_name;
+    private String typeName;
 }

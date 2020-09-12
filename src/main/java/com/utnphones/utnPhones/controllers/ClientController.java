@@ -3,24 +3,20 @@ package com.utnphones.utnPhones.controllers;
 
 import com.utnphones.utnPhones.domain.Client;
 import com.utnphones.utnPhones.domain.PhoneLine;
-import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
-import com.utnphones.utnPhones.exceptions.ValidationException;
-import com.utnphones.utnPhones.projections.CallsDates;
+import com.utnphones.utnPhones.dto.ClientCreatedDTO;
+import com.utnphones.utnPhones.dto.ClientUpdatedDTO;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
 import com.utnphones.utnPhones.exceptions.ClientIsAlreadyDeletedException;
+import com.utnphones.utnPhones.exceptions.ClientNotFoundException;
 import com.utnphones.utnPhones.services.ClientService;
+import com.utnphones.utnPhones.session.SessionManager;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.stereotype.Controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import java.util.Map;
 
-@RestController
-@RequestMapping("/clients")
+@Controller
 public class ClientController {
     private ClientService clientService;
 
@@ -29,47 +25,23 @@ public class ClientController {
         this.clientService = clientService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Client>> getAll(){
-        List<Client> list = clientService.getAll();
-        return (list.size() > 0) ? ResponseEntity.ok(list) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public List<Client> getAll(Integer quantity, Integer from){
+        return this.clientService.getAll(quantity,from);
     }
 
-    @GetMapping("/{idClient}")
-    public ResponseEntity<Client> getById(@PathVariable Integer idClient) throws ClientNotFoundException {
-        return ResponseEntity.ok(clientService.getById(idClient));
+    public Client getById(Integer id) throws ClientNotFoundException {
+        return this.clientService.getById(id);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Client> create(@RequestBody Client client) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.create(client));
+    public Client create(ClientCreatedDTO client) throws CityNotFoundException, NoSuchAlgorithmException {
+        return this.clientService.create(client);
     }
 
-    @PostMapping("/{idClient}/phonelines")
-    public ResponseEntity<PhoneLine> createPhoneLine(@PathVariable Integer idClient, @RequestBody PhoneLine phoneLine) throws ClientNotFoundException {
-        phoneLine.setClient(clientService.getById(idClient));
-        return ResponseEntity.status(HttpStatus.CREATED).body(clientService.setPhoneline(phoneLine));
+    public Client update(Integer id, ClientUpdatedDTO client) throws ClientNotFoundException, CityNotFoundException, NoSuchAlgorithmException {
+        return this.clientService.update(id, client);
     }
 
-    @PutMapping("/{idClient}")
-    public ResponseEntity<Client> updateClient(@PathVariable Integer idClient, @RequestBody Client updatedClient) throws ClientNotFoundException {
-        return ResponseEntity.ok(clientService.update(updatedClient));
-    }
-
-    @DeleteMapping("/{idClient}")
-    public ResponseEntity<Integer> deleteClient(@PathVariable Integer idClient) throws ClientNotFoundException, ClientIsAlreadyDeletedException {
-        return ResponseEntity.ok(clientService.delete(idClient));
-    }
-
-    @GetMapping("/{idClient}/registry")
-    public ResponseEntity<Map<String, List<CallsDates>>> getCallsBetweenDates(@PathVariable Integer idClient,
-                                                                              @RequestParam(name = "dateFrom") String dateFrom,
-                                                                              @RequestParam(name = "dateTo") String dateTo) throws ClientNotFoundException, ParseException, ValidationException {
-        Client client = this.clientService.getById(idClient);
-        Date from = new SimpleDateFormat("yyyy/MM/dd").parse(dateFrom);
-        Date to = new SimpleDateFormat("yyyy/MM/dd").parse(dateTo);
-        Map<String, List<CallsDates>> callsBetweenDates = clientService.getCallsBetweenDates(client.getId(), from, to);
-
-        return (!callsBetweenDates.isEmpty()) ? ResponseEntity.ok(callsBetweenDates) : ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public void delete(Integer id) throws ClientNotFoundException {
+        clientService.delete(id);
     }
 }

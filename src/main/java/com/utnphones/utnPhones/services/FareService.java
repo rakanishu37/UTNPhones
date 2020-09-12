@@ -1,8 +1,8 @@
 package com.utnphones.utnPhones.services;
 
-import com.utnphones.utnPhones.dao.mysql.FareMySQLDao;
 import com.utnphones.utnPhones.domain.Fare;
-import com.utnphones.utnPhones.projections.FareByCities;
+import com.utnphones.utnPhones.exceptions.CityNotFoundException;
+import com.utnphones.utnPhones.exceptions.FareNotFoundException;
 import com.utnphones.utnPhones.repository.FareRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,15 +18,9 @@ public class FareService {
         this.fareRepository = fareRepository;
     }
 
-    public List<Fare> getAll(){
-        return this.fareRepository.findAll();
+    public Fare getFareByCities(Integer idCityFrom, Integer idCityTo) throws FareNotFoundException {
+        return fareRepository.getFareByCities(idCityFrom, idCityTo).orElseThrow(FareNotFoundException::new);
     }
 
-    public Fare create(Fare fare){
-        return this.fareRepository.save(fare);
-    }
 
-    public FareByCities getFareByCities(Integer idCityFrom, Integer idCityTo){
-        return this.fareRepository.getFareByCities(idCityFrom, idCityTo);
-    }
 }

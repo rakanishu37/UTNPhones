@@ -36,24 +36,23 @@ public class Person {
     @ManyToOne
     @JoinColumn(name = "id_city")
     private City city;
-    //TODO buscar y modificar para que no se ejecute 2 veces la query de city
-    @NotNull
+
     @ManyToOne
     @JoinColumn(name = "id_user_type", referencedColumnName = "id_user_type",insertable=false, updatable =false)
-    //TODO deberia dejarnos incluirla en la query de insert sino no podriamos agregar personas
     private UserType userType;
 
     @NotNull
     @Column(name = "DNI")
     private String DNI;
+
     @NotNull
     @Column(name = "username")
     private String username;
+
     @NotNull
     @Column(name = "password")
     private String password;
 
-    @NotNull
     @Column(name = "is_active")
     private Boolean isActive;
 }

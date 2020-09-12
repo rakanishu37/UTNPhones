@@ -46,7 +46,7 @@ public class Call {
     private PhoneLine phoneTo;
 
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_invoice", insertable=false, updatable =false)
     @JsonBackReference
     private Invoice invoice;

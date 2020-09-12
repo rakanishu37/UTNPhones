@@ -21,18 +21,19 @@ CREATE TABLE cities(
 CREATE TABLE user_types(
 	id_user_type INT AUTO_INCREMENT,
     user_type VARCHAR(50),
-    CONSTRAINT PK_USER_TYPES PRIMARY KEY (id_user_type)
+    CONSTRAINT PK_USER_TYPES PRIMARY KEY (id_user_type),
+    CONSTRAINT UNQ_USER_TYPE unique(user_type)
 );
 
 CREATE TABLE persons(
     id_person INT AUTO_INCREMENT,
     id_city INT NOT NULL,
     firstname VARCHAR(50) NOT NULL,
-    surname VARCHAR(50) NOT NULL, 
+    surname VARCHAR(50) NOT NULL,
     DNI VARCHAR(9) NOT  NULL,
     username varchar(50) not null,
     password varchar(50) not null,
-    id_user_type INT NOT NULL, 
+    id_user_type INT NOT NULL,
     is_active BOOLEAN NOT NULL,
     CONSTRAINT PK_PERSONS PRIMARY KEY (id_person),
     CONSTRAINT FK_PERSONS_CITIES FOREIGN KEY (id_city) REFERENCES cities(id_city),
@@ -42,7 +43,7 @@ CREATE TABLE persons(
 );
 
 
-CREATE TABLE Fares(
+CREATE TABLE fares(
 	id_fare INT AUTO_INCREMENT,
     id_city_from INT NOT NULL,
     id_city_to INT NOT NULL,
@@ -55,7 +56,8 @@ CREATE TABLE Fares(
 CREATE TABLE line_types(
     id_line_type INT AUTO_INCREMENT,
     type_name VARCHAR(50) NOT NULL,
-    CONSTRAINT PK_LINE_TYPES PRIMARY KEY (id_line_type)
+    CONSTRAINT PK_LINE_TYPES PRIMARY KEY (id_line_type),
+    CONSTRAINT UNQ_TYPE_NAME unique(type_name)
 );
 
 CREATE TABLE phone_lines(
@@ -64,6 +66,7 @@ CREATE TABLE phone_lines(
     id_person INT NOT NULL,
     line_number VARCHAR(15) NOT NULL,
 	line_status ENUM('active', 'canceled', 'suspended') NOT NULL,
+	is_active BOOLEAN NOT NULL,
     CONSTRAINT PK_PHONE_LINES PRIMARY KEY (id_phone_line),
     CONSTRAINT FK_LINES_LINE_TYPES FOREIGN KEY (id_line_type) REFERENCES line_types(id_line_type),
     CONSTRAINT FK_LINES_PERSONS FOREIGN KEY (id_person) REFERENCES persons(id_person),
@@ -97,5 +100,3 @@ CREATE TABLE calls(
     CONSTRAINT FK_CALLS_PHONE_LINE_TO FOREIGN KEY (id_phone_line_to) REFERENCES phone_lines(id_phone_line),
     CONSTRAINT FK_CALLS_INVOICES FOREIGN KEY (id_invoice) REFERENCES invoices(id_invoice)
 );
-
-

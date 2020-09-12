@@ -1,6 +1,8 @@
 package com.utnphones.utnPhones.session;
 
 import com.utnphones.utnPhones.domain.Client;
+import com.utnphones.utnPhones.domain.Employee;
+import com.utnphones.utnPhones.domain.Person;
 
 
 import java.util.Date;
@@ -8,10 +10,10 @@ import java.util.Date;
 public class Session {
 
     String token;
-    Client loggedUser;
+    Person loggedUser;
     Date lastAction;
 
-    public Session(String token, Client loggedUser, Date lastAction) {
+    public Session(String token, Person loggedUser, Date lastAction) {
         this.token = token;
         this.loggedUser = loggedUser;
         this.lastAction = lastAction;
@@ -25,11 +27,11 @@ public class Session {
         this.token = token;
     }
 
-    public Client getLoggedUser() {
+    public Person getLoggedUser() {
         return loggedUser;
     }
 
-    public void setLoggedUser(Client loggedUser) {
+    public void setLoggedUser(Person loggedUser) {
         this.loggedUser = loggedUser;
     }
 

@@ -44,10 +44,13 @@ public class PhoneLine {
 
     @NotNull
     @Column(name = "line_number")
-    private String number;
+    private String lineNumber;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private LineStatus lineStatus;
 
+    @Column(name = "is_active")
+    @Builder.Default
+    private Boolean isActive = Boolean.TRUE;
 }
